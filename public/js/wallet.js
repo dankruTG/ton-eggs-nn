@@ -1,7 +1,7 @@
 import { TonConnect } from '@tonconnect/sdk';
 
 const connector = new TonConnect({
-  manifestUrl: 'https://dankrutg.github.io/ton-eggs-nn/tonconnect-manifest.json'
+  manifestUrl: 'https://github.com/dankruTG/ton-eggs-nn/blob/master/tonconnect-manifest.json'
 });
 
 const connectWalletButton = document.getElementById('connectWalletButton');
