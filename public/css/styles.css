@@ -2,7 +2,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     background-color: #f5f5f5;
     font-family: Arial, sans-serif;
     margin: 0;
@@ -10,6 +10,8 @@ body {
     background-image: url('https://github.com/dankruTG/ton-eggs-nn/blob/master/public/images/Backgrounds/DefBackground.png?raw=true');
     background-size: cover; /* Заполняет элемент body полностью, сохраняя пропорции */
     background-repeat: no-repeat; /* Запрещает повторение фонового изображения */
+    flex-direction: column;
+    background-position: center;
 }
 
 #eggContainer {
@@ -111,36 +113,24 @@ body {
     z-index: 1000; /* Поднимаем поверх других элементов */
     display: none; /* Начально скрываем */
 }
-#energyContainer {
-    position: absolute;
-    width: 200px;
-    height: 50px;
-    background-color: #333; /* Темный фон */
-    border: 2px solid gold; /* Золотые границы */
-    border-radius: 10px; /* Закругленные края */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    top: calc(75%); /* Располагаем чуть ниже яйца */
-    left: 50%; /* Центрируем по горизонтали */
-    transform: translateX(-50%); /* Центрируем точку позиционирования */
-}
+
 
 #energyContainer {
-    position: absolute;
-    width: 175px;
-    height: 50px; /* Высота увеличена для удобства демонстрации */
-    background-color: #333; /* Темный фон */
-    border: 2px solid gold; /* Золотые границы */
-    border-radius: 10px; /* Закругленные края */
+    position: fixed; /* Изменяем на fixed для фиксированного позиционирования */
+    width: 80%;
+    max-width: 300px; /* Ограничиваем максимальную ширину */
+    height: auto; /* Высота будет зависеть от содержимого */
+    background-color: #333; 
+    border: 2px solid gold;
+    border-radius: 10px;
     display: flex;
-    flex-direction: column; /* Столбцовая ориентация для содержимого */
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between; /* Равномерное распределение по вертикали */
-    top: calc(77%); /* Располагаем чуть ниже яйца */
-    left: 50%; /* Центрируем по горизонтали */
-    transform: translateX(-50%); /* Центрируем точку позиционирования */
-    padding: 10px; /* Внутренние отступы для содержимого */
+    justify-content: space-between;
+    bottom: 90px; /* Располагаем над bottomIconsContainer */
+    left: 50%; 
+    transform: translateX(-50%);
+    padding: 10px; 
 }
 
 #energyContent {
@@ -184,12 +174,12 @@ body {
     right: 0;
     margin: 0 auto;
     width: 80%;
-    max-width: 500px; /* Максимальная ширина контейнера */
+    max-width: 500px;
     max-height: 65px;
     padding: 10px;
-    background-color: rgba(0, 0, 0, 0.5); /* Цвет фона с прозрачностью */
-    border: 2px solid gold; /* Золотые границы */
-    border-radius: 10px; /* Закругленные края */
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 2px solid gold;
+    border-radius: 10px;
 }
 
 .iconContainer {
