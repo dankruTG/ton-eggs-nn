@@ -108,7 +108,7 @@ function buyEgg(rarity, price) {
 }
 
 // Назначаем обработчик клика на иконку магазина
-document.querySelector('.iconContainer img[src="images/shop_icon.png"]').parentElement.addEventListener('click', openShopModal);
+document.querySelector('.iconContainer img[src="public/images/shop_icon.png"]').parentElement.addEventListener('click', openShopModal);
 
 // Назначаем обработчик клика на крестик для закрытия магазина
 document.querySelector('#shopModal .close').addEventListener('click', closeShopModal);
