@@ -21,11 +21,11 @@ function buyUpgrade(type) {
     if (type === 'speed') {
         if (coinBalance >= speedUpgradePrice) {
             // Покупка улучшения скорости
-            upgradeSpeed();
             updateCoinBalance(-speedUpgradePrice);
             speedUpgradeLevel++;
             speedUpgradePrice *= 2;
             updateShopDisplay();
+            upgradeSpeed();
         } else {
             showNotEnoughCoinsModal(speedUpgradePrice, coinBalance);
         }
