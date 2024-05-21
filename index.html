@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Egg Clicker</title>
-    <link rel="stylesheet" href="css\styles.css">
+    <link rel="stylesheet" href="public\css\styles.css">
 </head>
 <body>
     <div id="root"></div>
@@ -15,7 +15,7 @@
     </div>
     <div id="energyContainer">
         <div id="energyContent">
-            <img id="energyIcon" src="images/energy.png" alt="Energy Icon">
+            <img id="energyIcon" src="public/images/energy.png" alt="Energy Icon">
             <span id="energyText">Text</span>
         </div>
         <div id="energyBarContainer">
@@ -27,7 +27,7 @@
             <span class="close">&times;</span>
             <h2>Ваш дроп</h2>
             <div id="coinInfo">
-                <img id="coinImage" src="images/coin.png" alt="Монета eShells">
+                <img id="coinImage" src="public/images/coin.png" alt="Монета eShells">
                 <span id="droppedCoinsCount"></span>
             </div>
             <div id="dropEggInfo">
@@ -39,25 +39,25 @@
     <div id="clickCounter">Начни добывать любое яйцо</div>
     <div id="coinBalanceContainer">
         <div id="coinBalance">0</div>
-        <img id="coinImage" src="images/coin.png" alt="Coin Image">
+        <img id="coinImage" src="public/images/coin.png" alt="Coin Image">
     </div>
     <!-- Контейнер с иконками внизу страницы -->
     <div id="bottomIconsContainer">
         <!-- Контейнер для первой иконки -->
         <div class="iconContainer" onclick="openInventory()">
-            <img src="images/inventory_icon.png" alt="Inventory Icon">
+            <img src="public/images/inventory_icon.png" alt="Inventory Icon">
         </div>
         <!-- Контейнер для второй иконки -->
         <div class="iconContainer" onclick="openShopModal()">
-            <img src="images/shop_icon.png" alt="Shop Icon">
+            <img src="public/images/shop_icon.png" alt="Shop Icon">
         </div>
         <!-- Контейнер для третьей иконки -->
         <div class="iconContainer" onclick="giveEggs()">
-            <img src="images/rewards_icon.png" alt="Rewards Icon">
+            <img src="public/images/rewards_icon.png" alt="Rewards Icon">
         </div>
         <!-- Контейнер для четвертой иконки -->
         <div class="iconContainer" onclick="openInvite()">
-            <img src="images/invite_icon.png" alt="Invite Icon">
+            <img src="public/images/invite_icon.png" alt="Invite Icon">
         </div>
     </div>
     <div id="notificationModal" class="modal">
@@ -110,11 +110,11 @@
 
     
     
-    <script src="js/inventory.js"></script>
-    <script src="js/eggsData.js"></script>
-    <script src="js/addEggs.js"></script>
-    <script src="js/openShop.js"></script>
-    <script src="js/energy.js"></script>
+    <script src="public/js/inventory.js"></script>
+    <script src="public/js/eggsData.js"></script>
+    <script src="public/js/addEggs.js"></script>
+    <script src="public/js/openShop.js"></script>
+    <script src="public/js/energy.js"></script>
 
 </body>
 </html>
