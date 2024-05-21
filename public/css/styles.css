@@ -13,6 +13,19 @@ body {
     flex-direction: column;
     background-position: center;
 }
+#walletContainer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: absolute;
+    top: 20px;
+    padding: 8px;
+    border-radius: 15px;
+    background-color: rgb(4, 37, 226);
+    height: 40px;
+    border: 2px solid rgb(255, 255, 255);
+    left: 10px;
+}
 
 #eggContainer {
     position: relative;
