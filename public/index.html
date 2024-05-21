@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Egg Clicker</title>
+    <link rel="stylesheet" href="css\styles.css">
+</head>
+<body>
+    <div id="eggDiggModal" class="modal">
+        <div class="modal-content">
+            <!-- Сюда будет добавлен результат добычи -->
+        </div>
+    </div>
+    <div id="energyContainer">
+        <div id="energyContent">
+            <img id="energyIcon" src="images/energy.png" alt="Energy Icon">
+            <span id="energyText">Text</span>
+        </div>
+        <div id="energyBarContainer">
+            <div id="energyBar"></div>
+        </div>
+    </div>
+    <div id="coinModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Ваш дроп</h2>
+            <div id="coinInfo">
+                <img id="coinImage" src="images/coin.png" alt="Монета eShells">
+                <span id="droppedCoinsCount"></span>
+            </div>
+            <div id="dropEggInfo">
+                <img id="eggImageInDrop" src="egg.png" alt="Выпавшее яйцо">
+                <span id="eggNameInDrop"></span>
+            </div>
+        </div>
+    </div>
+    <div id="clickCounter">Начни добывать любое яйцо</div>
+    <div id="coinBalanceContainer">
+        <div id="coinBalance">0</div>
+        <img id="coinImage" src="images/coin.png" alt="Coin Image">
+    </div>
+    <!-- Контейнер с иконками внизу страницы -->
+    <div id="bottomIconsContainer">
+        <!-- Контейнер для первой иконки -->
+        <div class="iconContainer" onclick="openInventory()">
+            <img src="images/inventory_icon.png" alt="Inventory Icon">
+        </div>
+        <!-- Контейнер для второй иконки -->
+        <div class="iconContainer" onclick="openShopModal()">
+            <img src="images/shop_icon.png" alt="Shop Icon">
+        </div>
+        <!-- Контейнер для третьей иконки -->
+        <div class="iconContainer" onclick="giveEggs()">
+            <img src="images/rewards_icon.png" alt="Rewards Icon">
+        </div>
+        <!-- Контейнер для четвертой иконки -->
+        <div class="iconContainer" onclick="openInvite()">
+            <img src="images/invite_icon.png" alt="Invite Icon">
+        </div>
+    </div>
+    <div id="notificationModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalMessage"></div>
+        </div>
+    </div>
+    <div id="inventoryModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Инвентарь</h2>
+            <div id="inventoryItemsContainer"></div> <!-- Контейнер для яиц в инвентаре -->
+        </div>
+    </div>
+        <!-- HTML-разметка для модального окна с информацией о яйце -->
+    <div id="eggInfoModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Description</h2>
+            <!-- Здесь будет отображаться информация о яйце -->
+        </div>
+    </div>
+        <!-- Модальное окно магазина -->
+        <div id="shopModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Магазин</h2>
+                <div id="shopItems">
+                    <div class="shopItem" id="buyCommonEgg">
+                        <button class="common-egg-button" onclick="buyEgg('Common', 50)">Купить обычное яйцо - 50 монет</button>
+                    </div>
+                    <div class="shopItem" id="buyUncommonEgg">
+                        <button class="uncommon-egg-button" onclick="buyEgg('Uncommon', 1)">Купить необычное яйцо - 1000 монет</button>
+                    </div>
+                    <div class="shopItem" id="buyRareEgg">
+                        <button class="rare-egg-button" onclick="buyEgg('Rare', 1)">Купить редкое яйцо - 10000 монет</button>
+                    </div>
+                    <div class="shopItem" id="buySpeedUpgrade">
+                        <button class="upgrade-speed-button" onclick="buyUpgrade('speed')">Улучшение скорости (Цена: <span id="speedUpgradePrice">500</span> монет) <span id="speedUpgradeLevel">Lv 1</span></button>
+                    </div>
+                    <div class="shopItem" id="buyEnergyUpgrade">
+                        <button class="upgrade-energy-button" onclick="buyUpgrade('energy')">Улучшение энергии (Цена: <span id="energyUpgradePrice">300</span> монет) <span id="energyUpgradeLevel">Lv 1</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+       
+
+    
+    
+    <script src="js/inventory.js"></script>
+    <script src="js/eggsData.js"></script>
+    <script src="js/addEggs.js"></script>
+    <script src="js/openShop.js"></script>
+    <script src="js/energy.js"></script>
+
+</body>
+</html>

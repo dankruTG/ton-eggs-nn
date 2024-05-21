@@ -1,0 +1,464 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('D:/ton-eggs-nn/public/images/Backgrounds/DefBackground.png');
+    background-size: cover; /* Заполняет элемент body полностью, сохраняя пропорции */
+    background-repeat: no-repeat; /* Запрещает повторение фонового изображения */
+}
+
+#eggContainer {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+#eggImage {
+    width: 200px;
+    cursor: pointer;
+}
+
+#clickCounter {
+    font-size: 24px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 2px 2px 4px #000;
+    margin: 10px;
+}
+
+#coinBalanceContainer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 8px; /* Уменьшаем внутренний отступ */
+    border-radius: 15px; /* Уменьшаем радиус закругления */
+    background-color: gold;
+    height: 40px; /* Устанавливаем меньшую высоту */
+    border: 2px solid black; /* Черные границы */
+}
+
+
+#coinBalance {
+    font-size: 18px;
+    margin-right: 5px;
+}
+#eggImageInDrop {
+    width: 50px;
+}
+
+#coinImage {
+    width: 70px;
+}
+/* Стили для модального окна */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный черный фон */
+}
+
+/* Стили для контейнера модального окна */
+.modal-content {
+    background-color: #1E90FF; /* Темно-синий цвет фона */
+    border-radius: 10px; /* Закругленные углы */
+    border: 2px solid silver; /* Серебрянная обводка */
+    padding: 20px;
+    margin: 20% auto; /* Расположение по центру */
+    width: 60%;
+    max-width: 600px;
+    position: relative;
+    text-align: center; /* Выравнивание текста по центру */
+}
+#coinInfo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* Кнопка для закрытия модального окна */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+#coinAnimation {
+    position: absolute;
+    top: 0;
+    left: 50%; /* Позиция по центру страницы */
+    transform: translateX(-50%); /* Центрирование по горизонтали */
+    z-index: 1000; /* Поднимаем поверх других элементов */
+    display: none; /* Начально скрываем */
+}
+#energyContainer {
+    position: absolute;
+    width: 200px;
+    height: 50px;
+    background-color: #333; /* Темный фон */
+    border: 2px solid gold; /* Золотые границы */
+    border-radius: 10px; /* Закругленные края */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: calc(75%); /* Располагаем чуть ниже яйца */
+    left: 50%; /* Центрируем по горизонтали */
+    transform: translateX(-50%); /* Центрируем точку позиционирования */
+}
+
+#energyContainer {
+    position: absolute;
+    width: 175px;
+    height: 50px; /* Высота увеличена для удобства демонстрации */
+    background-color: #333; /* Темный фон */
+    border: 2px solid gold; /* Золотые границы */
+    border-radius: 10px; /* Закругленные края */
+    display: flex;
+    flex-direction: column; /* Столбцовая ориентация для содержимого */
+    align-items: center;
+    justify-content: space-between; /* Равномерное распределение по вертикали */
+    top: calc(77%); /* Располагаем чуть ниже яйца */
+    left: 50%; /* Центрируем по горизонтали */
+    transform: translateX(-50%); /* Центрируем точку позиционирования */
+    padding: 10px; /* Внутренние отступы для содержимого */
+}
+
+#energyContent {
+    display: flex;
+    align-items: center;
+}
+
+#energyIcon {
+    width: 30px;
+    height: 30px;
+    margin-right: 5px; /* Отступ справа для изображения */
+}
+
+#energyText {
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 5px; /* Отступ справа для текста */
+}
+
+#energyBarContainer {
+    width: 80%; /* Ширина контейнера для полосы энергии */
+    height: 20px; /* Высота контейнера для полосы энергии */
+    border-radius: 8px;
+    overflow: hidden; /* Скрытие выходящей за рамки полосы */
+    background-color: #666; /* Цвет фона контейнера для полосы */
+}
+
+#energyBar {
+    height: 100%; /* Высота полосы энергии (будет меняться) */
+    background: linear-gradient(to right, white, gold); /* Градиент от белого до золотого */
+    transition: width 0.3s ease; /* Анимация изменения ширины */
+}
+#bottomIconsContainer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 80%;
+    max-width: 500px; /* Максимальная ширина контейнера */
+    max-height: 65px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.5); /* Цвет фона с прозрачностью */
+    border: 2px solid gold; /* Золотые границы */
+    border-radius: 10px; /* Закругленные края */
+}
+
+.iconContainer {
+    cursor: pointer; /* Курсор при наведении */
+    padding: 10px;
+    transition: transform 0.2s ease; /* Плавный переход при изменении размера */
+}
+
+.iconContainer:hover {
+    transform: scale(1.1); /* Увеличение масштаба при наведении */
+}
+
+.iconContainer img {
+    width: 60px; /* Ширина иконок */
+    height: 60px; /* Высота иконок */
+}
+/* Стили для модального окна инвентаря */
+#inventoryModal {
+    display: none;
+    position: fixed;
+    z-index: 900;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный черный фон */
+    justify-content: center; /* Горизонтальное центрирование */
+    align-items: center; /* Вертикальное центрирование */
+}
+
+/* Стиль для контента модального окна */
+#inventoryModal .modal-content {
+    padding: 20px;
+    background-color: white;
+    border: 2px solid gold; /* Золотая окантовка */
+    border-radius: 10px;
+    width: 80%; /* Можно изменить в зависимости от нужного размера */
+    max-width: 335px; /* Ограничение по максимальной ширине */
+    max-height: 335px; /* Ограничение по максимальной высоте */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Небольшая тень для объема */
+    overflow: hidden; /* Отключаем прокрутку у контента */
+    display: flex;
+    flex-direction: column;
+}
+
+#inventoryModal .modal-content h2 {
+    margin: 0;
+}
+
+/* Стиль для кнопки закрытия модального окна */
+#inventoryModal .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+/* Контейнер для предметов инвентаря с прокруткой */
+#inventoryItemsContainer {
+    display: flex;
+    flex-wrap: wrap; /* Позволяет элементам переноситься на новую строку */
+    justify-content: flex-start; /* Расположение элементов вдоль оси X (горизонталь) */
+    align-items: flex-start; /* Расположение элементов вдоль оси Y (вертикаль) */
+    width: 100%; /* Занимает всю ширину родительского элемента */
+    height: 100%; /* Занимает всю высоту родительского элемента */
+    overflow-y: auto; /* Вертикальная прокрутка */
+    overflow-x: hidden; /* Отключаем горизонтальную прокрутку */
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.eggContainer {
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    border-radius: 10px;
+    border: 1px solid black;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* Стили для модального окна с информацией о яйце */
+#eggInfoModal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Стили для содержимого модального окна с информацией о яйце */
+#eggInfoModal .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 8px;
+    width: 50%; /* Уменьшаем ширину модального окна до 50% от ширины экрана */
+}
+#eggInfoModal .modal-content img {
+    max-width: 100%; /* Максимальная ширина изображения - 100% от родительского контейнера (.modal-content) */
+    max-height: 200px; /* Максимальная высота изображения - 200px */
+    display: block;
+    margin: 0 auto; /* Центрируем изображение по горизонтали */
+}
+
+/* Стили для кнопки закрытия (крестик) в модальном окне с информацией о яйце */
+#eggInfoModal .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+#eggInfoModal .close:hover,
+#eggInfoModal .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+/* Стили для модального окна магазина */
+#shopModal {
+    display: none; /* По умолчанию скрыто */
+    position: fixed;
+    z-index: 999; /* Поместить поверх других элементов */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Разрешить прокрутку, если содержимое больше окна */
+    background-color: rgba(0, 0, 0, 0.4); /* Цвет фона с затемнением */
+}
+
+/* Стили для содержимого модального окна магазина */
+#shopModal .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* Отступ сверху/снизу и авто по бокам */
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 8px;
+    width: 80%; /* Ширина содержимого */
+}
+
+/* Стили для кнопки закрытия (крестик) */
+#shopModal .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+#shopModal .close:hover,
+#shopModal .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Стили для кнопок покупки */
+#shopModal .shopItem {
+    margin-bottom: 10px;
+}
+
+#shopModal button {
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+/* Стили для обычного яйца */
+.common-egg-button {
+    background-color: #A9A9A9; /* Серый фон */
+    color: #000000; /* Обычный текст */
+}
+
+/* Стили для необычного яйца */
+.uncommon-egg-button {
+    background-color: #2db4e0; /* Светло-синий фон */
+    color: #000000; /* Обычный текст */
+    font-weight: bold; /* Жирный текст */
+}
+
+/* Стили для редкого яйца */
+.rare-egg-button {
+    background-color: #E0115F; /* Рубиновый фон */
+    color: transparent; /* Сделать текст прозрачным, чтобы был виден градиент */
+    border: 2px solid gold; /* Золотая обводка кнопки */
+    font-weight: bold; /* Жирный текст */
+    position: relative; /* Относительное позиционирование для внутреннего элемента текста */
+    overflow: hidden; /* Скрыть текст за пределами кнопки */
+}
+
+/* Внутренний элемент для градиентного текста */
+.rare-egg-button::before {
+    content: 'Купить редкое яйцо (10000 монет)';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-image: linear-gradient(to right, #FFFFFF, #FFD700); /* Градиентный текст от белого к золотому */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    white-space: nowrap; /* Не переносить текст */
+}
+
+/* Дополнительные стили для кнопок улучшений (если нужно) */
+.upgrade-speed-button {
+    background-color: #2D83EC; /* Синий фон */
+    color: #020202; /* Обычный текст */
+}
+.upgrade-energy-button {
+    background-color: #2D83EC; /* Синий фон */
+    color: #020202; /* Обычный текст */
+}
+#shopModal button:hover {
+    background-color: #d515c2;
+}
+#startDiggButton:hover {
+    background-color: #0abcf2;
+}
+#notificationModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный черный фон */
+    z-index: 1000; /* Очень высокий индекс для показа поверх других элементов */
+    overflow: auto; /* Добавляем прокрутку, если содержимое выходит за пределы модального окна */
+}
+#notificationModal .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#notificationModal .modal-content .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #aaa;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+#notificationModal .modal-content .close:hover,
+#notificationModal .modal-content .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+.startDiggButton:hover {
+    transform: scale(1.1); /* Увеличение размера кнопки */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Тень для эффекта подсветки */
+    background-color: #d515c2;
+}
+  
