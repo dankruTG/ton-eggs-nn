@@ -7,7 +7,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-image: url('D:/ton-eggs-nn/public/images/Backgrounds/DefBackground.png');
+    background-image: url('https://github.com/dankruTG/ton-eggs-nn/blob/master/public/images/Backgrounds/DefBackground.png?raw=true');
     background-size: cover; /* Заполняет элемент body полностью, сохраняя пропорции */
     background-repeat: no-repeat; /* Запрещает повторение фонового изображения */
 }
