@@ -120,7 +120,7 @@ function openEggInfoModal(eggData, eggContainerId) {
             
 
             const startDiggIcon = document.createElement('img');
-            startDiggIcon.src = 'images/startdigg.png';
+            startDiggIcon.src = 'public/images/startdigg.png';
             startDiggIcon.alt = 'Start Digg';
             startDiggIcon.style.width = '20px';
             startDiggIcon.style.height = '20px';
@@ -466,23 +466,23 @@ function changeBackgroundByRarity(rarity) {
     // Проверяем значение eggAddedForDigg
     if (!eggAddedForDigg) {
         // Если eggAddedForDigg равно false, устанавливаем фон по умолчанию
-        bodyElement.style.backgroundImage = `url('images/Backgrounds/DefBackground.png')`;
+        bodyElement.style.backgroundImage = `url('public/images/Backgrounds/DefBackground.png')`;
     } else {
         // Если eggAddedForDigg равно true, устанавливаем фон в зависимости от редкости
         let backgroundImagePath;
         switch (rarity) {
             case 'Common':
-                backgroundImagePath = 'images/Backgrounds/CommonBackground.png';
+                backgroundImagePath = 'public/images/Backgrounds/CommonBackground.png';
                 break;
             case 'Uncommon':
-                backgroundImagePath = 'images/Backgrounds/UncommonBackground.png';
+                backgroundImagePath = 'public/images/Backgrounds/UncommonBackground.png';
                 break;
             case 'Rare':
-                backgroundImagePath = 'images/Backgrounds/RareBackground.png';
+                backgroundImagePath = 'public/images/Backgrounds/RareBackground.png';
                 break;
             default:
                 // По умолчанию используем фон по умолчанию
-                backgroundImagePath = 'images/Backgrounds/DefBackground.png';
+                backgroundImagePath = 'public/images/Backgrounds/DefBackground.png';
                 break;
         }
 
