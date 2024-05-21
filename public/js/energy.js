@@ -1,6 +1,6 @@
 let curenerg = 100; // Начальная энергия
 let maxenerg = 100; // Максимальная энергия
-
+let restoreEnergySpeed = 3000
 function decreaseEnergy() {
     curenerg--;
     updateEnergyBar();
@@ -33,7 +33,7 @@ function restoreEnergy() {
 }
 
 // Восстановление энергии каждые 5 секунд
-setInterval(restoreEnergy, 3000);
+setInterval(restoreEnergy, restoreEnergySpeed);
 updateEnergyBar()
 function disableClick() {
     const eggImage = document.getElementById('clickArea');
