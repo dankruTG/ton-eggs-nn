@@ -288,7 +288,7 @@ body {
 }
 #eggInfoModal .modal-content img {
     max-width: 100%; /* Максимальная ширина изображения - 100% от родительского контейнера (.modal-content) */
-    max-height: 200px; /* Максимальная высота изображения - 200px */
+    max-height: 150px; /* Максимальная высота изображения - 200px */
     display: block;
     margin: 0 auto; /* Центрируем изображение по горизонтали */
 }
