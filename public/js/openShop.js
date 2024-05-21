@@ -1,7 +1,7 @@
 let speedUpgradeLevel = 1;
-let speedUpgradePrice = 500;
+let speedUpgradePrice = 50;
 let energyUpgradeLevel = 1;
-let energyUpgradePrice = 300;
+let energyUpgradePrice = 30;
 
 function openShopModal() {
   const shopModal = document.getElementById('shopModal');
