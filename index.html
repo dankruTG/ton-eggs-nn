@@ -16,14 +16,11 @@
         </div>
     </div>
     <div id="walletContainer"> 
-        <button id="connectWalletButton">Привязать кошелек</button>
-        <span id="walletTaskStatus">none</span>
-
     </div>
     <script>
         const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
             manifestUrl: 'https://github.com/dankruTG/ton-eggs-nn/blob/master/tonconnect-manifest.json',
-            buttonRootId: 'connectWalletButton'
+            buttonRootId: 'walletContainer'
         });
     </script>
 
@@ -129,7 +126,7 @@
     <script src="public/js/addEggs.js"></script>
     <script src="public/js/openShop.js"></script>
     <script src="public/js/energy.js"></script>
-    <script src="public/js/TonWallet.js"></script>
+    
 
 
 </body>
