@@ -1,6 +1,7 @@
-src="https://unpkg.com/@tonconnect/ui@0.0.9/dist/tonconnect-ui.min.js"
+import { TonConnectUI } from '@tonconnect/ui';
 
-const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+
+const tonConnectUI = new TonConnectUI({
     manifestUrl: 'https://github.com/dankruTG/ton-eggs-nn/blob/master/tonconnect-manifest.json',
-    buttonRootId: 'connectWalletButton'
+    buttonRootId: 'walletContainer'
 });
