@@ -15,14 +15,28 @@
             <!-- Сюда будет добавлен результат добычи -->
         </div>
     </div>
-    <div id="walletContainer"> 
+    <div id="walletContainer">
     </div>
     <script>
         const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-            manifestUrl: 'https://github.com/dankruTG/ton-eggs-nn/blob/master/tonconnect-manifest.json',
+            manifestUrl: 'https://dankrutg.github.io/ton-eggs-nn/tonconnect-manifest.json',
             buttonRootId: 'walletContainer'
         });
+        function handleConnectionStatus(wallet) {
+            if (wallet) {
+                doneWallet();
+                console.log('Wallet address:', wallet.account.address);
+            }
+        }
+
+        tonConnectUI.onStatusChange(handleConnectionStatus);
     </script>
+    <div id="notComplete" class="not-complete-modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeNotCompleteModal()">&times;</span>
+            <p>Задание не выполнено</p>
+        </div>
+    </div>
 
     <div id="energyContainer">
         <div id="energyContent">
@@ -63,7 +77,7 @@
             <img src="public/images/shop_icon.png" alt="Shop Icon">
         </div>
         <!-- Контейнер для третьей иконки -->
-        <div class="iconContainer" onclick="giveEggs()">
+        <div class="iconContainer" onclick="openRewardsModal()">
             <img src="public/images/rewards_icon.png" alt="Rewards Icon">
         </div>
         <!-- Контейнер для четвертой иконки -->
@@ -77,6 +91,7 @@
             <div id="modalMessage"></div>
         </div>
     </div>
+    
     <div id="inventoryModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -90,6 +105,15 @@
             <span class="close">&times;</span>
             <h2>Description</h2>
             <!-- Здесь будет отображаться информация о яйце -->
+        </div>
+    </div>
+    <div id="rewardsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Задания</h2>
+            <div id="taskContainer">
+                <p>1. Привяжи кошелек <button class="claim-button" onclick="checkWalletAndClaim()">Claim</button></p>
+            </div>
         </div>
     </div>
         <!-- Модальное окно магазина -->
@@ -126,6 +150,7 @@
     <script src="public/js/addEggs.js"></script>
     <script src="public/js/openShop.js"></script>
     <script src="public/js/energy.js"></script>
+    <script src="public/js/rewards.js"></script>
     
     
 

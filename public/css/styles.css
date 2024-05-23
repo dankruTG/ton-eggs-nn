@@ -317,6 +317,65 @@ body {
     text-decoration: none;
     cursor: pointer;
 }
+.not-complete-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+}
+.not-complete-modal .close {
+    position: absolute;
+    top: 1px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+}
+.not-complete-modal .modal-content {
+    text-align: center;
+    color: red;
+    font-weight: bold;
+    padding: 0px;
+    background-color: black;
+    border: 2px solid gold;
+
+}
+#rewardsModal .modal-content {
+    background-color: #b2dc0cfc;
+    margin: 15% auto; /* Отступ сверху/снизу и авто по бокам */
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 8px;
+    width: 80%; /* Ширина содержимого */
+}
+#rewardsModal .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+#rewardsModal .close:hover,
+#rewardsModal .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+.claim-button {
+    background-color: #1E90FF; /* Голубой фон */
+    color: white; /* Белый цвет текста */
+    border: none; /* Без границы */
+    border-radius: 10px; /* Сглаженные края */
+    padding: 10px 20px; /* Внутренние отступы */
+    cursor: pointer; /* Указатель курсора */
+    transition: background-color 0.3s ease; /* Плавный переход при наведении */
+}
+
+.claim-button:hover {
+    background-color: white; /* Белый фон при наведении */
+    color: #1E90FF; /* Голубой цвет текста при наведении */
+}
 /* Стили для модального окна магазина */
 #shopModal {
     display: none; /* По умолчанию скрыто */
@@ -327,12 +386,12 @@ body {
     width: 100%;
     height: 100%;
     overflow: auto; /* Разрешить прокрутку, если содержимое больше окна */
-    background-color: rgba(0, 0, 0, 0.4); /* Цвет фона с затемнением */
+    background-color: rgba(10, 9, 9, 0.541); /* Цвет фона с затемнением */
 }
 
 /* Стили для содержимого модального окна магазина */
 #shopModal .modal-content {
-    background-color: #fefefe;
+    background-color: #0907077a;
     margin: 15% auto; /* Отступ сверху/снизу и авто по бокам */
     padding: 20px;
     border: 1px solid #888;
