@@ -20,8 +20,8 @@ body {
     position: absolute;
     top: 20px;
     padding: 8px;
-    height: 40px;
-    left: 10px;
+    height: 23px;
+    left: 220px;
 }
 
 #eggContainer {
@@ -48,8 +48,8 @@ body {
     align-items: center;
     justify-content: flex-end;
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 11px;
+    right: 250px;
     padding: 8px; /* Уменьшаем внутренний отступ */
     border-radius: 15px; /* Уменьшаем радиус закругления */
     background-color: gold;
