@@ -6,6 +6,7 @@
     <title>TON EGGS</title>
     <link rel="stylesheet" href="public\css\styles.css">
     <link rel="icon" href="public/images/TON-EGG.ico" type="image/x-icon">
+    <script src="https://unpkg.com/@tonconnect/ui@0.0.9/dist/tonconnect-ui.min.js"></script>
 </head>
 <body>
     <div id="root"></div>
@@ -19,6 +20,13 @@
         <span id="walletTaskStatus">none</span>
 
     </div>
+    <script>
+        const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+            manifestUrl: 'https://github.com/dankruTG/ton-eggs-nn/blob/master/tonconnect-manifest.json',
+            buttonRootId: 'connectWalletButton'
+        });
+    </script>
+
     <div id="energyContainer">
         <div id="energyContent">
             <img id="energyIcon" src="public/images/energy.png" alt="Energy Icon">
