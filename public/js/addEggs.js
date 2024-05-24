@@ -1,11 +1,43 @@
+import { saveProgress, getProgress } from './public/js/firebase.js';
+
 let eggContainerIdCounter = 1; // Инициализация счетчика
 let inventoryItems = {}; // Объект для хранения элементов инвентаря по id
+let clickCount = 0; // Счетчик кликов
+let currentEgg = null; // Текущее добываемое яйцо
+
+// Восстановление данных из базы данных при загрузке
+Telegram.WebApp.ready();
+const userId = Telegram.WebApp.initDataUnsafe.user.id;
+getProgress(userId).then(savedProgress => {
+    if (savedProgress) {
+        inventoryItems = savedProgress.inventoryItems || {};
+        currentEgg = savedProgress.currentEgg || null;
+        clickCount = savedProgress.clickCount || 0;
+        restoreInventory();
+        if (currentEgg) {
+            startDiggEgg(currentEgg, true); // true указывает на восстановление добычи
+        }
+    }
+});
+
+function restoreInventory() {
+    const inventoryContainer = document.getElementById('inventoryItemsContainer');
+    if (inventoryContainer) {
+        for (const eggId in inventoryItems) {
+            const eggData = inventoryItems[eggId];
+            const eggContainer = createEggContainer(eggData, eggId);
+            inventoryContainer.appendChild(eggContainer);
+        }
+    }
+}
+
 // Функция для добавления яйца в инвентарь
 function addEggToInventory(egg) {
     const inventoryContainer = document.getElementById('inventoryItemsContainer');
     if (inventoryContainer) {
         const eggContainer = createEggContainer(egg);
         inventoryContainer.appendChild(eggContainer);
+        saveInventory(); // Сохранение инвентаря после добавления яйца
     }
 }
 
@@ -24,6 +56,7 @@ function giveEggs() {
             // Создание контейнера для выбранного яйца и добавление его в инвентарь
             const eggContainer = createEggContainer(selectedEgg);
             inventoryContainer.appendChild(eggContainer);
+            saveInventory(); // Сохранение инвентаря после добавления яйца
         } else {
             console.log('Нет яиц категории Common');
         }
@@ -31,7 +64,7 @@ function giveEggs() {
 }
 
 // Функция, которая создает контейнер для яйца
-function createEggContainer(eggData) {
+function createEggContainer(eggData, eggContainerId = null) {
     const eggContainer = document.createElement('div');
     eggContainer.classList.add('eggContainer');
 
@@ -47,11 +80,13 @@ function createEggContainer(eggData) {
 
     eggContainer.style.backgroundColor = getBackgroundColor(eggData.rarity); // Определяем цвет фона
 
-    // Присваиваем уникальный id контейнеру яйца
-    const eggContainerId = `${eggContainerIdCounter}`;
+    if (!eggContainerId) {
+        // Присваиваем уникальный id контейнеру яйца, если он не передан
+        eggContainerId = `${eggContainerIdCounter}`;
+        eggContainerIdCounter++; // Увеличиваем счетчик id для следующего контейнера
+    }
     eggContainer.id = eggContainerId;
-    eggContainerIdCounter++; // Увеличиваем счетчик id для следующего контейнера
-    inventoryItems[eggContainerId] = eggContainer;
+    inventoryItems[eggContainerId] = eggData;
 
     eggContainer.addEventListener('click', () => {
         openEggInfoModal(eggData, eggContainerId);
@@ -60,6 +95,9 @@ function createEggContainer(eggData) {
     return eggContainer;
 }
 
+function saveInventory() {
+    saveProgress(userId, { inventoryItems });
+}
 
 // Функция, которая определяет цвет фона в зависимости от редкости яйца
 function getBackgroundColor(rarity) {
@@ -119,7 +157,6 @@ function openEggInfoModal(eggData, eggContainerId) {
             startDiggButton.style.alignItems = 'center';
             startDiggButton.style.justifyContent = 'center';
             startDiggButton.style.margin = '0 auto';
-            
 
             const startDiggIcon = document.createElement('img');
             startDiggIcon.src = 'public/images/startdigg.png';
@@ -158,22 +195,12 @@ function openEggInfoModal(eggData, eggContainerId) {
         modalContent.style.backgroundColor = getBackgroundColor(eggData.rarity);
     }
 }
-document.addEventListener('DOMContentLoaded', () => {
-    const initialEggName = 'EggName';
-    const eggData = findEggByName(initialEggName);
-    if (eggData) {
-        startDiggEgg(eggData);
-    }
-});
-
-let eggAddedForDigg = false; // Флаг для отслеживания добавления яйца для добычи
-let diggEggData = null; // Данные текущего яйца для добычи
 
 function startDiggEggByName(eggName, eggContainerId) {
     const eggData = eggs.find((egg) => egg.name === eggName);
 
     // Проверяем, есть ли уже активное яйцо для клика
-    if (eggAddedForDigg) {
+    if (currentEgg) {
         // Показываем модальное окно, что уже идет добыча другого яйца
         showModal('Вы уже DIGG другое EGG. Завершите его сначала!');
         return;
@@ -192,19 +219,21 @@ function startDiggEggByName(eggName, eggContainerId) {
 
         // Начинаем добычу нового яйца
         startDiggEgg(eggData);
-        diggEggData = eggData;
-        eggAddedForDigg = true;
+        currentEgg = eggData;
+        saveProgress(userId, { currentEgg, clickCount }); // Сохранение прогресса
         changeBackgroundByRarity(eggData.rarity)
     } else {
         console.log('Яйцо не найдено в инвентаре');
     }
 }
 
+
 function removeEggFromInventory(eggContainerId) {
     const eggContainer = document.getElementById(eggContainerId);
     if (eggContainer) {
         eggContainer.remove();
         delete inventoryItems[eggContainerId]; // Удаление элемента из объекта инвентаря
+        saveInventory(); // Сохранение инвентаря после удаления яйца
     }
 }
 
@@ -226,20 +255,24 @@ function showModal(message) {
 }
 
 // Функция начала добычи яйца
-function startDiggEgg(eggData) {
+function startDiggEgg(eggData, isRestoring = false) {
     // Удаление предыдущей зоны для клика, если она была добавлена
     const previousClickArea = document.getElementById('clickArea');
     if (previousClickArea) {
         previousClickArea.remove();
     }
 
-    if (!eggAddedForDigg) {
+    if (!currentEgg || isRestoring) {
         createClickArea(eggData); // Создание области для клика (добычи) яйца
-        eggAddedForDigg = true; // Устанавливаем флаг, что яйцо добавлено для добычи
+        currentEgg = eggData; // Устанавливаем текущее яйцо для добычи
+        if (!isRestoring) {
+            saveProgress(userId, { currentEgg, clickCount }); // Сохранение прогресса при начале новой добычи
+        }
     } else {
         console.log('Яйцо уже добавлено для добычи');
     }
 }
+
 let clickValue = 1;
 
 function createClickArea(eggData) {
@@ -261,12 +294,15 @@ function createClickArea(eggData) {
     eggImage.style.objectFit = 'contain';
     clickArea.appendChild(eggImage);
 
-    let clickCount = eggData.strength; // Начальное количество кликов для открытия
+    let initialClickCount = eggData.strength; // Начальное количество кликов для открытия
+    let currentClickCount = initialClickCount - clickCount; // Восстановленный счетчик кликов
 
     clickArea.addEventListener('click', (event) => {
-        if (clickCount > 0) {
-            clickCount -= clickValue;
-            updateClickCounter(clickCount);
+        if (currentClickCount > 0) {
+            currentClickCount -= clickValue;
+            clickCount = initialClickCount - currentClickCount; // Обновляем глобальный счетчик кликов
+            updateClickCounter(currentClickCount);
+            saveProgress(userId, { clickCount }); // Сохранение прогресса кликов
             decreaseEnergy(); // Уменьшение энергии при клике
 
             // Анимация увеличения яйца
@@ -300,7 +336,7 @@ function createClickArea(eggData) {
                 damageElement.remove(); // Удалить элемент "урона" после завершения анимации
             }, 1000);
 
-            if (clickCount <= 0) {
+            if (currentClickCount <= 0) {
                 finishDiggEgg(eggData); // Завершение добычи яйца
             }
 
@@ -312,21 +348,19 @@ function createClickArea(eggData) {
     });
 
     document.body.appendChild(clickArea);
-    updateClickCounter(clickCount);
+    updateClickCounter(currentClickCount);
 }
 
-
-
-
-  
-function finishDiggEgg(eggData) {
-    eggAddedForDigg = false; // Сброс флага добавления яйца для добычи
-    diggEggData = null; // Сброс данных о текущем яйце для добычи
+async function finishDiggEgg(eggData) {
+    currentEgg = null; // Сброс текущего яйца для добычи
+    clickCount = 0; // Сброс счетчика кликов
+    saveProgress(userId, { currentEgg, clickCount }); // Сохранение прогресса
     let coinsDropped = 0;
     let eggDropped = null;
-    let clickCount = 'Начни добывать любое яйцо';
-    updateClickCounter(clickCount)
-    changeBackgroundByRarity(eggData.rarity)
+
+    let clickCountText = 'Начни добывать любое яйцо';
+    updateClickCounter(clickCountText);
+    changeBackgroundByRarity(eggData.rarity);
 
     switch (eggData.rarity) {
         case 'Common':
@@ -365,10 +399,14 @@ function finishDiggEgg(eggData) {
     const eggNameElement = document.getElementById('eggNameInDrop');
 
     if (coinBalanceElement && droppedCoinsCount && modal) {
+        // Загрузка текущего баланса пользователя из базы данных
+        const progress = await getProgress(userId);
+        const currentBalance = progress.balance || 0;
+
         // Обновление баланса монет
-        const currentBalance = parseInt(coinBalanceElement.textContent);
         const newBalance = currentBalance + coinsDropped;
         coinBalanceElement.textContent = newBalance;
+        updateCoinBalance(newBalance); // Обновление и сохранение нового баланса
         eggImageElement.style.verticalAlign = 'middle';
 
         // Отображение выпавших монет
@@ -408,7 +446,7 @@ function finishDiggEgg(eggData) {
 
         // Закрытие модального окна при щелчке на крестик
         const closeButton = document.querySelector('#coinModal .close');
-        const coinModal = document.getElementById('coinModal')
+        const coinModal = document.getElementById('coinModal');
         if (closeButton) {
             closeButton.onclick = function () {
                 coinModal.style.display = 'none';
@@ -462,7 +500,7 @@ function getRandomEggByRarity(rarity) {
     const randomIndex = Math.floor(Math.random() * filteredEggs.length);
     return filteredEggs[randomIndex];
 }
-    
+
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -470,17 +508,18 @@ function getRandomInt(min, max) {
 function updateCoinBalance(coins) {
     const coinBalanceElement = document.getElementById('coinBalance');
     if (coinBalanceElement) {
-        coinBalanceElement.textContent = parseInt(coinBalanceElement.textContent) + coins;
+        coinBalanceElement.textContent = coins;
+        saveProgress(userId, { balance: coins }); // Сохранение прогресса баланса
     }
 }
 function changeBackgroundByRarity(rarity) {
     const bodyElement = document.body;
     // Проверяем значение eggAddedForDigg
-    if (!eggAddedForDigg) {
-        // Если eggAddedForDigg равно false, устанавливаем фон по умолчанию
+    if (!currentEgg) {
+        // Если currentEgg равно null, устанавливаем фон по умолчанию
         bodyElement.style.backgroundImage = `url('public/images/Backgrounds/DefBackground.png')`;
     } else {
-        // Если eggAddedForDigg равно true, устанавливаем фон в зависимости от редкости
+        // Если currentEgg не равно null, устанавливаем фон в зависимости от редкости
         let backgroundImagePath;
         switch (rarity) {
             case 'Common':
@@ -493,7 +532,7 @@ function changeBackgroundByRarity(rarity) {
                 backgroundImagePath = 'public/images/Backgrounds/UncommonBackground.png';
                 break;
             case 'Secret':
-                backgroundImagePath = 'public/images/Backgrounds/RareBackground.png';1
+                backgroundImagePath = 'public/images/Backgrounds/RareBackground.png';
                 break;
             default:
                 // По умолчанию используем фон по умолчанию
@@ -505,6 +544,7 @@ function changeBackgroundByRarity(rarity) {
         bodyElement.style.backgroundImage = `url('${backgroundImagePath}')`;
     }
 }
+
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
     // Пример вызова начала добычи при загрузке страницы
@@ -514,3 +554,10 @@ document.addEventListener('DOMContentLoaded', () => {
         startDiggEgg(eggData); // Начало добычи выбранного яйца при загрузке
     }
 });
+
+function updateClickCounter(clickCount) {
+    const clickCounterElement = document.getElementById('clickCounter');
+    if (clickCounterElement) {
+        clickCounterElement.textContent = `${clickCount}`;
+    }
+}

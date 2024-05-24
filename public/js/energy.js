@@ -1,9 +1,24 @@
+import { saveProgress, getProgress } from './public/js/firebase.js';
+
 let curenerg = 100; // Начальная энергия
 let maxenerg = 100; // Максимальная энергия
-let restoreEnergySpeed = 3000
+let restoreEnergySpeed = 3000;
+
+// Восстановление энергии из базы данных при загрузке
+Telegram.WebApp.ready();
+const userId = Telegram.WebApp.initDataUnsafe.user.id;
+getProgress(userId).then(savedProgress => {
+    if (savedProgress) {
+        curenerg = savedProgress.curenerg || 100;
+        maxenerg = savedProgress.maxenerg || 100;
+        updateEnergyBar();
+    }
+});
+
 function decreaseEnergy() {
     curenerg--;
     updateEnergyBar();
+    saveProgress(userId, { curenerg, maxenerg }); // Сохранение прогресса
     if (curenerg <= 0) {
         disableClick(); // Если энергия иссякла, блокируем возможность кликать
     }
@@ -29,12 +44,14 @@ function restoreEnergy() {
     if (curenerg < maxenerg) {
         curenerg++; // Увеличиваем текущую энергию
         updateEnergyBar();
+        saveProgress(userId, { curenerg, maxenerg }); // Сохранение прогресса
     }
 }
 
 // Восстановление энергии каждые 5 секунд
 setInterval(restoreEnergy, restoreEnergySpeed);
-updateEnergyBar()
+updateEnergyBar();
+
 function disableClick() {
     const eggImage = document.getElementById('clickArea');
     if (eggImage) {
@@ -50,6 +67,7 @@ function enableClick() {
         eggImage.style.pointerEvents = 'auto'; // Включаем события на изображении
     }
 }
+
 function updateClickCounter(clickCount) {
     const clickCounterElement = document.getElementById('clickCounter');
     if (clickCounterElement) {
