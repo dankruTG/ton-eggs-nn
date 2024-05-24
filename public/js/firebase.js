@@ -52,7 +52,8 @@ export async function getProgress(userId) {
             maxenerg: 100,
             inventoryItems: {},
             currentEgg: null,
-            clickCount: 0
+            clickCount: 0,
+            completedTasks: []
         };
         await saveProgress(userId, initialData);
         return initialData;
