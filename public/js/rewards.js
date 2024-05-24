@@ -1,6 +1,14 @@
 import { saveProgress, getProgress } from './firebase.js';
 
-// Проверка привязки кошелька и выполнение задания
+// Восстановление данных из базы данных при загрузке
+Telegram.WebApp.ready();
+const userId = Telegram.WebApp.initDataUnsafe.user.id;
+getProgress(userId).then(savedProgress => {
+    if (savedProgress) {
+        walletStatus = savedProgress.walletStatus || 'none';
+    }
+});
+
 async function checkWalletAndClaim() {
     const userId = Telegram.WebApp.initDataUnsafe.user.id;
     const userProgress = await getProgress(userId);
@@ -17,7 +25,6 @@ async function checkWalletAndClaim() {
     }
 }
 
-// Открытие модального окна невыполненного задания
 function openNotCompleteModal() {
     const notCompleteModal = document.getElementById('notComplete');
     if (notCompleteModal) {
@@ -25,7 +32,6 @@ function openNotCompleteModal() {
     }
 }
 
-// Закрытие модального окна невыполненного задания
 function closeNotCompleteModal() {
     const notCompleteModal = document.getElementById('notComplete');
     if (notCompleteModal) {
@@ -33,7 +39,6 @@ function closeNotCompleteModal() {
     }
 }
 
-// Открытие модального окна наград
 async function openRewardsModal() {
     const rewardsModal = document.getElementById('rewardsModal');
     if (rewardsModal) {
@@ -55,7 +60,6 @@ async function openRewardsModal() {
     }
 }
 
-// Закрытие модального окна наград
 function closeRewardsModal() {
     const rewardsModal = document.getElementById('rewardsModal');
     if (rewardsModal) {
@@ -63,20 +67,19 @@ function closeRewardsModal() {
     }
 }
 
-// Назначаем обработчик клика на иконку наград
-const rewardsIconContainer = document.querySelector('.iconContainer img[src="public/images/rewards_icon.png"]');
-if (rewardsIconContainer) {
-    rewardsIconContainer.parentElement.addEventListener('click', openRewardsModal);
-}
+document.addEventListener('DOMContentLoaded', () => {
+    const rewardsIconContainer = document.querySelector('.iconContainer img[src="public/images/rewards_icon.png"]');
+    if (rewardsIconContainer) {
+        rewardsIconContainer.parentElement.addEventListener('click', openRewardsModal);
+    }
 
-// Назначаем обработчик клика на крестик для закрытия магазина
-const rewardsModalCloseButton = document.querySelector('#rewardsModal .close');
-if (rewardsModalCloseButton) {
-    rewardsModalCloseButton.addEventListener('click', closeRewardsModal);
-}
+    const rewardsModalCloseButton = document.querySelector('#rewardsModal .close');
+    if (rewardsModalCloseButton) {
+        rewardsModalCloseButton.addEventListener('click', closeRewardsModal);
+    }
 
-console.log('Event handlers assigned');
+    console.log('Event handlers assigned');
+});
 
-// Экспорт функций в глобальную область видимости
 window.openRewardsModal = openRewardsModal;
 window.checkWalletAndClaim = checkWalletAndClaim;
