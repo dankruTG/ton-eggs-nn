@@ -9,6 +9,7 @@ getProgress(userId).then(savedProgress => {
     if (savedProgress) {
         walletStatus = savedProgress.walletStatus || 'none';
         completedTasks = savedProgress.completedTasks || [];
+        updateTasksDisplay(); // Добавляем обновление списка заданий при загрузке
     }
 }).catch(error => {
     console.error('Error connecting to Firebase:', error);
@@ -87,6 +88,8 @@ function createTaskElement(task) {
 
 function updateTasksDisplay() {
     const taskContainer = document.getElementById('taskContainer');
+    if (!taskContainer) return;
+    
     taskContainer.innerHTML = '';
 
     tasks.forEach(task => {
@@ -99,33 +102,39 @@ function updateTasksDisplay() {
 
 async function openRewardsModal() {
     try {
-        const rewardsModal = document.createElement('div');
-        rewardsModal.classList.add('modal');
-        rewardsModal.style.display = 'block';
-        rewardsModal.style.zIndex = '1000';
+        let rewardsModal = document.getElementById('rewardsModal');
+        if (!rewardsModal) {
+            rewardsModal = document.createElement('div');
+            rewardsModal.id = 'rewardsModal';
+            rewardsModal.classList.add('modal');
+            rewardsModal.style.display = 'block';
+            rewardsModal.style.zIndex = '1000';
 
-        const modalContent = document.createElement('div');
-        modalContent.classList.add('modal-content');
-        rewardsModal.appendChild(modalContent);
+            const modalContent = document.createElement('div');
+            modalContent.classList.add('modal-content');
+            rewardsModal.appendChild(modalContent);
 
-        const closeButton = document.createElement('span');
-        closeButton.classList.add('close');
-        closeButton.textContent = '×';
-        modalContent.appendChild(closeButton);
+            const closeButton = document.createElement('span');
+            closeButton.classList.add('close');
+            closeButton.textContent = '×';
+            modalContent.appendChild(closeButton);
 
-        const title = document.createElement('h2');
-        title.textContent = 'Задания';
-        modalContent.appendChild(title);
+            const title = document.createElement('h2');
+            title.textContent = 'Задания';
+            modalContent.appendChild(title);
 
-        const taskContainer = document.createElement('div');
-        taskContainer.id = 'taskContainer';
-        modalContent.appendChild(taskContainer);
+            const taskContainer = document.createElement('div');
+            taskContainer.id = 'taskContainer';
+            modalContent.appendChild(taskContainer);
 
-        document.body.appendChild(rewardsModal);
+            document.body.appendChild(rewardsModal);
 
-        closeButton.addEventListener('click', () => {
-            rewardsModal.style.display = 'none';
-        });
+            closeButton.addEventListener('click', () => {
+                rewardsModal.style.display = 'none';
+            });
+        } else {
+            rewardsModal.style.display = 'block';
+        }
 
         // Обновление выполненных заданий перед открытием
         const userProgress = await getProgress(userId);
@@ -146,4 +155,6 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Event handlers assigned');
 });
 
-
+window.openRewardsModal = openRewardsModal;
+window.checkWalletAndClaim = checkWalletAndClaim;
+window.closeRewardsModal = closeRewardsModal;
