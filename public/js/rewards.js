@@ -146,15 +146,4 @@ async function openRewardsModal() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const rewardsIconContainer = document.querySelector('.iconContainer img[src="public/images/rewards_icon.png"]');
-    if (rewardsIconContainer) {
-        rewardsIconContainer.parentElement.addEventListener('click', openRewardsModal);
-    }
 
-    console.log('Event handlers assigned');
-});
-
-window.openRewardsModal = openRewardsModal;
-window.checkWalletAndClaim = checkWalletAndClaim;
-window.closeRewardsModal = closeRewardsModal;
