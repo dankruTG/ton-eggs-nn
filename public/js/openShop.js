@@ -1,7 +1,7 @@
 let speedUpgradeLevel = 1;
-let speedUpgradePrice = 50;
+let speedUpgradePrice = 100;
 let energyUpgradeLevel = 1;
-let energyUpgradePrice = 30;
+let energyUpgradePrice = 50;
 
 function openShopModal() {
   const shopModal = document.getElementById('shopModal');
@@ -23,7 +23,7 @@ function buyUpgrade(type) {
             // Покупка улучшения скорости
             updateCoinBalance(-speedUpgradePrice);
             speedUpgradeLevel++;
-            speedUpgradePrice *= 2;
+            speedUpgradePrice *= 2,5;
             updateShopDisplay();
             upgradeSpeed();
         } else {
