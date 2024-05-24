@@ -1,16 +1,4 @@
-// rewards.js
-
 import { saveProgress, getProgress } from './firebase.js';
-
-let walletStatus = 'none'; // Переменная для отслеживания состояния кошелька
-
-async function doneWallet() {
-    walletStatus = 'Done!';
-    
-    // Сохранение состояния кошелька в базе данных
-    const userId = Telegram.WebApp.initDataUnsafe.user.id;
-    await saveProgress(userId, { walletStatus });
-}
 
 // Проверка привязки кошелька и выполнение задания
 async function checkWalletAndClaim() {
@@ -92,4 +80,3 @@ console.log('Event handlers assigned');
 // Экспорт функций в глобальную область видимости
 window.openRewardsModal = openRewardsModal;
 window.checkWalletAndClaim = checkWalletAndClaim;
-window.doneWallet = doneWallet;
