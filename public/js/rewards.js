@@ -86,3 +86,6 @@ if (rewardsModalCloseButton) {
 }
 
 console.log('Event handlers assigned');
+// Экспорт функций в глобальную область видимости
+window.openRewardsModal = openRewardsModal;
+window.checkWalletAndClaim = checkWalletAndClaim;
