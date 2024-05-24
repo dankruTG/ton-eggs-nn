@@ -11,10 +11,10 @@
     <script type="module" src="public/js/firebase.js"></script>
     <script src="public/js/inventory.js"></script>
     <script src="public/js/eggsData.js"></script>
-    <script src="public/js/addEggs.js"></script>
-    <script src="public/js/openShop.js"></script>
-    <script src="public/js/energy.js"></script>
-    <script src="public/js/rewards.js"></script>
+    <script type="module" src="public/js/addEggs.js"></script>
+    <script type="module" src="public/js/openShop.js"></script>
+    <script type="module" src="public/js/energy.js"></script>
+    <script type="module" src="public/js/rewards.js"></script>
 </head>
 <body>
     <div id="root"></div>
@@ -31,8 +31,8 @@
         Telegram.WebApp.ready();
 
         const user = Telegram.WebApp.initDataUnsafe.user;
-        const userId = user.id;
-        const username = user.username;
+        const userId = '0013210';
+        const username = 'dankru';
 
         console.log(`User ID: ${userId}, Username: ${username}`);
 
