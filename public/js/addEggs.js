@@ -407,10 +407,11 @@ function finishDiggEgg(eggData) {
         modal.style.display = 'block';
 
         // Закрытие модального окна при щелчке на крестик
-        const closeButton = document.querySelector('.close');
+        const closeButton = document.querySelector('#coinModal .close');
+        const coinModal = document.getElementById('coinModal')
         if (closeButton) {
             closeButton.onclick = function () {
-                modal.style.display = 'none';
+                coinModal.style.display = 'none';
             };
         }
 
