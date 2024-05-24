@@ -2,18 +2,24 @@ import { saveProgress, getProgress } from './firebase.js';
 
 let completedTasks = [];
 
-// Восстановление данных из базы данных при загрузке
-Telegram.WebApp.ready();
-const userId = Telegram.WebApp.initDataUnsafe.user.id;
-getProgress(userId).then(savedProgress => {
-    if (savedProgress) {
-        walletStatus = savedProgress.walletStatus || 'none';
-        completedTasks = savedProgress.completedTasks || [];
-        // Не вызываем updateTasksDisplay здесь, чтобы избежать двойного вызова
+// Функция для инициализации данных пользователя
+async function initializeUserData() {
+    try {
+        const userId = Telegram.WebApp.initDataUnsafe.user.id;
+        const savedProgress = await getProgress(userId);
+        if (savedProgress) {
+            walletStatus = savedProgress.walletStatus || 'none';
+            completedTasks = savedProgress.completedTasks || [];
+            updateTasksDisplay();
+            console.log('User data:', savedProgress); // Печать всех данных пользователя
+        }
+    } catch (error) {
+        console.error('Error connecting to Firebase:', error);
     }
-}).catch(error => {
-    console.error('Error connecting to Firebase:', error);
-});
+}
+
+Telegram.WebApp.ready();
+initializeUserData();
 
 const tasks = [
     {
@@ -24,16 +30,20 @@ const tasks = [
 ];
 
 async function checkWalletAndClaim() {
-    const userId = Telegram.WebApp.initDataUnsafe.user.id;
-    const userProgress = await getProgress(userId);
+    try {
+        const userId = Telegram.WebApp.initDataUnsafe.user.id;
+        const userProgress = await getProgress(userId);
 
-    if (userProgress.walletStatus === 'Done!') {
-        giveEggs();
-        completedTasks.push(1);
-        await saveProgress(userId, { completedTasks });
-        updateTasksDisplay();
-    } else {
-        openNotCompleteModal();
+        if (userProgress.walletStatus === 'Done!') {
+            giveEggs();
+            completedTasks.push(1);
+            await saveProgress(userId, { completedTasks });
+            updateTasksDisplay();
+        } else {
+            openNotCompleteModal();
+        }
+    } catch (error) {
+        console.error('Error checking wallet status:', error);
     }
 }
 
@@ -137,7 +147,7 @@ async function openRewardsModal() {
         }
 
         // Обновление выполненных заданий перед открытием
-        const userProgress = await getProgress(userId);
+        const userProgress = await getProgress(Telegram.WebApp.initDataUnsafe.user.id);
         completedTasks = userProgress.completedTasks || [];
 
         updateTasksDisplay();
@@ -157,4 +167,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.openRewardsModal = openRewardsModal;
 window.checkWalletAndClaim = checkWalletAndClaim;
-window.closeRewardsModal = closeRewardsModal;
