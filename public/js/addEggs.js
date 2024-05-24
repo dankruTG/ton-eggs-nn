@@ -70,6 +70,8 @@ function getBackgroundColor(rarity) {
             return 'lightblue';
         case 'Rare':
             return 'pink';
+        case 'Secret':
+            return 'red';
         default:
             return 'white';
     }
@@ -332,12 +334,16 @@ function finishDiggEgg(eggData) {
             eggDropped = getRandomEggByRarity('Common');
             break;
         case 'Uncommon':
-            coinsDropped = getRandomInt(150, 1500);
+            coinsDropped = getRandomInt(350, 650);
             eggDropped = getRandomEggByRarity('Uncommon');
             break;
         case 'Rare':
-            coinsDropped = getRandomInt(750, 7500);
+            coinsDropped = getRandomInt(700, 1300);
             eggDropped = getRandomEggByRarity('Rare');
+            break;
+        case 'Secret':
+            coinsDropped = getRandomInt(1800, 3000);
+            eggDropped = getRandomEggByRarity('Secret');
             break;
         default:
             coinsDropped = 0; // По умолчанию
@@ -377,13 +383,17 @@ function finishDiggEgg(eggData) {
                 eggNameElement.style.fontWeight = 'normal';
                 break;
             case 'Uncommon':
-                eggNameElement.style.color = 'blue';
+                eggNameElement.style.color = 'black';
                 eggNameElement.style.textShadow = '1px 1px 2px black'; // Добавляем контур
                 break;
             case 'Rare':
-                eggNameElement.style.color = 'red';
+                eggNameElement.style.color = 'blue';
                 eggNameElement.style.fontWeight = 'bold';
                 break;
+            case 'Secret':
+                eggNameElement.style.color = 'red';
+                eggNameElement.style.fontWeight = 'bold';
+                break; 
             default:
                 eggNameElement.style.color = 'black'; // По умолчанию
                 eggNameElement.style.fontWeight = 'normal';
@@ -425,9 +435,10 @@ function finishDiggEgg(eggData) {
 
 function getRandomEggByRarity(rarity) {
     const rarityChances = {
-        Common: { Common: 0.93, Uncommon: 0.06, Rare: 0.01 },
-        Uncommon: { Common: 0.52, Uncommon: 0.41, Rare: 0.08 },
-        Rare: { Common: 0.29, Uncommon: 0.51, Rare: 0.20 }
+        Common: { Common: 0.93, Uncommon: 0.06, Rare: 0.0075, Secret: 0.0025 },
+        Uncommon: { Common: 0.52, Uncommon: 0.41, Rare: 0.06, Secret: 0.02 },
+        Rare: { Common: 0.28, Uncommon: 0.50, Rare: 0.14, Secret: 0.08 },
+        Secret: { Common: 0.14, Uncommon: 0.26, Rare: 0.28, Secret: 0.32 }
     };
 
     const chances = rarityChances[rarity];
@@ -472,13 +483,16 @@ function changeBackgroundByRarity(rarity) {
         let backgroundImagePath;
         switch (rarity) {
             case 'Common':
-                backgroundImagePath = 'public/images/Backgrounds/CommonBackground.png';
+                backgroundImagePath = 'public/images/Backgrounds/DefBackground.png';
                 break;
             case 'Uncommon':
-                backgroundImagePath = 'public/images/Backgrounds/UncommonBackground.png';
+                backgroundImagePath = 'public/images/Backgrounds/CommonBackground.png';
                 break;
             case 'Rare':
-                backgroundImagePath = 'public/images/Backgrounds/RareBackground.png';
+                backgroundImagePath = 'public/images/Backgrounds/UncommonBackground.png';
+                break;
+            case 'Secret':
+                backgroundImagePath = 'public/images/Backgrounds/RareBackground.png';1
                 break;
             default:
                 // По умолчанию используем фон по умолчанию
