@@ -17,7 +17,10 @@ async function checkWalletAndClaim() {
 
     if (userProgress.walletStatus === 'Done!') {
         giveEggs();
-        document.getElementById('taskContainer').remove();
+        const taskContainer = document.getElementById('taskContainer');
+        if (taskContainer) {
+            taskContainer.remove();
+        }
         closeRewardsModal();
     } else {
         openNotCompleteModal();
@@ -47,10 +50,16 @@ async function openRewardsModal() {
         const userId = Telegram.WebApp.initDataUnsafe.user.id;
         const userProgress = await getProgress(userId);
 
+        const taskContainer = document.getElementById('taskContainer');
         if (userProgress.walletStatus !== 'Done!') {
+            if (taskContainer) {
+                taskContainer.innerHTML = '<p>Привяжи кошелек <button class="claim-button" onclick="checkWalletAndClaim()">Claim</button></p>';
+            }
             rewardsModal.style.display = 'block';
         } else {
-            document.getElementById('taskContainer').innerHTML = '<p>Все задания выполнены</p>';
+            if (taskContainer) {
+                taskContainer.innerHTML = '<p>Все задания выполнены</p>';
+            }
             rewardsModal.style.display = 'block';
         }
     }
@@ -65,9 +74,15 @@ function closeRewardsModal() {
 }
 
 // Назначаем обработчик клика на иконку наград
-document.querySelector('.iconContainer img[src="public/images/rewards_icon.png"]').parentElement.addEventListener('click', openRewardsModal);
+const rewardsIconContainer = document.querySelector('.iconContainer img[src="public/images/rewards_icon.png"]');
+if (rewardsIconContainer) {
+    rewardsIconContainer.parentElement.addEventListener('click', openRewardsModal);
+}
 
 // Назначаем обработчик клика на крестик для закрытия магазина
-document.querySelector('#rewardsModal .close').addEventListener('click', closeRewardsModal);
+const rewardsModalCloseButton = document.querySelector('#rewardsModal .close');
+if (rewardsModalCloseButton) {
+    rewardsModalCloseButton.addEventListener('click', closeRewardsModal);
+}
 
 console.log('Event handlers assigned');
