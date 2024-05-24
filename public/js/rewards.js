@@ -1,5 +1,7 @@
+// rewards.js
+
 import { saveProgress, getProgress } from './firebase.js';
-import { giveEggs } from './addEggs.js'
+
 let walletStatus = 'none'; // Переменная для отслеживания состояния кошелька
 
 async function doneWallet() {
@@ -86,8 +88,8 @@ if (rewardsModalCloseButton) {
 }
 
 console.log('Event handlers assigned');
+
 // Экспорт функций в глобальную область видимости
 window.openRewardsModal = openRewardsModal;
 window.checkWalletAndClaim = checkWalletAndClaim;
 window.doneWallet = doneWallet;
-window.closeNotCompleteModal = closeNotCompleteModal;
