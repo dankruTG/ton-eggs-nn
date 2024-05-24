@@ -1,4 +1,4 @@
-import { saveProgress, getProgress } from './public/js/firebase.js';
+import { saveProgress, getProgress } from './firebase.js';
 
 let eggContainerIdCounter = 1; // Инициализация счетчика
 let inventoryItems = {}; // Объект для хранения элементов инвентаря по id

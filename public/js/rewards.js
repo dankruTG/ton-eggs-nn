@@ -1,4 +1,4 @@
-import { saveProgress, getProgress } from './public/js/firebase.js';
+import { saveProgress, getProgress } from './firebase.js';
 
 let walletStatus = 'none'; // Переменная для отслеживания состояния кошелька
 

@@ -1,4 +1,4 @@
-import { saveProgress, getProgress } from './public/js/firebase.js';
+import { saveProgress, getProgress } from './firebase.js';
 
 let curenerg = 100; // Начальная энергия
 let maxenerg = 100; // Максимальная энергия
