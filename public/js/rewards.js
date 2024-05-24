@@ -67,19 +67,11 @@ function closeRewardsModal() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const rewardsIconContainer = document.querySelector('.iconContainer img[src="public/images/rewards_icon.png"]');
-    if (rewardsIconContainer) {
-        rewardsIconContainer.parentElement.addEventListener('click', openRewardsModal);
-    }
+// Назначаем обработчик клика на иконку магазина
+document.querySelector('.iconContainer img[src="public/images/rewards_icon.png"]').parentElement.addEventListener('click', openRewardsModal);
 
-    const rewardsModalCloseButton = document.querySelector('#rewardsModal .close');
-    if (rewardsModalCloseButton) {
-        rewardsModalCloseButton.addEventListener('click', closeRewardsModal);
-    }
-
-    console.log('Event handlers assigned');
-});
-
+// Назначаем обработчик клика на крестик для закрытия магазина
+document.querySelector('#rewardsModal .close').addEventListener('click', closeRewardsModal);
 window.openRewardsModal = openRewardsModal;
 window.checkWalletAndClaim = checkWalletAndClaim;
+window.closeRewardsModal = closeRewardsModal;
