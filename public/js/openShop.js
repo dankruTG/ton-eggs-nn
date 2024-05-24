@@ -138,3 +138,6 @@ document.querySelector('#shopModal .close').addEventListener('click', closeShopM
 
 // Начальное отображение уровней и цен
 updateShopDisplay();
+window.openShopModal = openShopModal;
+window.buyEgg = buyEgg;
+window.buyUpgrade = buyUpgrade;
