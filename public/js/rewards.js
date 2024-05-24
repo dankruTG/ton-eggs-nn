@@ -146,6 +146,4 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Event handlers assigned');
 });
 
-window.openRewardsModal = openRewardsModal;
-window.checkWalletAndClaim = checkWalletAndClaim;
-window.closeRewardsModal = closeRewardsModal;
+
