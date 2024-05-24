@@ -9,7 +9,7 @@ getProgress(userId).then(savedProgress => {
     if (savedProgress) {
         walletStatus = savedProgress.walletStatus || 'none';
         completedTasks = savedProgress.completedTasks || [];
-        updateTasksDisplay(); // Добавляем обновление списка заданий при загрузке
+        // Не вызываем updateTasksDisplay здесь, чтобы избежать двойного вызова
     }
 }).catch(error => {
     console.error('Error connecting to Firebase:', error);
@@ -89,7 +89,7 @@ function createTaskElement(task) {
 function updateTasksDisplay() {
     const taskContainer = document.getElementById('taskContainer');
     if (!taskContainer) return;
-    
+
     taskContainer.innerHTML = '';
 
     tasks.forEach(task => {
@@ -146,4 +146,15 @@ async function openRewardsModal() {
     }
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const rewardsIconContainer = document.querySelector('.iconContainer img[src="public/images/rewards_icon.png"]');
+    if (rewardsIconContainer) {
+        rewardsIconContainer.parentElement.addEventListener('click', openRewardsModal);
+    }
 
+    console.log('Event handlers assigned');
+});
+
+window.openRewardsModal = openRewardsModal;
+window.checkWalletAndClaim = checkWalletAndClaim;
+window.closeRewardsModal = closeRewardsModal;
