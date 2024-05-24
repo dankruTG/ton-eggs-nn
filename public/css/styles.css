@@ -452,7 +452,7 @@ body {
 
 /* Внутренний элемент для градиентного текста */
 .rare-egg-button::before {
-    content: 'Buy Secret Egg (2500 монет)';
+    content: 'Buy Rare Egg (1000 $Shells)';
     position: absolute;
     top: 50%;
     left: 50%;
@@ -475,7 +475,7 @@ body {
 
 /* Внутренний элемент для градиентного текста */
 .secret-egg-button::before {
-    content: 'Buy Secret Egg (2500 монет)';
+    content: 'Buy Secret Egg (2500 $Shells)';
     position: absolute;
     top: 50%;
     left: 50%;

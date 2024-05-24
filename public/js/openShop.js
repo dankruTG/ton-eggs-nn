@@ -70,11 +70,11 @@ function showNotEnoughCoinsModal(price, coinBalance) {
 }
 function updateShopDisplay() {
     // Обновление уровня и цены улучшения скорости
-    document.getElementById('speedUpgradeLevel').textContent = `Lv ${speedUpgradeLevel}`;
+    document.getElementById('speedUpgradeLevel').textContent = `Lvl ${speedUpgradeLevel}`;
     document.getElementById('speedUpgradePrice').textContent = speedUpgradePrice;
 
     // Обновление уровня и цены улучшения энергии
-    document.getElementById('energyUpgradeLevel').textContent = `Lv ${energyUpgradeLevel}`;
+    document.getElementById('energyUpgradeLevel').textContent = `Lvl ${energyUpgradeLevel}`;
     document.getElementById('energyUpgradePrice').textContent = energyUpgradePrice;
 }
 
