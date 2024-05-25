@@ -508,11 +508,10 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function updateCoinBalance(coins) {
-    const coinBalanceElement = document.getElementById('coinBalance');
-    if (coinBalanceElement) {
-        coinBalanceElement.textContent = coins;
-        saveProgress(userId, { balance: coins }); // Сохранение прогресса баланса
+function updateCoinBalance(newBalance) {
+    
+    if (newBalance) {
+        saveProgress(userId, { balance: newBalance }); // Сохранение прогресса баланса
     }
 }
 function changeBackgroundByRarity(rarity) {
