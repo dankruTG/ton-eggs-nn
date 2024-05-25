@@ -15,7 +15,7 @@ getProgress(userId).then(savedProgress => {
     }
 });
 
-function decreaseEnergy() {
+export function decreaseEnergy() {
     curenerg--;
     updateEnergyBar();
     saveProgress(userId, { curenerg, maxenerg }); // Сохранение прогресса

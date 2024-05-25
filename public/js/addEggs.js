@@ -336,7 +336,7 @@ function createClickArea(eggData) {
                 damageElement.remove(); // Удалить элемент "урона" после завершения анимации
             }, 1000);
 
-            if (currentClickCount <= 0) {
+        if (currentClickCount <= 0) {
                 finishDiggEgg(eggData); // Завершение добычи яйца
             }
 
