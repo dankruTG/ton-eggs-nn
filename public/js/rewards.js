@@ -36,6 +36,7 @@ export async function handleWalletConnection(userId, walletAddress) {
         console.error('Error saving wallet address:', error);
     }
 }
+window.handleWalletConnection = handleWalletConnection;
 async function checkWalletAndClaim() {
     try {
         const userId = Telegram.WebApp.initDataUnsafe.user.id;
