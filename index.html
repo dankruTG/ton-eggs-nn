@@ -43,7 +43,8 @@
                 // Дополнительная логика для восстановления состояния игры
             }
         });
-
+    </script>
+    <script>
         const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
             manifestUrl: 'https://dankrutg.github.io/ton-eggs-nn/tonconnect-manifest.json',
             buttonRootId: 'walletContainer'
@@ -57,7 +58,7 @@
                 console.log('User ID:', userId);
                 console.log('Wallet Address:', walletAddress);
                 try {
-                    await firebase.saveProgress(userId, { walletStatus: 'Done!', walletAddress });
+                    await saveProgress(userId, { walletStatus: 'Done!', walletAddress });
                     console.log('Wallet address saved:', walletAddress);
                 } catch (error) {
                     console.error('Error saving progress:', error);
@@ -68,7 +69,9 @@
         }
 
         tonConnectUI.onStatusChange(handleConnectionStatus);
+
     </script>
+    
     <div id="notComplete" class="not-complete-modal">
         <div class="modal-content">
             <span class="close" onclick="closeNotCompleteModal()">&times;</span>
