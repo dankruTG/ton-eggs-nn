@@ -5,6 +5,7 @@ let speedUpgradeLevel = 1;
 let speedUpgradePrice = 100;
 let energyUpgradeLevel = 1;
 let energyUpgradePrice = 50;
+let balance = 0;
 
 // Восстановление данных из базы данных при загрузке
 Telegram.WebApp.ready();
@@ -39,17 +40,14 @@ async function buyUpgrade(type) {
     const coinBalance = Number (userData.balance);
 
     if (type === 'speed') {
+        let speedUpgradeLevel = Number (userData.speedUpgradeLevel);
         let speedUpgradePrice = Number (userData.speedUpgradePrice);
         if (coinBalance >= speedUpgradePrice) {
-            let speedUpgradeLevel = Number (userData.speedUpgradeLevel);
-            let speedUpgradePrice = Number (userData.speedUpgradePrice);
             // Покупка улучшения скорости
             updateCoinBalance(-speedUpgradePrice);
             speedUpgradeLevel++;
             speedUpgradePrice *= 3;
-            let clickValue = Number (userData.clickValue);
-            clickValue = speedUpgradeLevel;
-            await saveProgress(userId, { speedUpgradeLevel, speedUpgradePrice, clickValue }); // Сохранение прогресса
+            await saveProgress(userId, { speedUpgradeLevel, speedUpgradePrice }); // Сохранение прогресса
             updateShopDisplay();
         } else {
             showNotEnoughCoinsModal(speedUpgradePrice, coinBalance);
