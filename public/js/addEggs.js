@@ -1,5 +1,5 @@
 import { saveProgress, getProgress } from './firebase.js';
-
+import { decreaseEnergy } from './energy.js';
 let eggContainerIdCounter = 1; // Инициализация счетчика
 let inventoryItems = {}; // Объект для хранения элементов инвентаря по id
 let clickCount = 0; // Счетчик кликов
@@ -19,6 +19,7 @@ getProgress(userId).then(savedProgress => {
         }
     }
 });
+const userData = await getProgress(userId);
 
 function restoreInventory() {
     const inventoryContainer = document.getElementById('inventoryItemsContainer');
@@ -273,7 +274,6 @@ function startDiggEgg(eggData, isRestoring = false) {
     }
 }
 
-let clickValue = 1;
 
 function createClickArea(eggData) {
     const clickArea = document.createElement('div');
@@ -293,9 +293,12 @@ function createClickArea(eggData) {
     eggImage.style.height = '100%';
     eggImage.style.objectFit = 'contain';
     clickArea.appendChild(eggImage);
+    
 
     let initialClickCount = eggData.strength; // Начальное количество кликов для открытия
     let currentClickCount = initialClickCount - clickCount; // Восстановленный счетчик кликов
+    let clickValue = userData.speedUpgradeLevel;
+    console.log('clickValue:', clickValue);
 
     clickArea.addEventListener('click', (event) => {
         if (currentClickCount > 0) {
