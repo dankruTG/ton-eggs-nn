@@ -404,13 +404,13 @@ async function finishDiggEgg(eggData) {
     if (coinBalanceElement && droppedCoinsCount && modal) {
         // Загрузка текущего баланса пользователя из базы данных
         const progress = await getProgress(userId);
-        const currentBalance = progress.balance || 0;
+        const currentBalance = Number(progress.balance) || 0;
 
         // Обновление баланса монет
         const newBalance = currentBalance + coinsDropped;
-        let balance = newBalance;
-        saveProgress(userId, balance);
-        console.log('Coins balance:', balance);
+        const balance = Number(newBalance);
+        await saveProgress(userId, { balance });
+        console.log('Coins balance saved:', balance);
         eggImageElement.style.verticalAlign = 'middle';
 
         // Отображение выпавших монет
