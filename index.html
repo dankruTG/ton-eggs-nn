@@ -46,15 +46,15 @@
         });
     </script>
     <script type="module">
-        import { handleWalletConnection } from 'public/js/rewards.js';
-
+        import { handleWalletConnection } from './public/js/rewards.js';
+    
         Telegram.WebApp.ready();
-
+    
         const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
             manifestUrl: 'https://dankrutg.github.io/ton-eggs-nn/tonconnect-manifest.json',
             buttonRootId: 'walletContainer'
         });
-
+    
         async function handleConnectionStatus(wallet) {
             console.log('Wallet status changed:', wallet);
             if (wallet) {
@@ -63,7 +63,7 @@
                 console.log('User ID:', userId);
                 console.log('Wallet Address:', walletAddress);
                 try {
-                    handleWalletConnection(userId, walletAddress);
+                    await handleWalletConnection(userId, walletAddress);
                     console.log('Wallet address sent for saving:', walletAddress);
                 } catch (error) {
                     console.error('Error handling wallet connection:', error);
@@ -72,7 +72,7 @@
                 console.log('No wallet connected');
             }
         }
-
+    
         tonConnectUI.onStatusChange(handleConnectionStatus);
     </script>
     
