@@ -26,7 +26,7 @@
     <div id="walletContainer">
     </div>
     <script type="module">
-        import { saveProgress, getProgress } from './public/js/firebase.js';
+        import firebase from './public/js/firebase.js';
 
         Telegram.WebApp.ready();
 
@@ -37,7 +37,7 @@
         console.log(`User ID: ${userId}, Username: ${username}`);
 
         // Получение сохраненного прогресса
-        getProgress(userId).then(savedProgress => {
+        firebase.getProgress(userId).then(savedProgress => {
             if (savedProgress) {
                 console.log('Restored progress:', savedProgress);
                 // Дополнительная логика для восстановления состояния игры
@@ -57,7 +57,7 @@
                 console.log('User ID:', userId);
                 console.log('Wallet Address:', walletAddress);
                 try {
-                    await saveProgress(userId, { walletStatus: 'Done!', walletAddress });
+                    await firebase.saveProgress(userId, { walletStatus: 'Done!', walletAddress });
                     console.log('Wallet address saved:', walletAddress);
                 } catch (error) {
                     console.error('Error saving progress:', error);
