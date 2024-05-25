@@ -28,7 +28,14 @@ const tasks = [
         action: checkWalletAndClaim
     }
 ];
-
+export async function handleWalletConnection(userId, walletAddress) {
+    try {
+        await saveProgress(userId, { walletStatus: 'Done!', walletAddress });
+        console.log('Wallet address saved:', walletAddress);
+    } catch (error) {
+        console.error('Error saving wallet address:', error);
+    }
+}
 async function checkWalletAndClaim() {
     try {
         const userId = Telegram.WebApp.initDataUnsafe.user.id;

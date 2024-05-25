@@ -44,6 +44,7 @@ export async function getProgress(userId) {
             username: userId.toString(), // Placeholder
             balance: 0,
             walletStatus: 'none',
+            walletAddress: '',
             speedUpgradeLevel: 1,
             speedUpgradePrice: 100,
             energyUpgradeLevel: 1,
