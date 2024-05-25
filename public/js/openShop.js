@@ -40,6 +40,7 @@ function buyUpgrade(type) {
     const coinBalance = Number (userData.balance);
     const sup = Number (userData.speedUpgradePrice);
     const eup = Number (userData.energyUpgradePrice);
+    console.log ({sup}, {eup})
 
     if (type === 'speed') {
         if (coinBalance >= sup) {
