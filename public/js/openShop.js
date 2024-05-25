@@ -35,8 +35,8 @@ function closeShopModal() {
     }
 }
 
-async function buyUpgrade(type) {
-    const userData = await getProgress(userId);
+function buyUpgrade(type) {
+    const userData = getProgress(userId);
     const coinBalance = Number (userData.balance);
     let speedUpgradePrice = Number (userData.speedUpgradePrice);
     let energyUpgradePrice = Number (userData.energyUpgradePrice);
