@@ -408,8 +408,7 @@ async function finishDiggEgg(eggData) {
 
         // Обновление баланса монет
         const newBalance = currentBalance + coinsDropped;
-        coinBalanceElement.textContent = newBalance;
-        updateCoinBalance(newBalance); // Обновление и сохранение нового баланса
+        saveProgress(userId, { balance: newBalance });
         eggImageElement.style.verticalAlign = 'middle';
 
         // Отображение выпавших монет
@@ -508,12 +507,6 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function updateCoinBalance(newBalance) {
-    
-    if (newBalance) {
-        saveProgress(userId, { balance: newBalance }); // Сохранение прогресса баланса
-    }
-}
 function changeBackgroundByRarity(rarity) {
     const bodyElement = document.body;
     // Проверяем значение eggAddedForDigg
