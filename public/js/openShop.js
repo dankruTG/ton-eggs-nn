@@ -37,42 +37,43 @@ function closeShopModal() {
 
 async function buyUpgrade(type) {
     const userData = await getProgress(userId);
-    const coinBalance = Number (userData.balance);
+    const coinBalance = Number(userData.balance);
 
     if (type === 'speed') {
-        let speedUpgradeLevel = Number (userData.speedUpgradeLevel);
-        let speedUpgradePrice = Number (userData.speedUpgradePrice);
+        let speedUpgradeLevel = Number(userData.speedUpgradeLevel);
+        let speedUpgradePrice = Number(userData.speedUpgradePrice);
         if (coinBalance >= speedUpgradePrice) {
             // Покупка улучшения скорости
-            updateCoinBalance(-speedUpgradePrice);
+            await updateCoinBalance(-speedUpgradePrice);
             speedUpgradeLevel++;
             speedUpgradePrice *= 3;
             await saveProgress(userId, { speedUpgradeLevel, speedUpgradePrice }); // Сохранение прогресса
-            updateShopDisplay();
-            console.log({speedUpgradeLevel}, {speedUpgradePrice});
+            await updateShopDisplay();
+            console.log({ speedUpgradeLevel }, { speedUpgradePrice });
         } else {
             showNotEnoughCoinsModal(speedUpgradePrice, coinBalance);
         }
     } else if (type === 'energy') {
-        let energyUpgradePrice = Number (userData.energyUpgradePrice);
-        let energyUpgradeLevel = Number (userData.energyUpgradeLevel);
+        let energyUpgradePrice = Number(userData.energyUpgradePrice);
+        let energyUpgradeLevel = Number(userData.energyUpgradeLevel);
         if (coinBalance >= energyUpgradePrice) {
             // Покупка улучшения энергии
-            upgradeEnergy();
-            updateCoinBalance(-energyUpgradePrice);
+            await upgradeEnergy();
+            await updateCoinBalance(-energyUpgradePrice);
             energyUpgradeLevel++;
             energyUpgradePrice *= 2;
-            saveProgress(userId, { energyUpgradeLevel, energyUpgradePrice }); // Сохранение прогресса
-            updateShopDisplay();
+            await saveProgress(userId, { energyUpgradeLevel, energyUpgradePrice }); // Сохранение прогресса
+            await updateShopDisplay();
         } else {
             showNotEnoughCoinsModal(energyUpgradePrice, coinBalance);
         }
     }
 }
-async function updateCoinBalance(price) {
+
+async function updateCoinBalance(amount) {
     const userData = await getProgress(userId);
-    const balance = Number (userData.balance + price);
-    await saveProgress(userId, { balance });
+    const newBalance = Number(userData.balance) + amount;
+    await saveProgress(userId, { balance: newBalance });
 }
 
 function showNotEnoughCoinsModal(price, coinBalance) {
@@ -118,24 +119,18 @@ async function updateShopDisplay() {
     document.getElementById('energyUpgradePrice').textContent = energyUpgradePrice;
 }
 
-function upgradeSpeed() {
-    // Увеличиваем значение одного клика на 1 за каждый уровень
-    clickValue = speedUpgradeLevel;
-    saveProgress(userId, { clickValue }); // Сохранение прогресса
-}
-
 async function upgradeEnergy() {
     const userData = await getProgress(userId);
-    let maxenerg = Number (userData.maxenerg);
+    let maxenerg = Number(userData.maxenerg);
     // Увеличиваем максимальную энергию на 10 за каждый уровень
     maxenerg += 10;
-    saveProgress(userId, { maxenerg }); // Сохранение прогресса
+    await saveProgress(userId, { maxenerg }); // Сохранение прогресса
     updateEnergyBar(); // Обновляем отображение энергии после увеличения
 }
 
 async function buyEgg(rarity, price) {
     const userData = await getProgress(userId);
-    const coinBalance = Number (userData.balance);
+    const coinBalance = Number(userData.balance);
     if (coinBalance >= price) {
         const availableEggs = eggs.filter((egg) => egg.rarity === rarity);
         if (availableEggs.length > 0) {
@@ -146,7 +141,7 @@ async function buyEgg(rarity, price) {
             addEggToInventory(selectedEgg);
 
             // Вычесть стоимость из баланса монет
-            updateCoinBalance(-price);
+            await updateCoinBalance(-price);
         }
     } else {
         showNotEnoughCoinsModal(price, coinBalance);
