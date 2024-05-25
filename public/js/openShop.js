@@ -39,7 +39,7 @@ async function buyUpgrade(type) {
     const coinBalance = Number (userData.balance);
 
     if (type === 'speed') {
-        speedUpgradePrice = Number (userData.speedUpgradePrice);
+        let speedUpgradePrice = Number (userData.speedUpgradePrice);
         if (coinBalance >= speedUpgradePrice) {
             let speedUpgradeLevel = Number (userData.speedUpgradeLevel);
             let speedUpgradePrice = Number (userData.speedUpgradePrice);
@@ -47,7 +47,7 @@ async function buyUpgrade(type) {
             updateCoinBalance(-speedUpgradePrice);
             speedUpgradeLevel++;
             speedUpgradePrice *= 3;
-            clickValue = Number (userData.clickValue);
+            let clickValue = Number (userData.clickValue);
             clickValue = speedUpgradeLevel;
             await saveProgress(userId, { speedUpgradeLevel, speedUpgradePrice, clickValue }); // Сохранение прогресса
             updateShopDisplay();
@@ -55,8 +55,8 @@ async function buyUpgrade(type) {
             showNotEnoughCoinsModal(speedUpgradePrice, coinBalance);
         }
     } else if (type === 'energy') {
-        energyUpgradePrice = Number (userData.energyUpgradePrice);
-        energyUpgradeLevel = Number (userData.energyUpgradeLevel);
+        let energyUpgradePrice = Number (userData.energyUpgradePrice);
+        let energyUpgradeLevel = Number (userData.energyUpgradeLevel);
         if (coinBalance >= energyUpgradePrice) {
             // Покупка улучшения энергии
             upgradeEnergy();
