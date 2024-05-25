@@ -49,17 +49,27 @@
             manifestUrl: 'https://dankrutg.github.io/ton-eggs-nn/tonconnect-manifest.json',
             buttonRootId: 'walletContainer'
         });
-    
+
         async function handleConnectionStatus(wallet) {
+            console.log('Wallet status changed:', wallet);
             if (wallet) {
                 const userId = Telegram.WebApp.initDataUnsafe.user.id;
                 const walletAddress = wallet.account.address;
-                await saveProgress(userId, { walletStatus: 'Done!', walletAddress });
-                console.log('Wallet address:', walletAddress);
+                console.log('User ID:', userId);
+                console.log('Wallet Address:', walletAddress);
+                try {
+                    await saveProgress(userId, { walletStatus: 'Done!', walletAddress });
+                    console.log('Wallet address saved:', walletAddress);
+                } catch (error) {
+                    console.error('Error saving progress:', error);
+                }
+            } else {
+                console.log('No wallet connected');
             }
         }
-    
+
         tonConnectUI.onStatusChange(handleConnectionStatus);
+
     </script>
     
     <div id="notComplete" class="not-complete-modal">
