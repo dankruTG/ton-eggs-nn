@@ -20,7 +20,7 @@ getProgress(userId).then(savedProgress => {
     }
 });
 
-function openShopModal() {
+async function openShopModal() {
     const shopModal = document.getElementById('shopModal');
     if (shopModal) {
         shopModal.style.display = 'block'; // Показать модальное окно
