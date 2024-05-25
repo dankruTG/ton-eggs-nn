@@ -1,5 +1,5 @@
 import { saveProgress, getProgress } from './firebase.js';
-import { decreaseEnergy } from './energy.js';
+import { decreaseEnergy, updateBalance } from './energy.js';
 let eggContainerIdCounter = 1; // Инициализация счетчика
 let inventoryItems = {}; // Объект для хранения элементов инвентаря по id
 let clickCount = 0; // Счетчик кликов
@@ -395,7 +395,7 @@ async function finishDiggEgg(eggData) {
         previousClickArea.remove();
     }
 
-    const coinBalanceElement = document.getElementById('coinBalance');
+    let coinBalanceElement = userData.balance;
     const droppedCoinsCount = document.getElementById('droppedCoinsCount');
     const modal = document.getElementById('coinModal');
     const eggImageElement = document.getElementById('eggImageInDrop');
@@ -403,13 +403,12 @@ async function finishDiggEgg(eggData) {
 
     if (coinBalanceElement && droppedCoinsCount && modal) {
         // Загрузка текущего баланса пользователя из базы данных
-        const progress = await getProgress(userId);
-        const currentBalance = progress.balance || 0;
+        const currentBalance = userData.balance;
 
         // Обновление баланса монет
-        const newBalance = currentBalance + coinsDropped;
-        coinBalanceElement.textContent = newBalance;
-        updateCoinBalance(newBalance); // Обновление и сохранение нового баланса
+        const coins = currentBalance + coinsDropped;
+        coinBalanceElement.textContent = coins;
+        updateCoinBalance(coins); // Обновление и сохранение нового баланса
         eggImageElement.style.verticalAlign = 'middle';
 
         // Отображение выпавших монет
@@ -513,6 +512,7 @@ function updateCoinBalance(coins) {
     if (coinBalanceElement) {
         coinBalanceElement.textContent = coins;
         saveProgress(userId, { balance: coins }); // Сохранение прогресса баланса
+        updateBalance;
     }
 }
 function changeBackgroundByRarity(rarity) {

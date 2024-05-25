@@ -74,3 +74,14 @@ function updateClickCounter(clickCount) {
         clickCounterElement.textContent = `${clickCount}`;
     }
 }
+export async function updateBalance() {
+    const userData = await getProgress(userId);
+    document.getElementById('coinBalance').textContent = userData.balance;
+}
+
+// Call updateBalance on page load
+document.addEventListener('DOMContentLoaded', updateBalance);
+
+// Periodically update the balance every 5 seconds (5000 milliseconds)
+setInterval(updateBalance, 5000);
+
