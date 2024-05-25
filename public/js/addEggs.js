@@ -7,9 +7,9 @@ let currentEgg = null; // Текущее добываемое яйцо
 
 // Восстановление данных из базы данных при загрузке
 Telegram.WebApp.ready();
+
 const userId = Telegram.WebApp.initDataUnsafe.user.id;
-async function initializeUserData() {
-    const savedProgress = await getProgress(userId);
+getProgress(userId).then(savedProgress => {
     if (savedProgress) {
         inventoryItems = savedProgress.inventoryItems || {};
         currentEgg = savedProgress.currentEgg || null;
@@ -19,10 +19,8 @@ async function initializeUserData() {
             startDiggEgg(currentEgg, true);
         }
     }
-}
-
-initializeUserData();
-
+});
+const userData = await getProgress(userId);
 
 function restoreInventory() {
     const inventoryContainer = document.getElementById('inventoryItemsContainer');
@@ -41,7 +39,7 @@ function addEggToInventory(egg) {
     if (inventoryContainer) {
         const eggContainer = createEggContainer(egg);
         inventoryContainer.appendChild(eggContainer);
-        saveInventory();
+        saveInventory(); // Сохранение инвентаря после добавления яйца
     }
 }
 
@@ -82,11 +80,12 @@ function createEggContainer(eggData, eggContainerId = null) {
 
     eggContainer.appendChild(eggIcon);
 
-    eggContainer.style.backgroundColor = getBackgroundColor(eggData.rarity);
+    eggContainer.style.backgroundColor = getBackgroundColor(eggData.rarity); // Определяем цвет фона
 
     if (!eggContainerId) {
+        // Присваиваем уникальный id контейнеру яйца, если он не передан
         eggContainerId = `${eggContainerIdCounter}`;
-        eggContainerIdCounter++;
+        eggContainerIdCounter++; // Увеличиваем счетчик id для следующего контейнера
     }
     eggContainer.id = eggContainerId;
     inventoryItems[eggContainerId] = eggData;
@@ -202,24 +201,29 @@ function openEggInfoModal(eggData, eggContainerId) {
 function startDiggEggByName(eggName, eggContainerId) {
     const eggData = eggs.find((egg) => egg.name === eggName);
 
+    // Проверяем, есть ли уже активное яйцо для клика
     if (currentEgg) {
+        // Показываем модальное окно, что уже идет добыча другого яйца
         showModal('Вы уже DIGG другое EGG. Завершите его сначала!');
         return;
     }
 
     if (eggData) {
+        // Закрываем модальное окно с информацией о яйце
         const modal = document.getElementById('eggInfoModal');
         if (modal) {
             modal.style.display = 'none';
         }
         closeInventory();
 
+        // Удаляем новое яйцо из инвентаря
         removeEggFromInventory(eggContainerId);
 
+        // Начинаем добычу нового яйца
         startDiggEgg(eggData);
         currentEgg = eggData;
-        saveProgress(userId, { currentEgg, clickCount });
-        changeBackgroundByRarity(eggData.rarity);
+        saveProgress(userId, { currentEgg, clickCount }); // Сохранение прогресса
+        changeBackgroundByRarity(eggData.rarity)
     } else {
         console.log('Яйцо не найдено в инвентаре');
     }
@@ -244,6 +248,7 @@ function showModal(message) {
         modal.style.display = 'block';
     }
 
+    // Закрытие модального окна при клике на фон или крестик
     modal.onclick = function(event) {
         if (event.target === modal || event.target.classList.contains('close')) {
             modal.style.display = 'none';
@@ -277,6 +282,7 @@ function createClickArea(eggData) {
     clickArea.style.height = '200px';
     clickArea.style.backgroundColor = 'transparent';
     clickArea.style.position = 'relative';
+    clickArea.style.overflow = 'block';
     clickArea.style.display = 'flex';
     clickArea.style.justifyContent = 'center';
     clickArea.style.alignItems = 'center';
@@ -288,34 +294,29 @@ function createClickArea(eggData) {
     eggImage.style.objectFit = 'contain';
     clickArea.appendChild(eggImage);
 
-    let initialClickCount = eggData.strength; // Начальное количество кликов для открытия
-    let currentClickCount = initialClickCount - clickCount; // Восстановленный счетчик кликов
+    let initialClickCount = eggData.strength;
+    let currentClickCount = initialClickCount - clickCount;
     let clickValue = userData.speedUpgradeLevel;
-    console.log('clickValue:', clickValue);
 
-    clickArea.addEventListener('click', async (event) => {
+    clickArea.addEventListener('click', async () => {
         if (currentClickCount > 0) {
             currentClickCount -= clickValue;
-            clickCount = initialClickCount - currentClickCount; // Обновляем глобальный счетчик кликов
+            clickCount = initialClickCount - currentClickCount;
             updateClickCounter(currentClickCount);
-            await saveProgress(userId, { clickCount }); // Сохранение прогресса кликов
-            decreaseEnergy(); // Уменьшение энергии при клике
+            await saveProgress(userId, { clickCount });
+            decreaseEnergy();
 
-            // Анимация увеличения яйца
             eggImage.style.transform = 'scale(1.1)';
             eggImage.style.transition = 'transform 0.3s ease';
 
-            // Создание элемента "урона"
             const damageElement = document.createElement('span');
             damageElement.textContent = `-${clickValue}`;
             damageElement.style.position = 'absolute';
-            damageElement.style.color = 'white'; // Цвет текста "урона"
-            damageElement.style.fontSize = '16px'; // Размер шрифта "урона"
+            damageElement.style.color = 'white';
+            damageElement.style.fontSize = '16px';
 
-            // Добавление элемента "урона" к области клика
             clickArea.appendChild(damageElement);
 
-            // Анимация "урона"
             damageElement.animate(
                 [
                     { opacity: 1, transform: 'translateY(0)' },
@@ -329,14 +330,13 @@ function createClickArea(eggData) {
             );
 
             setTimeout(() => {
-                damageElement.remove(); // Удалить элемент "урона" после завершения анимации
+                damageElement.remove();
             }, 1000);
 
             if (currentClickCount <= 0) {
-                await finishDiggEgg(eggData); // Завершение добычи яйца
+                finishDiggEgg(eggData);
             }
 
-            // Сброс анимации увеличения яйца
             setTimeout(() => {
                 eggImage.style.transform = 'scale(1)';
             }, 100);
@@ -346,10 +346,11 @@ function createClickArea(eggData) {
     document.body.appendChild(clickArea);
     updateClickCounter(currentClickCount);
 }
+
 async function finishDiggEgg(eggData) {
     currentEgg = null; // Сброс текущего яйца для добычи
     clickCount = 0; // Сброс счетчика кликов
-    await saveProgress(userId, { currentEgg, clickCount }); // Сохранение прогресса
+    saveProgress(userId, { currentEgg, clickCount }); // Сохранение прогресса
     let coinsDropped = 0;
     let eggDropped = null;
 
@@ -394,16 +395,20 @@ async function finishDiggEgg(eggData) {
     const eggNameElement = document.getElementById('eggNameInDrop');
 
     if (coinBalanceElement && droppedCoinsCount && modal) {
+        // Загрузка текущего баланса пользователя из базы данных
         const progress = await getProgress(userId);
         const currentBalance = Number(progress.balance) || 0;
 
+        // Обновление баланса монет
         const newBalance = currentBalance + coinsDropped;
         const balance = Number(newBalance);
         await saveProgress(userId, { balance });
         console.log('Coins balance saved:', balance);
         eggImageElement.style.verticalAlign = 'middle';
 
+        // Отображение выпавших монет
         droppedCoinsCount.textContent = `+${coinsDropped}`;
+        // Отображение информации о выпавшем яйце
         eggImageElement.src = eggDropped.icon;
         eggImageElement.alt = eggDropped.name;
         eggNameElement.textContent = eggDropped.name;
@@ -414,7 +419,7 @@ async function finishDiggEgg(eggData) {
                 break;
             case 'Uncommon':
                 eggNameElement.style.color = 'black';
-                eggNameElement.style.textShadow = '1px 1px 2px black';
+                eggNameElement.style.textShadow = '1px 1px 2px black'; // Добавляем контур
                 break;
             case 'Rare':
                 eggNameElement.style.color = 'blue';
@@ -423,18 +428,20 @@ async function finishDiggEgg(eggData) {
             case 'Secret':
                 eggNameElement.style.color = 'red';
                 eggNameElement.style.fontWeight = 'bold';
-                break;
+                break; 
             default:
-                eggNameElement.style.color = 'black';
+                eggNameElement.style.color = 'black'; // По умолчанию
                 eggNameElement.style.fontWeight = 'normal';
                 break;
         }
-        eggNameElement.style.display = 'inline-block';
-        eggNameElement.style.verticalAlign = 'middle';
-        eggNameElement.style.marginLeft = '10px';
+        eggNameElement.style.display = 'inline-block'; // Устанавливаем inline-block для правильного позиционирования
+        eggNameElement.style.verticalAlign = 'middle'; // Выравниваем по вертикали
+        eggNameElement.style.marginLeft = '10px'; // Пример отступа слева от изображения
 
+        // Отображение модального окна с информацией о дропе
         modal.style.display = 'block';
 
+        // Закрытие модального окна при щелчке на крестик
         const closeButton = document.querySelector('#coinModal .close');
         const coinModal = document.getElementById('coinModal');
         if (closeButton) {
@@ -443,18 +450,22 @@ async function finishDiggEgg(eggData) {
             };
         }
 
+        // Закрытие модального окна при щелчке вне модального окна
         window.onclick = function (event) {
             if (event.target === modal) {
                 modal.style.display = 'none';
             }
         };
 
+        // Добавление яйца в инвентарь
         console.log('Adding egg to inventory:', eggDropped);
         addEggToInventory(eggDropped);
 
+        // Возвращаем объект с информацией о дропе (монеты и яйцо)
         return { coinsDropped, eggDropped };
     }
 
+    // Возвращаем только информацию о монетах, если что-то не найдено
     return coinsDropped;
 }
 
@@ -470,6 +481,7 @@ function getRandomEggByRarity(rarity) {
     let randomValue = Math.random();
     let selectedRarity = null;
 
+    // Определяем редкость яйца в соответствии с заданными шансами
     for (const rarityType in chances) {
         if (randomValue < chances[rarityType]) {
             selectedRarity = rarityType;
@@ -478,8 +490,10 @@ function getRandomEggByRarity(rarity) {
         randomValue -= chances[rarityType];
     }
 
+    // Фильтруем яйца по выбранной редкости
     let filteredEggs = eggs.filter((egg) => egg.rarity === selectedRarity);
 
+    // Выбираем случайное яйцо из отфильтрованного списка
     const randomIndex = Math.floor(Math.random() * filteredEggs.length);
     return filteredEggs[randomIndex];
 }
