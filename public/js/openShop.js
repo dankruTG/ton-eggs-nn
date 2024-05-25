@@ -1,4 +1,5 @@
 import { saveProgress, getProgress } from './firebase.js';
+import {addEggToInventory} from './addEggs.js';
 
 let speedUpgradeLevel = 1;
 let speedUpgradePrice = 100;
@@ -38,18 +39,24 @@ async function buyUpgrade(type) {
     const coinBalance = Number (userData.balance);
 
     if (type === 'speed') {
+        speedUpgradePrice = Number (userData.speedUpgradePrice);
         if (coinBalance >= speedUpgradePrice) {
+            let speedUpgradeLevel = Number (userData.speedUpgradeLevel);
+            let speedUpgradePrice = Number (userData.speedUpgradePrice);
             // Покупка улучшения скорости
             updateCoinBalance(-speedUpgradePrice);
             speedUpgradeLevel++;
-            speedUpgradePrice *= 2.5;
-            saveProgress(userId, { speedUpgradeLevel, speedUpgradePrice }); // Сохранение прогресса
+            speedUpgradePrice *= 3;
+            clickValue = Number (userData.clickValue);
+            clickValue = speedUpgradeLevel;
+            await saveProgress(userId, { speedUpgradeLevel, speedUpgradePrice, clickValue }); // Сохранение прогресса
             updateShopDisplay();
-            upgradeSpeed();
         } else {
             showNotEnoughCoinsModal(speedUpgradePrice, coinBalance);
         }
     } else if (type === 'energy') {
+        energyUpgradePrice = Number (userData.energyUpgradePrice);
+        energyUpgradeLevel = Number (userData.energyUpgradeLevel);
         if (coinBalance >= energyUpgradePrice) {
             // Покупка улучшения энергии
             upgradeEnergy();
@@ -112,10 +119,12 @@ function upgradeSpeed() {
     saveProgress(userId, { clickValue }); // Сохранение прогресса
 }
 
-function upgradeEnergy() {
+async function upgradeEnergy() {
+    const userData = await getProgress(userId);
+    let maxenerg = Number (userData.maxenerg);
     // Увеличиваем максимальную энергию на 10 за каждый уровень
     maxenerg += 10;
-    saveProgress(userId, { curenerg, maxenerg }); // Сохранение прогресса
+    saveProgress(userId, { maxenerg }); // Сохранение прогресса
     updateEnergyBar(); // Обновляем отображение энергии после увеличения
 }
 
