@@ -43,8 +43,7 @@
                 // Дополнительная логика для восстановления состояния игры
             }
         });
-    </script>
-    <script>
+
         const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
             manifestUrl: 'https://dankrutg.github.io/ton-eggs-nn/tonconnect-manifest.json',
             buttonRootId: 'walletContainer'
@@ -69,9 +68,7 @@
         }
 
         tonConnectUI.onStatusChange(handleConnectionStatus);
-
     </script>
-    
     <div id="notComplete" class="not-complete-modal">
         <div class="modal-content">
             <span class="close" onclick="closeNotCompleteModal()">&times;</span>
