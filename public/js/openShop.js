@@ -35,28 +35,27 @@ function closeShopModal() {
     }
 }
 
-function buyUpgrade(type) {
-    const userData = getProgress(userId);
+async function buyUpgrade(type) {
+    const userData = await getProgress(userId);
     const coinBalance = Number (userData.balance);
-    const sup = Number (userData.speedUpgradePrice);
-    const eup = Number (userData.energyUpgradePrice);
-    console.log ({sup}, {eup})
+    let speedUpgradePrice = Number (userData.speedUpgradePrice);
+    let energyUpgradePrice = Number (userData.energyUpgradePrice);
 
     if (type === 'speed') {
-        if (coinBalance >= sup) {
+        if (coinBalance >= speedUpgradePrice) {
             // Покупка улучшения скорости
-            updateCoinBalance(-sup);
+            updateCoinBalance(-speedUpgradePrice);
             upgradeSpeed();
         } else {
-            showNotEnoughCoinsModal(sup, coinBalance);
+            showNotEnoughCoinsModal(speedUpgradePrice, coinBalance);
         }
     } else if (type === 'energy') {
-        if (coinBalance >= eup) {
+        if (coinBalance >= energyUpgradePrice) {
             // Покупка улучшения энергии
-            updateCoinBalance(-eup);
+            updateCoinBalance(-energyUpgradePrice);
             upgradeEnergy();
         } else {
-            showNotEnoughCoinsModal(eup, coinBalance);
+            showNotEnoughCoinsModal(energyUpgradePrice, coinBalance);
         }
     }
 }
