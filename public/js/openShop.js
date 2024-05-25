@@ -14,6 +14,7 @@ getProgress(userId).then(savedProgress => {
         speedUpgradePrice = savedProgress.speedUpgradePrice || 100;
         energyUpgradeLevel = savedProgress.energyUpgradeLevel || 1;
         energyUpgradePrice = savedProgress.energyUpgradePrice || 50;
+        balance = savedProgress.balance || 0;
         updateShopDisplay();
     }
 });
@@ -32,8 +33,9 @@ function closeShopModal() {
     }
 }
 
-function buyUpgrade(type) {
-    const coinBalance = parseInt(document.getElementById('coinBalance').textContent);
+async function buyUpgrade(type) {
+    const userData = await getProgress(userId);
+    const coinBalance = Number (userData.balance);
 
     if (type === 'speed') {
         if (coinBalance >= speedUpgradePrice) {
@@ -60,6 +62,11 @@ function buyUpgrade(type) {
             showNotEnoughCoinsModal(energyUpgradePrice, coinBalance);
         }
     }
+}
+async function updateCoinBalance(price) {
+    const userData = await getProgress(userId);
+    const balance = Number (userData.balance + price);
+    await saveProgress(userId, { balance });
 }
 
 function showNotEnoughCoinsModal(price, coinBalance) {
@@ -102,6 +109,7 @@ function updateShopDisplay() {
 function upgradeSpeed() {
     // Увеличиваем значение одного клика на 1 за каждый уровень
     clickValue = speedUpgradeLevel;
+    saveProgress(userId, { clickValue }); // Сохранение прогресса
 }
 
 function upgradeEnergy() {
@@ -111,8 +119,9 @@ function upgradeEnergy() {
     updateEnergyBar(); // Обновляем отображение энергии после увеличения
 }
 
-function buyEgg(rarity, price) {
-    const coinBalance = parseInt(document.getElementById('coinBalance').textContent);
+async function buyEgg(rarity, price) {
+    const userData = await getProgress(userId);
+    const coinBalance = Number (userData.balance);
     if (coinBalance >= price) {
         const availableEggs = eggs.filter((egg) => egg.rarity === rarity);
         if (availableEggs.length > 0) {

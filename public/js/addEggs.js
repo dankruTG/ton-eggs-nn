@@ -17,6 +17,7 @@ getProgress(userId).then(savedProgress => {
         restoreInventory();
         if (currentEgg) {
             startDiggEgg(currentEgg, true);
+            showModal;
         }
     }
 });
