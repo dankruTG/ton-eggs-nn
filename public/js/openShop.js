@@ -38,34 +38,24 @@ function closeShopModal() {
 function buyUpgrade(type) {
     const userData = getProgress(userId);
     const coinBalance = Number (userData.balance);
+    const sup = Number (userData.speedUpgradePrice);
+    const eup = Number (userData.energyUpgradePrice);
 
     if (type === 'speed') {
-        let speedUpgradeLevel = Number (userData.speedUpgradeLevel);
-        let speedUpgradePrice = Number (userData.speedUpgradePrice);
-        if (coinBalance >= speedUpgradePrice) {
+        if (coinBalance >= sup) {
             // Покупка улучшения скорости
-            updateCoinBalance(-speedUpgradePrice);
-            speedUpgradeLevel++;
-            speedUpgradePrice *= 3;
-            saveProgress(userId, { speedUpgradeLevel, speedUpgradePrice }); // Сохранение прогресса
-            updateShopDisplay();
-            console.log({speedUpgradeLevel}, {speedUpgradePrice});
+            updateCoinBalance(-sup);
+            upgradeSpeed();
         } else {
-            showNotEnoughCoinsModal(speedUpgradePrice, coinBalance);
+            showNotEnoughCoinsModal(sup, coinBalance);
         }
     } else if (type === 'energy') {
-        let energyUpgradePrice = Number (userData.energyUpgradePrice);
-        let energyUpgradeLevel = Number (userData.energyUpgradeLevel);
-        if (coinBalance >= energyUpgradePrice) {
+        if (coinBalance >= eup) {
             // Покупка улучшения энергии
+            updateCoinBalance(-eup);
             upgradeEnergy();
-            updateCoinBalance(-energyUpgradePrice);
-            energyUpgradeLevel++;
-            energyUpgradePrice *= 2;
-            saveProgress(userId, { energyUpgradeLevel, energyUpgradePrice }); // Сохранение прогресса
-            updateShopDisplay();
         } else {
-            showNotEnoughCoinsModal(energyUpgradePrice, coinBalance);
+            showNotEnoughCoinsModal(eup, coinBalance);
         }
     }
 }
@@ -104,10 +94,10 @@ function showNotEnoughCoinsModal(price, coinBalance) {
 
 function updateShopDisplay() {
     const userData = getProgress(userId);
-    const speedUpgradeLevel = userData.speedUpgradeLevel;
-    const speedUpgradePrice = userData.speedUpgradePrice;
-    const energyUpgradeLevel = userData.energyUpgradeLevel;
-    const energyUpgradePrice = userData.energyUpgradePrice;
+    const speedUpgradeLevel = Number (userData.speedUpgradeLevel);
+    const speedUpgradePrice = Number (userData.speedUpgradePrice);
+    const energyUpgradeLevel = Number (userData.energyUpgradeLevel);
+    const energyUpgradePrice = Number (userData.energyUpgradePrice);
 
     // Обновление уровня и цены улучшения скорости
     document.getElementById('speedUpgradeLevel').textContent = `Lvl ${speedUpgradeLevel}`;
@@ -118,18 +108,27 @@ function updateShopDisplay() {
     document.getElementById('energyUpgradePrice').textContent = energyUpgradePrice;
 }
 
-function upgradeSpeed() {
-    // Увеличиваем значение одного клика на 1 за каждый уровень
-    clickValue = speedUpgradeLevel;
-    saveProgress(userId, { clickValue }); // Сохранение прогресса
+async function upgradeSpeed() {
+    const userData = await getProgress(userId);
+    let speedUpgradePrice = Number (userData.speedUpgradePrice);
+    let speedUpgradeLevel = Number (userData.speedUpgradeLevel);
+    speedUpgradeLevel++;
+    speedUpgradePrice *= 3;
+    saveProgress(userId, { speedUpgradePrice, speedUpgradeLevel }); // Сохранение прогресса
+    updateShopDisplay();
 }
 
 async function upgradeEnergy() {
     const userData = await getProgress(userId);
     let maxenerg = Number (userData.maxenerg);
+    let energyUpgradeLevel = Number (userData.energyUpgradeLevel);
+    let energyUpgradePrice = Number (userData.energyUpgradePrice);
     // Увеличиваем максимальную энергию на 10 за каждый уровень
+    energyUpgradeLevel++;
+    energyUpgradePrice *= 2;
     maxenerg += 10;
-    saveProgress(userId, { maxenerg }); // Сохранение прогресса
+    saveProgress(userId, { maxenerg, energyUpgradeLevel, energyUpgradePrice }); // Сохранение прогресса
+    updateShopDisplay();
     updateEnergyBar(); // Обновляем отображение энергии после увеличения
 }
 
