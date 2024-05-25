@@ -51,10 +51,10 @@ export async function getProgress(userId) {
             energyUpgradePrice: 50,
             curenerg: 100,
             maxenerg: 100,
-            inventoryItems: {},
             currentEgg: null,
             clickCount: 0,
-            completedTasks: []
+            completedTasks: [],
+            inventoryItems: {}
         };
         await saveProgress(userId, initialData);
         return initialData;

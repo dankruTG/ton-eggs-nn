@@ -49,6 +49,7 @@ async function buyUpgrade(type) {
             speedUpgradePrice *= 3;
             await saveProgress(userId, { speedUpgradeLevel, speedUpgradePrice }); // Сохранение прогресса
             updateShopDisplay();
+            console.log({speedUpgradeLevel}, {speedUpgradePrice});
         } else {
             showNotEnoughCoinsModal(speedUpgradePrice, coinBalance);
         }
@@ -101,7 +102,13 @@ function showNotEnoughCoinsModal(price, coinBalance) {
     });
 }
 
-function updateShopDisplay() {
+async function updateShopDisplay() {
+    const userData = await getProgress(userId);
+    const speedUpgradeLevel = userData.speedUpgradeLevel;
+    const speedUpgradePrice = userData.speedUpgradePrice;
+    const energyUpgradeLevel = userData.energyUpgradeLevel;
+    const energyUpgradePrice = userData.energyUpgradePrice;
+
     // Обновление уровня и цены улучшения скорости
     document.getElementById('speedUpgradeLevel').textContent = `Lvl ${speedUpgradeLevel}`;
     document.getElementById('speedUpgradePrice').textContent = speedUpgradePrice;
