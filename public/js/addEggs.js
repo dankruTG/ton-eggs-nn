@@ -410,6 +410,7 @@ async function finishDiggEgg(eggData) {
         const newBalance = currentBalance + coinsDropped;
         balance = newBalance;
         saveProgress(userId, { balance });
+        console.log('Coins balance:', balance);
         eggImageElement.style.verticalAlign = 'middle';
 
         // Отображение выпавших монет
