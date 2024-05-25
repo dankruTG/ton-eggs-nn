@@ -1,5 +1,5 @@
 import { saveProgress, getProgress } from './firebase.js';
-import {addEggToInventory} from './addEggs.js';
+import { addEggToInventory } from './addEggs.js';
 
 let speedUpgradeLevel = 1;
 let speedUpgradePrice = 100;
