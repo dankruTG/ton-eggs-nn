@@ -24,7 +24,7 @@ export function decreaseEnergy() {
     }
 }
 
-function updateEnergyBar() {
+export async function updateEnergyBar() {
     const energyBar = document.getElementById('energyBar');
     if (energyBar) {
         energyBar.style.width = `${(curenerg / maxenerg) * 100}%`;

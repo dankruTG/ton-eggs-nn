@@ -1,5 +1,6 @@
 import { saveProgress, getProgress } from './firebase.js';
 import { addEggToInventory } from './addEggs.js';
+import { updateEnergyBar } from './energy.js';
 
 let speedUpgradeLevel = 1;
 let speedUpgradePrice = 100;
@@ -35,8 +36,8 @@ function closeShopModal() {
     }
 }
 
-function buyUpgrade(type) {
-    const userData = getProgress(userId);
+async function buyUpgrade(type) {
+    const userData = await getProgress(userId);
     const coinBalance = Number (userData.balance);
     let speedUpgradePrice = Number (userData.speedUpgradePrice);
     let energyUpgradePrice = Number (userData.energyUpgradePrice);
@@ -44,16 +45,16 @@ function buyUpgrade(type) {
     if (type === 'speed') {
         if (coinBalance >= speedUpgradePrice) {
             // Покупка улучшения скорости
-            updateCoinBalance(-speedUpgradePrice);
-            upgradeSpeed();
+            await updateCoinBalance(-speedUpgradePrice);
+            await upgradeSpeed();
         } else {
             showNotEnoughCoinsModal(speedUpgradePrice, coinBalance);
         }
     } else if (type === 'energy') {
         if (coinBalance >= energyUpgradePrice) {
             // Покупка улучшения энергии
-            updateCoinBalance(-energyUpgradePrice);
-            upgradeEnergy();
+            await updateCoinBalance(-energyUpgradePrice);
+            await upgradeEnergy();
         } else {
             showNotEnoughCoinsModal(energyUpgradePrice, coinBalance);
         }
@@ -94,10 +95,10 @@ function showNotEnoughCoinsModal(price, coinBalance) {
 
 async function updateShopDisplay() {
     const userData = await getProgress(userId);
-    const speedUpgradeLevel = Number (userData.speedUpgradeLevel);
-    const speedUpgradePrice = Number (userData.speedUpgradePrice);
-    const energyUpgradeLevel = Number (userData.energyUpgradeLevel);
-    const energyUpgradePrice = Number (userData.energyUpgradePrice);
+    let speedUpgradeLevel = Number (userData.speedUpgradeLevel);
+    let speedUpgradePrice = Number (userData.speedUpgradePrice);
+    let energyUpgradeLevel = Number (userData.energyUpgradeLevel);
+    let energyUpgradePrice = Number (userData.energyUpgradePrice);
 
     // Обновление уровня и цены улучшения скорости
     document.getElementById('speedUpgradeLevel').textContent = `Lvl ${speedUpgradeLevel}`;
@@ -114,8 +115,8 @@ async function upgradeSpeed() {
     let speedUpgradeLevel = Number (userData.speedUpgradeLevel);
     speedUpgradeLevel++;
     speedUpgradePrice *= 3;
-    saveProgress(userId, { speedUpgradePrice, speedUpgradeLevel }); // Сохранение прогресса
-    updateShopDisplay();
+    await saveProgress(userId, { speedUpgradePrice, speedUpgradeLevel }); // Сохранение прогресса
+    await updateShopDisplay();
 }
 
 async function upgradeEnergy() {
@@ -127,9 +128,9 @@ async function upgradeEnergy() {
     energyUpgradeLevel++;
     energyUpgradePrice *= 2;
     maxenerg += 10;
-    saveProgress(userId, { maxenerg, energyUpgradeLevel, energyUpgradePrice }); // Сохранение прогресса
-    updateShopDisplay();
-    updateEnergyBar(); // Обновляем отображение энергии после увеличения
+    await saveProgress(userId, { maxenerg, energyUpgradeLevel, energyUpgradePrice }); // Сохранение прогресса
+    await updateShopDisplay();
+    await updateEnergyBar(); // Обновляем отображение энергии после увеличения
 }
 
 async function buyEgg(rarity, price) {
