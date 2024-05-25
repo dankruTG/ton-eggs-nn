@@ -35,7 +35,7 @@ function restoreInventory() {
 }
 
 // Функция для добавления яйца в инвентарь
-export async function addEggToInventory(egg) {
+export function addEggToInventory(egg) {
     const inventoryContainer = document.getElementById('inventoryItemsContainer');
     if (inventoryContainer) {
         const eggContainer = createEggContainer(egg);
