@@ -92,8 +92,8 @@ function showNotEnoughCoinsModal(price, coinBalance) {
     });
 }
 
-function updateShopDisplay() {
-    const userData = getProgress(userId);
+async function updateShopDisplay() {
+    const userData = await getProgress(userId);
     const speedUpgradeLevel = Number (userData.speedUpgradeLevel);
     const speedUpgradePrice = Number (userData.speedUpgradePrice);
     const energyUpgradeLevel = Number (userData.energyUpgradeLevel);
