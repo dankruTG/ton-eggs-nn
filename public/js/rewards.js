@@ -1,4 +1,5 @@
 import { saveProgress, getProgress } from './firebase.js';
+import { giveEggs } from './addEggs.js';
 
 let completedTasks = [];
 
