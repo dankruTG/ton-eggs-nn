@@ -23,8 +23,11 @@ export async function saveProgress(userId, data) {
     if (docSnap.exists()) {
         const existingData = docSnap.data();
         const newData = { ...existingData, ...data };
+        console.log('Existing data:', existingData);
+        console.log('New data to save:', newData);
         await setDoc(docRef, newData);
     } else {
+        console.log('Creating new document with data:', data);
         await setDoc(docRef, data);
     }
     console.log('Progress saved');

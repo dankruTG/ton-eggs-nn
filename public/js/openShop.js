@@ -124,13 +124,15 @@ async function upgradeEnergy() {
     let maxenerg = Number (userData.maxenerg);
     let energyUpgradeLevel = Number (userData.energyUpgradeLevel);
     let energyUpgradePrice = Number (userData.energyUpgradePrice);
+    console.log('Before upgrade:', { maxenerg, energyUpgradeLevel, energyUpgradePrice });
     // Увеличиваем максимальную энергию на 10 за каждый уровень
     energyUpgradeLevel++;
     energyUpgradePrice *= 2;
     maxenerg += 10;
+    console.log('After upgrade:', { maxenerg, energyUpgradeLevel, energyUpgradePrice });
     await saveProgress(userId, { maxenerg, energyUpgradeLevel, energyUpgradePrice }); // Сохранение прогресса
     await updateShopDisplay();
-    await updateEnergyBar(); // Обновляем отображение энергии после увеличения
+    updateEnergyBar(); // Обновляем отображение энергии после увеличения
 }
 
 async function buyEgg(rarity, price) {
