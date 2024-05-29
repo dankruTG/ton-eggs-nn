@@ -37,13 +37,15 @@ function restoreInventory() {
 }
 
 // Функция для добавления яйца в инвентарь
-export function addEggToInventory(egg) {
+export async function addEggToInventory(egg) {
+    showLoadingIndicator();
     const inventoryContainer = document.getElementById('inventoryItemsContainer');
     if (inventoryContainer) {
         const eggContainer = createEggContainer(egg);
         inventoryContainer.appendChild(eggContainer);
-        saveInventory(); // Сохранение инвентаря после добавления яйца
+        await saveInventory(); // Сохранение инвентаря после добавления яйца
     }
+    hideLoadingIndicator();
 }
 
 export function giveEggs() {
@@ -351,7 +353,8 @@ function createClickArea(eggData) {
 async function finishDiggEgg(eggData) {
     currentEgg = null; // Сброс текущего яйца для добычи
     clickCount = 0; // Сброс счетчика кликов
-    saveProgress(userId, { currentEgg, clickCount }); // Сохранение прогресса
+    showLoadingIndicator();
+    await saveProgress(userId, { currentEgg, clickCount }); // Сохранение прогресса
     let coinsDropped = 0;
     let eggDropped = null;
 
@@ -460,14 +463,16 @@ async function finishDiggEgg(eggData) {
 
         // Добавление яйца в инвентарь
         console.log('Adding egg to inventory:', eggDropped);
-        addEggToInventory(eggDropped);
+        await addEggToInventory(eggDropped);
 
         // Возвращаем объект с информацией о дропе (монеты и яйцо)
         return { coinsDropped, eggDropped };
     }
+    hideLoadingIndicator();
 
     // Возвращаем только информацию о монетах, если что-то не найдено
     return coinsDropped;
+    
 }
 
 function getRandomEggByRarity(rarity) {
