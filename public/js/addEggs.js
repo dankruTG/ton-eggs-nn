@@ -14,13 +14,14 @@ getProgress(userId).then(savedProgress => {
         inventoryItems = savedProgress.inventoryItems || {};
         currentEgg = savedProgress.currentEgg || null;
         clickCount = savedProgress.clickCount || 0;
+        speedUpgradeLevel = savedProgress.speedUpgradeLevel || 0;
         restoreInventory();
         if (currentEgg) {
             createClickArea(currentEgg);
         }
     }
 });
-const userData = await getProgress(userId);
+
 
 function restoreInventory() {
     const inventoryContainer = document.getElementById('inventoryItemsContainer');
@@ -292,7 +293,7 @@ function createClickArea(eggData) {
 
     let initialClickCount = eggData.strength;
     let currentClickCount = initialClickCount - clickCount;
-    let clickValue = userData.speedUpgradeLevel;
+    let clickValue = speedUpgradeLevel;
 
     clickArea.addEventListener('click', async () => {
         if (currentClickCount > 0) {
