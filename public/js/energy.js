@@ -3,6 +3,7 @@ import { saveProgress, getProgress } from './firebase.js';
 let curenerg = 100; // Начальная энергия
 let maxenerg = 100; // Максимальная энергия
 let restoreEnergySpeed = 3000;
+let restoreRate = 1;
 
 // Восстановление энергии из базы данных при загрузке
 Telegram.WebApp.ready();
@@ -11,14 +12,22 @@ getProgress(userId).then(savedProgress => {
     if (savedProgress) {
         curenerg = savedProgress.curenerg || 100;
         maxenerg = savedProgress.maxenerg || 100;
+        const lastUpdate = savedProgress.lastEnergyUpdate || Date.now();
+        const now = Date.now();
+        const elapsedTime = now - lastUpdate;
+        const energyToRestore = Math.floor(elapsedTime / restoreEnergySpeed) * restoreRate;
+        
+        curenerg = Math.min(curenerg + energyToRestore, maxenerg);
+        
         updateEnergyBar();
+        saveProgress(userId, { curenerg, lastEnergyUpdate: now });
     }
 });
 
 export function decreaseEnergy() {
     curenerg--;
     updateEnergyBar();
-    saveProgress(userId, { curenerg, maxenerg }); // Сохранение прогресса
+    saveProgress(userId, { curenerg, lastEnergyUpdate: Date.now() }); // Сохранение прогресса
     if (curenerg <= 0) {
         disableClick(); // Если энергия иссякла, блокируем возможность кликать
     }
@@ -42,9 +51,10 @@ export function updateEnergyBar() {
 
 function restoreEnergy() {
     if (curenerg < maxenerg) {
-        curenerg++; // Увеличиваем текущую энергию
+        curenerg += restoreRate; // Увеличиваем текущую энергию
+        curenerg = Math.min(curenerg, maxenerg); // Ограничиваем максимальной энергией
         updateEnergyBar();
-        saveProgress(userId, { curenerg, maxenerg }); // Сохранение прогресса
+        saveProgress(userId, { curenerg, lastEnergyUpdate: Date.now() }); // Сохранение прогресса с обновлением времени
     }
 }
 
