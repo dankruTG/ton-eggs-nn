@@ -86,7 +86,22 @@ function updateClickCounter(clickCount) {
 }
 export async function updateBalance() {
     const userData = await getProgress(userId);
-    document.getElementById('coinBalance').textContent = userData.balance;
+    const balanceElement = document.getElementById('coinBalance');
+    if (balanceElement) {
+        balanceElement.textContent = formatNumber(userData.balance);
+    }
+
+}
+function formatNumber(number) {
+    if (number >= 1e9) {
+        return (number / 1e9).toFixed(1) + 'B'; // Миллиарды
+    } else if (number >= 1e6) {
+        return (number / 1e6).toFixed(1) + 'M'; // Миллионы
+    } else if (number >= 1e3) {
+        return (number / 1e3).toFixed(1) + 'K'; // Тысячи
+    } else {
+        return number; // Если число меньше тысячи, выводим его как есть
+    }
 }
 
 // Call updateBalance on page load
