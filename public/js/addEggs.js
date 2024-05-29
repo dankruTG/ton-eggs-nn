@@ -44,7 +44,7 @@ export function addEggToInventory(egg) {
     }
 }
 
-function giveEggs() {
+export function giveEggs() {
     const inventoryContainer = document.getElementById('inventoryItemsContainer');
     if (inventoryContainer) {
         // Фильтрация яиц по редкости Common
