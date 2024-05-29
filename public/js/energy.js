@@ -24,7 +24,7 @@ export function decreaseEnergy() {
     }
 }
 
-export function updateEnergyBar() {
+export function updateEnergyBar(maxenerg) {
     const energyBar = document.getElementById('energyBar');
     if (energyBar) {
         energyBar.style.width = `${(curenerg / maxenerg) * 100}%`;
@@ -36,7 +36,7 @@ export function updateEnergyBar() {
     }
 
     if (curenerg > 0) {
-        enableClick(); // Если энергия иссякла, блокируем возможность кликать
+        enableClick(); // Если энергия восстановилась, разрешаем кликать
     }
 }
 

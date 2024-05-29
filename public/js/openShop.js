@@ -1,6 +1,6 @@
 import { saveProgress, getProgress } from './firebase.js';
 import { addEggToInventory } from './addEggs.js';
-import { updateEnergyBar } from './energy.js';
+import { updateEnergyBar, updateBalance } from './energy.js';
 
 let speedUpgradeLevel = 1;
 let speedUpgradePrice = 100;
@@ -11,6 +11,7 @@ let balance = 0;
 // Восстановление данных из базы данных при загрузке
 Telegram.WebApp.ready();
 const userId = Telegram.WebApp.initDataUnsafe.user.id;
+showLoadingIndicator();
 getProgress(userId).then(savedProgress => {
     if (savedProgress) {
         speedUpgradeLevel = savedProgress.speedUpgradeLevel || 1;
@@ -20,6 +21,7 @@ getProgress(userId).then(savedProgress => {
         balance = savedProgress.balance || 0;
         updateShopDisplay();
     }
+    hideLoadingIndicator();
 });
 
 async function openShopModal() {
@@ -37,6 +39,7 @@ function closeShopModal() {
 }
 
 async function buyUpgrade(type) {
+    showLoadingIndicator();
     const userData = await getProgress(userId);
     const coinBalance = Number (userData.balance);
     let speedUpgradePrice = Number (userData.speedUpgradePrice);
@@ -59,11 +62,15 @@ async function buyUpgrade(type) {
             showNotEnoughCoinsModal(energyUpgradePrice, coinBalance);
         }
     }
+    hideLoadingIndicator();
 }
 async function updateCoinBalance(price) {
+    showLoadingIndicator();
     const userData = await getProgress(userId);
     const balance = Number (userData.balance + price);
     await saveProgress(userId, { balance });
+    updateBalance();
+    hideLoadingIndicator();
 }
 
 function showNotEnoughCoinsModal(price, coinBalance) {
@@ -94,6 +101,7 @@ function showNotEnoughCoinsModal(price, coinBalance) {
 }
 
 async function updateShopDisplay() {
+    showLoadingIndicator();
     const userData = await getProgress(userId);
     let speedUpgradeLevel = Number (userData.speedUpgradeLevel);
     let speedUpgradePrice = Number (userData.speedUpgradePrice);
@@ -107,9 +115,11 @@ async function updateShopDisplay() {
     // Обновление уровня и цены улучшения энергии
     document.getElementById('energyUpgradeLevel').textContent = `Lvl ${energyUpgradeLevel}`;
     document.getElementById('energyUpgradePrice').textContent = energyUpgradePrice;
+    hideLoadingIndicator();
 }
 
 async function upgradeSpeed() {
+    showLoadingIndicator();
     const userData = await getProgress(userId);
     let speedUpgradePrice = Number (userData.speedUpgradePrice);
     let speedUpgradeLevel = Number (userData.speedUpgradeLevel);
@@ -117,9 +127,11 @@ async function upgradeSpeed() {
     speedUpgradePrice *= 3;
     await saveProgress(userId, { speedUpgradePrice, speedUpgradeLevel }); // Сохранение прогресса
     await updateShopDisplay();
+    hideLoadingIndicator();
 }
 
 async function upgradeEnergy() {
+    showLoadingIndicator();
     const userData = await getProgress(userId);
     let maxenerg = Number (userData.maxenerg);
     let energyUpgradeLevel = Number (userData.energyUpgradeLevel);
@@ -132,10 +144,12 @@ async function upgradeEnergy() {
     console.log('After upgrade:', { maxenerg, energyUpgradeLevel, energyUpgradePrice });
     await saveProgress(userId, { maxenerg, energyUpgradeLevel, energyUpgradePrice }); // Сохранение прогресса
     await updateShopDisplay();
-    updateEnergyBar(); // Обновляем отображение энергии после увеличения
+    updateEnergyBar(maxenerg); // Обновляем отображение энергии после увеличения
+    hideLoadingIndicator();
 }
 
 async function buyEgg(rarity, price) {
+    showLoadingIndicator();
     const userData = await getProgress(userId);
     const coinBalance = Number (userData.balance);
     if (coinBalance >= price) {
@@ -152,6 +166,20 @@ async function buyEgg(rarity, price) {
         }
     } else {
         showNotEnoughCoinsModal(price, coinBalance);
+    }
+    hideLoadingIndicator();
+}
+function showLoadingIndicator() {
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    if (loadingOverlay) {
+        loadingOverlay.style.display = 'flex';
+    }
+}
+
+function hideLoadingIndicator() {
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    if (loadingOverlay) {
+        loadingOverlay.style.display = 'none';
     }
 }
 
