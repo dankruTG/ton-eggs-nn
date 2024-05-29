@@ -127,6 +127,7 @@ async function upgradeSpeed() {
     speedUpgradePrice *= 3;
     await saveProgress(userId, { speedUpgradePrice, speedUpgradeLevel }); // Сохранение прогресса
     await updateShopDisplay();
+    await Telegram.WebApp.ready();
     hideLoadingIndicator();
 }
 
@@ -145,6 +146,7 @@ async function upgradeEnergy() {
     await saveProgress(userId, { maxenerg, energyUpgradeLevel, energyUpgradePrice }); // Сохранение прогресса
     await updateShopDisplay();
     updateEnergyBar(); // Обновляем отображение энергии после увеличения
+    await Telegram.WebApp.ready();
     hideLoadingIndicator();
 }
 
@@ -156,14 +158,14 @@ async function buyEgg(rarity, price) {
         const availableEggs = eggs.filter((egg) => egg.rarity === rarity);
         if (availableEggs.length > 0) {
             const randomIndex = Math.floor(Math.random() * availableEggs.length);
-            const selectedEgg = availableEggs[randomIndex];
+            const egg = availableEggs[randomIndex];
 
             // Добавить выбранное яйцо в инвентарь
-            await addEggToInventory(selectedEgg);
-            console.log(selectedEgg)
+            await addEggToInventory(egg);
+            console.log(egg)
 
             // Вычесть стоимость из баланса монет
-            updateCoinBalance(-price);
+            await updateCoinBalance(-price);
         }
     } else {
         showNotEnoughCoinsModal(price, coinBalance);
