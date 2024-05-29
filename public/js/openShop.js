@@ -159,7 +159,8 @@ async function buyEgg(rarity, price) {
             const selectedEgg = availableEggs[randomIndex];
 
             // Добавить выбранное яйцо в инвентарь
-            addEggToInventory(selectedEgg);
+            await addEggToInventory(selectedEgg);
+            console.log(selectedEgg)
 
             // Вычесть стоимость из баланса монет
             updateCoinBalance(-price);
