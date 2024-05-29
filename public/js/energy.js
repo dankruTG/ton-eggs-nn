@@ -25,7 +25,6 @@ export function decreaseEnergy() {
 }
 
 export function updateEnergyBar() {
-    let maxenerg = Number (getProgress.userId.maxenerg);
     const energyBar = document.getElementById('energyBar');
     if (energyBar) {
         energyBar.style.width = `${(curenerg / maxenerg) * 100}%`;
