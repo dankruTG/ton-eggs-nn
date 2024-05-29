@@ -16,8 +16,7 @@ getProgress(userId).then(savedProgress => {
         clickCount = savedProgress.clickCount || 0;
         restoreInventory();
         if (currentEgg) {
-            startDiggEgg(currentEgg, true);
-            showModal;
+            createClickArea(currentEgg);
         }
     }
 });
