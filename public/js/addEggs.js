@@ -1,9 +1,11 @@
 import { saveProgress, getProgress } from './firebase.js';
 import { decreaseEnergy } from './energy.js';
+import { showLoadingIndicator, hideLoadingIndicator } from './openShop.js';
 let eggContainerIdCounter = 1; // Инициализация счетчика
 let inventoryItems = {}; // Объект для хранения элементов инвентаря по id
 let clickCount = 0; // Счетчик кликов
 let currentEgg = null; // Текущее добываемое яйцо
+let speedUpgradeLevel = 0;
 
 // Восстановление данных из базы данных при загрузке
 Telegram.WebApp.ready();
@@ -94,8 +96,10 @@ function createEggContainer(eggData, eggContainerId = null) {
     return eggContainer;
 }
 
-function saveInventory() {
-    saveProgress(userId, { inventoryItems });
+async function saveInventory() {
+    showLoadingIndicator();
+    await saveProgress(userId, { inventoryItems });
+    hideLoadingIndicator();
 }
 
 // Функция, которая определяет цвет фона в зависимости от редкости яйца

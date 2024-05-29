@@ -169,14 +169,14 @@ async function buyEgg(rarity, price) {
     }
     hideLoadingIndicator();
 }
-function showLoadingIndicator() {
+export function showLoadingIndicator() {
     const loadingOverlay = document.getElementById('loadingOverlay');
     if (loadingOverlay) {
         loadingOverlay.style.display = 'flex';
     }
 }
 
-function hideLoadingIndicator() {
+export function hideLoadingIndicator() {
     const loadingOverlay = document.getElementById('loadingOverlay');
     if (loadingOverlay) {
         loadingOverlay.style.display = 'none';
