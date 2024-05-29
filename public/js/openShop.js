@@ -144,7 +144,7 @@ async function upgradeEnergy() {
     console.log('After upgrade:', { maxenerg, energyUpgradeLevel, energyUpgradePrice });
     await saveProgress(userId, { maxenerg, energyUpgradeLevel, energyUpgradePrice }); // Сохранение прогресса
     await updateShopDisplay();
-    updateEnergyBar(maxenerg); // Обновляем отображение энергии после увеличения
+    updateEnergyBar(); // Обновляем отображение энергии после увеличения
     hideLoadingIndicator();
 }
 

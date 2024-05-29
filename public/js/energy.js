@@ -24,15 +24,16 @@ export function decreaseEnergy() {
     }
 }
 
-export function updateEnergyBar(maxenerg) {
+export function updateEnergyBar() {
+    let maxenerg = Number (getProgress.userId.maxenerg);
     const energyBar = document.getElementById('energyBar');
     if (energyBar) {
-        energyBar.style.width = `${(curenerg /Number (maxenerg)) * 100}%`;
+        energyBar.style.width = `${(curenerg / maxenerg) * 100}%`;
     }
     
     const energyText = document.getElementById('energyText');
     if (energyText) {
-        energyText.textContent = `${curenerg}/${Number (maxenerg)}`;
+        energyText.textContent = `${curenerg}/${maxenerg}`;
     }
 
     if (curenerg > 0) {
