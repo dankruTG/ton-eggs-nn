@@ -55,11 +55,7 @@ export function giveEggs() {
             // Выбор случайного яйца из списка commonEggs
             const randomIndex = Math.floor(Math.random() * commonEggs.length);
             const selectedEgg = commonEggs[randomIndex];
-            
-            // Создание контейнера для выбранного яйца и добавление его в инвентарь
-            const eggContainer = createEggContainer(selectedEgg);
-            inventoryContainer.appendChild(eggContainer);
-            saveInventory(); // Сохранение инвентаря после добавления яйца
+            addEggToInventory(selectedEgg);
         } else {
             console.log('Нет яиц категории Common');
         }
