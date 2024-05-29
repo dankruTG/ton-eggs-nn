@@ -27,8 +27,11 @@ getProgress(userId).then(savedProgress => {
 
 async function restoreInventory() {
     showLoadingIndicator();
+    const userData = await getProgress(userId);
+    const inventoryItems = userData.inventoryItems || {};
     const inventoryContainer = document.getElementById('inventoryItemsContainer');
     if (inventoryContainer) {
+        inventoryContainer.innerHTML = ''; // Очистить контейнер перед восстановлением
         for (const eggId in inventoryItems) {
             const eggData = inventoryItems[eggId];
             const eggContainer = createEggContainer(eggData, eggId);
@@ -41,12 +44,12 @@ async function restoreInventory() {
 // Функция для добавления яйца в инвентарь
 export async function addEggToInventory(egg) {
     showLoadingIndicator();
-    const inventoryContainer = document.getElementById('inventoryItemsContainer');
-    if (inventoryContainer) {
-        const eggContainer = createEggContainer(egg);
-        inventoryContainer.appendChild(eggContainer);
-        await saveInventory(); // Сохранение инвентаря после добавления яйца
-    }
+    const userData = await getProgress(userId);
+    const inventoryItems = userData.inventoryItems || {};
+    const eggContainerId = `${Object.keys(inventoryItems).length + 1}`;
+    inventoryItems[eggContainerId] = egg; // Добавить новое яйцо в инвентарь
+
+    await saveInventory(inventoryItems); // Сохранить обновленный инвентарь
     hideLoadingIndicator();
 }
 
@@ -100,10 +103,10 @@ function createEggContainer(eggData, eggContainerId = null) {
     return eggContainer;
 }
 
-async function saveInventory() {
+async function saveInventory(inventoryItems) {
     showLoadingIndicator();
     await saveProgress(userId, { inventoryItems });
-    await restoreInventory();
+    await restoreInventory(); // Восстановить инвентарь из базы данных
     hideLoadingIndicator();
 }
 
@@ -206,7 +209,7 @@ function openEggInfoModal(eggData, eggContainerId) {
 
 async function startDiggEggByName(eggName, eggContainerId) {
     const eggData = eggs.find((egg) => egg.name === eggName);
-    showLoadingIndicator();
+    
 
     // Проверяем, есть ли уже активное яйцо для клика
     if (currentEgg) {
@@ -222,6 +225,7 @@ async function startDiggEggByName(eggName, eggContainerId) {
             modal.style.display = 'none';
         }
         closeInventory();
+        showLoadingIndicator();
 
         // Удаляем новое яйцо из инвентаря
         await removeEggFromInventory(eggContainerId);
@@ -240,12 +244,13 @@ async function startDiggEggByName(eggName, eggContainerId) {
 
 async function removeEggFromInventory(eggContainerId) {
     showLoadingIndicator();
+    const userData = await getProgress(userId);
+    let inventoryItems = userData.inventoryItems || {};
     const eggContainer = document.getElementById(eggContainerId);
     if (eggContainer) {
         eggContainer.remove();
         delete inventoryItems[eggContainerId];
-        await saveInventory();
-        await restoreInventory();
+        await saveInventory(inventoryItems);
     }
     hideLoadingIndicator();
 }
