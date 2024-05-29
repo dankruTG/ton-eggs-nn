@@ -27,12 +27,12 @@ export function decreaseEnergy() {
 export function updateEnergyBar(maxenerg) {
     const energyBar = document.getElementById('energyBar');
     if (energyBar) {
-        energyBar.style.width = `${(curenerg / maxenerg) * 100}%`;
+        energyBar.style.width = `${(curenerg /Number (maxenerg)) * 100}%`;
     }
     
     const energyText = document.getElementById('energyText');
     if (energyText) {
-        energyText.textContent = `${curenerg}/${maxenerg}`;
+        energyText.textContent = `${curenerg}/${Number (maxenerg)}`;
     }
 
     if (curenerg > 0) {
