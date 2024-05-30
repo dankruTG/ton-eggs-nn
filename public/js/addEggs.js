@@ -396,6 +396,7 @@ async function finishDiggEgg(eggData) {
             coinsDropped = 0; // По умолчанию
             break;
     }
+    
 
     console.log('Coins dropped:', coinsDropped);
     console.log('Egg dropped:', eggDropped);
@@ -481,11 +482,7 @@ async function finishDiggEgg(eggData) {
         // Возвращаем объект с информацией о дропе (монеты и яйцо)
         return { coinsDropped, eggDropped };
     }
-    hideLoadingIndicator();
-
-    // Возвращаем только информацию о монетах, если что-то не найдено
-    return coinsDropped;
-    
+    hideLoadingIndicator();    
 }
 
 function getRandomEggByRarity(rarity) {

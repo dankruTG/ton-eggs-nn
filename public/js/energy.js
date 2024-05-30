@@ -1,4 +1,6 @@
 import { saveProgress, getProgress } from './firebase.js';
+import { hideLoadingIndicator, showLoadingIndicator } from './openShop.js';
+
 
 let curenerg = 100; // Начальная энергия
 let maxenerg = 100; // Максимальная энергия
@@ -8,7 +10,8 @@ let restoreRate = 1;
 // Восстановление энергии из базы данных при загрузке
 Telegram.WebApp.ready();
 const userId = Telegram.WebApp.initDataUnsafe.user.id;
-getProgress(userId).then(savedProgress => {
+showLoadingIndicator();
+await getProgress(userId).then(savedProgress => {
     if (savedProgress) {
         curenerg = savedProgress.curenerg || 100;
         maxenerg = savedProgress.maxenerg || 100;
@@ -23,6 +26,7 @@ getProgress(userId).then(savedProgress => {
         saveProgress(userId, { curenerg, lastEnergyUpdate: now });
     }
 });
+hideLoadingIndicator();
 
 export function decreaseEnergy() {
     curenerg--;
