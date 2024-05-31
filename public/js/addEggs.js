@@ -1,6 +1,7 @@
 import { saveProgress, getProgress } from './firebase.js';
 import { decreaseEnergy } from './energy.js';
 import { showLoadingIndicator, hideLoadingIndicator } from './openShop.js';
+import { closeInventory } from './inventory.js';
 let eggContainerIdCounter = 1; // Инициализация счетчика
 let inventoryItems = {}; // Объект для хранения элементов инвентаря по id
 let clickCount = 0; // Счетчик кликов
@@ -41,17 +42,28 @@ async function restoreInventory() {
     hideLoadingIndicator();
 }
 
+
 // Функция для добавления яйца в инвентарь
 export async function addEggToInventory(egg) {
     showLoadingIndicator();
     const userData = await getProgress(userId);
     const inventoryItems = userData.inventoryItems || {};
-    const eggContainerId = `${Object.keys(inventoryItems).length + 1}`;
+    
+    // Генерация уникального идентификатора для нового яйца
+    const eggContainerId = `egg_${Date.now()}`;
     inventoryItems[eggContainerId] = egg; // Добавить новое яйцо в инвентарь
 
-    await saveInventory(inventoryItems); // Сохранить обновленный инвентарь
+    await saveProgress(userId, { inventoryItems }); // Сохранить обновленный инвентарь
+
+    // Обновление UI
+    const inventoryContainer = document.getElementById('inventoryItemsContainer');
+    if (inventoryContainer) {
+        const eggContainer = createEggContainer(egg, eggContainerId);
+        inventoryContainer.appendChild(eggContainer);
+    }
     hideLoadingIndicator();
 }
+
 
 export function giveEggs() {
     const inventoryContainer = document.getElementById('inventoryItemsContainer');
@@ -209,17 +221,14 @@ function openEggInfoModal(eggData, eggContainerId) {
 
 async function startDiggEggByName(eggName, eggContainerId) {
     const eggData = eggs.find((egg) => egg.name === eggName);
-    
 
     // Проверяем, есть ли уже активное яйцо для клика
     if (currentEgg) {
-        // Показываем модальное окно, что уже идет добыча другого яйца
         showModal('Вы уже DIGG другое EGG. Завершите его сначала!');
         return;
     }
 
     if (eggData) {
-        // Закрываем модальное окно с информацией о яйце
         const modal = document.getElementById('eggInfoModal');
         if (modal) {
             modal.style.display = 'none';
@@ -233,8 +242,8 @@ async function startDiggEggByName(eggName, eggContainerId) {
         // Начинаем добычу нового яйца
         startDiggEgg(eggData);
         currentEgg = eggData;
-        await saveProgress(userId, { currentEgg, clickCount }); // Сохранение прогресса
-        await changeBackgroundByRarity(eggData.rarity)
+        await saveProgress(userId, { currentEgg, clickCount });
+        changeBackgroundByRarity(eggData.rarity);
     } else {
         console.log('Яйцо не найдено в инвентаре');
     }
@@ -242,18 +251,25 @@ async function startDiggEggByName(eggName, eggContainerId) {
 }
 
 
+
 async function removeEggFromInventory(eggContainerId) {
     showLoadingIndicator();
     const userData = await getProgress(userId);
     let inventoryItems = userData.inventoryItems || {};
-    const eggContainer = document.getElementById(eggContainerId);
-    if (eggContainer) {
-        eggContainer.remove();
+    
+    if (inventoryItems[eggContainerId]) {
         delete inventoryItems[eggContainerId];
-        await saveInventory(inventoryItems);
+        await saveProgress(userId, { inventoryItems });
+        
+        // Удаление из UI
+        const eggContainer = document.getElementById(eggContainerId);
+        if (eggContainer) {
+            eggContainer.remove();
+        }
     }
     hideLoadingIndicator();
 }
+
 
 function showModal(message) {
     const modal = document.getElementById('notificationModal');
@@ -373,9 +389,10 @@ async function finishDiggEgg(eggData) {
 
     let clickCountText = 'Начни добывать любое яйцо';
     updateClickCounter(clickCountText);
-    await changeBackgroundByRarity(eggData.rarity);
+    changeBackgroundByRarity(eggData.rarity);
+    const rarity = eggData.rarity;
 
-    switch (eggData.rarity) {
+    switch (rarity) {
         case 'Common':
             coinsDropped = getRandomInt(10, 100);
             eggDropped = getRandomEggByRarity('Common');
@@ -419,8 +436,7 @@ async function finishDiggEgg(eggData) {
 
         // Обновление баланса монет
         const newBalance = currentBalance + coinsDropped;
-        const balance = Number(newBalance);
-        await saveProgress(userId, { balance });
+        await saveProgress(userId, { balance: newBalance });
         console.log('Coins balance saved:', balance);
         eggImageElement.style.verticalAlign = 'middle';
 
@@ -480,7 +496,6 @@ async function finishDiggEgg(eggData) {
         await addEggToInventory(eggDropped);
 
         // Возвращаем объект с информацией о дропе (монеты и яйцо)
-        return { coinsDropped, eggDropped };
     }
     hideLoadingIndicator();    
 }
@@ -518,7 +533,7 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-async function changeBackgroundByRarity(rarity) {
+function changeBackgroundByRarity(rarity) {
     showLoadingIndicator();
     const bodyElement = document.body;
     // Проверяем значение eggAddedForDigg
