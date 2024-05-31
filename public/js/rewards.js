@@ -89,13 +89,15 @@ function openNotCompleteModal() {
     });
 }
 
-function createTaskElement(task) {
+async function createTaskElement(task) {
     const taskElement = document.createElement('div');
     taskElement.classList.add('task');
 
     const description = document.createElement('p');
     description.textContent = task.description;
     taskElement.appendChild(description);
+    const userData = await getProgress(userId);
+    let completedTasks = userData.completedTasks;
 
     if (completedTasks.includes(task.id)) {
         const doneText = document.createElement('span');
