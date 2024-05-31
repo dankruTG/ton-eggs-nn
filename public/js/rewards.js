@@ -49,7 +49,7 @@ async function checkWalletAndClaim() {
 
         if (userProgress.walletStatus === 'Done!') {
             giveEggs();
-            let completedTasks = userProgress.completedTasks;
+            let completedTasks = userProgress.completedTasks || [];
             if (!completedTasks.includes(1)) {
                 completedTasks.push(1);
                 await saveProgress(userId, { completedTasks });
@@ -62,6 +62,7 @@ async function checkWalletAndClaim() {
         console.error('Error checking wallet status:', error);
     }
 }
+
 
 function openNotCompleteModal() {
     const notCompleteModal = document.createElement('div');
