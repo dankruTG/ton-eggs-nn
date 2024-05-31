@@ -30,6 +30,7 @@ const tasks = [
         action: checkWalletAndClaim
     }
 ];
+
 export async function handleWalletConnection(userId, walletAddress) {
     try {
         await saveProgress(userId, { walletStatus: 'Done!', walletAddress });
@@ -38,7 +39,9 @@ export async function handleWalletConnection(userId, walletAddress) {
         console.error('Error saving wallet address:', error);
     }
 }
+
 window.handleWalletConnection = handleWalletConnection;
+
 async function checkWalletAndClaim() {
     try {
         const userId = Telegram.WebApp.initDataUnsafe.user.id;
@@ -46,9 +49,11 @@ async function checkWalletAndClaim() {
 
         if (userProgress.walletStatus === 'Done!') {
             giveEggs();
-            completedTasks.push(1);
-            await saveProgress(userId, { completedTasks });
-            updateTasksDisplay();
+            if (!completedTasks.includes(1)) {
+                completedTasks.push(1);
+                await saveProgress(userId, { completedTasks });
+                updateTasksDisplay();
+            }
         } else {
             openNotCompleteModal();
         }
@@ -113,10 +118,8 @@ function updateTasksDisplay() {
     taskContainer.innerHTML = '';
 
     tasks.forEach(task => {
-        if (!completedTasks.includes(task.id)) {
-            const taskElement = createTaskElement(task);
-            taskContainer.appendChild(taskElement);
-        }
+        const taskElement = createTaskElement(task);
+        taskContainer.appendChild(taskElement);
     });
 }
 
