@@ -537,13 +537,16 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function changeBackgroundByRarity(rarity) {
+async function changeBackgroundByRarity(rarity) {
     showLoadingIndicator();
     const bodyElement = document.body;
+    const userData = await getProgress(userId);
+
     // Проверяем значение eggAddedForDigg
+    let currentEgg = userData.currentEgg;
     if (!currentEgg) {
         // Если currentEgg равно null, устанавливаем фон по умолчанию
-        bodyElement.style.backgroundImage = `url('public/images/Backgrounds/DefBackground.png')`;
+        bodyElement.style.backgroundImage = "url('public/images/Backgrounds/DefBackground.png')";
     } else {
         // Если currentEgg не равно null, устанавливаем фон в зависимости от редкости
         let backgroundImagePath;
