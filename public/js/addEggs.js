@@ -242,7 +242,6 @@ async function startDiggEggByName(eggName, eggContainerId) {
         startDiggEgg(eggData);
         currentEgg = eggData;
         await saveProgress(userId, { currentEgg, clickCount });
-        changeBackgroundByRarity(eggData.rarity);
     } else {
         console.log('Яйцо не найдено в инвентаре');
     }
@@ -307,6 +306,7 @@ function startDiggEgg(eggData, isRestoring = false) {
 
 
 function createClickArea(eggData) {
+    changeBackgroundByRarity(eggData.rarity);
     const clickArea = document.createElement('div');
     clickArea.id = 'clickArea';
     clickArea.style.width = '200px';
@@ -325,11 +325,13 @@ function createClickArea(eggData) {
     eggImage.style.objectFit = 'contain';
     clickArea.appendChild(eggImage);
 
-    let initialClickCount = eggData.strength;
-    let currentClickCount = initialClickCount - clickCount;
-    let clickValue = speedUpgradeLevel;
+    
 
     clickArea.addEventListener('click', async () => {
+        let initialClickCount = eggData.strength;
+        await getProgress(userId, { clickCount, speedUpgradeLevel });
+        let currentClickCount = initialClickCount - clickCount;
+        let clickValue = speedUpgradeLevel;
         if (currentClickCount > 0) {
             currentClickCount -= clickValue;
             clickCount = initialClickCount - currentClickCount;
@@ -363,16 +365,18 @@ function createClickArea(eggData) {
             setTimeout(() => {
                 damageElement.remove();
             }, 1000);
-
-            if (currentClickCount <= 0) {
-                finishDiggEgg(eggData);
-            }
-
             setTimeout(() => {
                 eggImage.style.transform = 'scale(1)';
             }, 100);
+        };
+
+        if (currentClickCount <= 0) {
+            await finishDiggEgg(eggData);
         }
-    });
+
+            
+        }
+    );
 
     document.body.appendChild(clickArea);
     updateClickCounter(currentClickCount);
