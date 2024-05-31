@@ -436,7 +436,7 @@ async function finishDiggEgg(eggData) {
         // Обновление баланса монет
         const newBalance = currentBalance + coinsDropped;
         await saveProgress(userId, { balance: newBalance });
-        console.log('Coins balance saved:', balance);
+        console.log('Coins balance saved:', newBalance);
         eggImageElement.style.verticalAlign = 'middle';
 
         // Отображение выпавших монет
