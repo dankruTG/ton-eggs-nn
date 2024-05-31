@@ -48,11 +48,13 @@ async function checkWalletAndClaim() {
         const userProgress = await getProgress(userId);
 
         if (userProgress.walletStatus === 'Done!') {
-            giveEggs();
             if (!completedTasks.includes(1)) {
+                giveEggs();
                 completedTasks.push(1);
                 await saveProgress(userId, { completedTasks });
                 updateTasksDisplay();
+            } else {
+                console.log('Task already completed');
             }
         } else {
             openNotCompleteModal();
@@ -88,7 +90,7 @@ function openNotCompleteModal() {
     });
 }
 
-async function createTaskElement(task) {
+function createTaskElement(task) {
     const taskElement = document.createElement('div');
     taskElement.classList.add('task');
 
@@ -111,18 +113,18 @@ async function createTaskElement(task) {
     return taskElement;
 }
 
-async function updateTasksDisplay() {
+function updateTasksDisplay() {
     const taskContainer = document.getElementById('taskContainer');
     if (!taskContainer) return;
 
     taskContainer.innerHTML = '';
 
-    for (const task of tasks) {
+    tasks.forEach(task => {
         if (!completedTasks.includes(task.id)) {
-            const taskElement = await createTaskElement(task);
+            const taskElement = createTaskElement(task);
             taskContainer.appendChild(taskElement);
         }
-    }
+    });
 }
 
 async function openRewardsModal() {
@@ -165,7 +167,7 @@ async function openRewardsModal() {
         const userProgress = await getProgress(Telegram.WebApp.initDataUnsafe.user.id);
         completedTasks = userProgress.completedTasks || [];
 
-        await updateTasksDisplay();
+        updateTasksDisplay();
     } catch (error) {
         console.error('Error in openRewardsModal:', error);
     }
