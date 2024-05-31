@@ -49,7 +49,6 @@ async function checkWalletAndClaim() {
 
         if (userProgress.walletStatus === 'Done!') {
             giveEggs();
-            let completedTasks = userProgress.completedTasks || [];
             if (!completedTasks.includes(1)) {
                 completedTasks.push(1);
                 await saveProgress(userId, { completedTasks });
@@ -62,7 +61,6 @@ async function checkWalletAndClaim() {
         console.error('Error checking wallet status:', error);
     }
 }
-
 
 function openNotCompleteModal() {
     const notCompleteModal = document.createElement('div');
@@ -97,8 +95,6 @@ async function createTaskElement(task) {
     const description = document.createElement('p');
     description.textContent = task.description;
     taskElement.appendChild(description);
-    const userData = await getProgress(userId);
-    let completedTasks = userData.completedTasks;
 
     if (completedTasks.includes(task.id)) {
         const doneText = document.createElement('span');
@@ -115,16 +111,18 @@ async function createTaskElement(task) {
     return taskElement;
 }
 
-function updateTasksDisplay() {
+async function updateTasksDisplay() {
     const taskContainer = document.getElementById('taskContainer');
     if (!taskContainer) return;
 
     taskContainer.innerHTML = '';
 
-    tasks.forEach(task => {
-        const taskElement = createTaskElement(task);
-        taskContainer.appendChild(taskElement);
-    });
+    for (const task of tasks) {
+        if (!completedTasks.includes(task.id)) {
+            const taskElement = await createTaskElement(task);
+            taskContainer.appendChild(taskElement);
+        }
+    }
 }
 
 async function openRewardsModal() {
@@ -159,8 +157,6 @@ async function openRewardsModal() {
             closeButton.addEventListener('click', () => {
                 rewardsModal.style.display = 'none';
             });
-            createTaskElement();
-            updateTasksDisplay();
         } else {
             rewardsModal.style.display = 'block';
         }
@@ -169,7 +165,7 @@ async function openRewardsModal() {
         const userProgress = await getProgress(Telegram.WebApp.initDataUnsafe.user.id);
         completedTasks = userProgress.completedTasks || [];
 
-        updateTasksDisplay();
+        await updateTasksDisplay();
     } catch (error) {
         console.error('Error in openRewardsModal:', error);
     }
