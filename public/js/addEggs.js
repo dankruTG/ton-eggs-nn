@@ -233,6 +233,7 @@ async function startDiggEggByName(eggName, eggContainerId) {
             modal.style.display = 'none';
         }
         showLoadingIndicator();
+        closeInventory();
 
         // Удаляем новое яйцо из инвентаря
         await removeEggFromInventory(eggContainerId);
@@ -379,7 +380,7 @@ function createClickArea(eggData) {
     );
 
     document.body.appendChild(clickArea);
-    updateClickCounter(currentClickCount);
+    
 }
 
 async function finishDiggEgg(eggData) {
