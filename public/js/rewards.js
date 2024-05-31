@@ -159,6 +159,7 @@ async function openRewardsModal() {
             closeButton.addEventListener('click', () => {
                 rewardsModal.style.display = 'none';
             });
+            createTaskElement();
             updateTasksDisplay();
         } else {
             rewardsModal.style.display = 'block';
