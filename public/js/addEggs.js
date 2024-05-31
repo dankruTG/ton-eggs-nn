@@ -1,7 +1,6 @@
 import { saveProgress, getProgress } from './firebase.js';
 import { decreaseEnergy } from './energy.js';
 import { showLoadingIndicator, hideLoadingIndicator } from './openShop.js';
-import { closeInventory } from './inventory.js';
 let eggContainerIdCounter = 1; // Инициализация счетчика
 let inventoryItems = {}; // Объект для хранения элементов инвентаря по id
 let clickCount = 0; // Счетчик кликов
