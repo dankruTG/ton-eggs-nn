@@ -72,6 +72,15 @@ async function openRewardsModal() {
 
     updateTasksDisplay(completedTasks);
 }
+export async function handleWalletConnection(userId, walletAddress) {
+    try {
+        await saveProgress(userId, { walletStatus: 'Done!', walletAddress });
+        console.log('Wallet address saved:', walletAddress);
+    } catch (error) {
+        console.error('Error saving wallet address:', error);
+    }
+}
+
 
 // Обновление отображения заданий
 function updateTasksDisplay(completedTasks) {
@@ -115,7 +124,7 @@ async function checkWalletAndClaim() {
 
     if (userProgress.walletStatus === 'Done!') {
         giveEggs();
-        completeTask(1);
+        await completeTask(1);
     } else {
         openNotCompleteModal();
     }
