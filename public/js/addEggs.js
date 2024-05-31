@@ -232,7 +232,6 @@ async function startDiggEggByName(eggName, eggContainerId) {
         if (modal) {
             modal.style.display = 'none';
         }
-        closeInventory();
         showLoadingIndicator();
 
         // Удаляем новое яйцо из инвентаря
@@ -240,8 +239,7 @@ async function startDiggEggByName(eggName, eggContainerId) {
 
         // Начинаем добычу нового яйца
         startDiggEgg(eggData);
-        currentEgg = eggData;
-        await saveProgress(userId, { currentEgg, clickCount });
+        await saveProgress(userId, { currentEgg: eggData, clickCount: 0 });
     } else {
         console.log('Яйцо не найдено в инвентаре');
     }
@@ -324,6 +322,8 @@ function createClickArea(eggData) {
     eggImage.style.height = '100%';
     eggImage.style.objectFit = 'contain';
     clickArea.appendChild(eggImage);
+    let stl = eggData.strength;
+    updateClickCounter(stl);
 
     
 
