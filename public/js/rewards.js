@@ -124,7 +124,8 @@ async function checkWalletAndClaim() {
 
     if (userProgress.walletStatus === 'Done!') {
         giveEggs();
-        await completeTask(1);
+        let taskId = 1;
+        await completeTask(Number (taskId));
     } else {
         openNotCompleteModal();
     }
@@ -134,8 +135,8 @@ async function checkWalletAndClaim() {
 // Обновление состояния выполнения задания в базе данных
 async function completeTask(taskId) {
     const userId = Telegram.WebApp.initDataUnsafe.user.id;
-    if (!completedTasks.includes(taskId)) {
-        completedTasks.push(taskId);
+    if (!completedTasks.includes(Number (taskId))) {
+        completedTasks.push(Number (taskId));
         showLoadingIndicator();
         await saveProgress(userId, { completedTasks });
         updateTasksDisplay(completedTasks);
