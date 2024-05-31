@@ -49,6 +49,7 @@ async function checkWalletAndClaim() {
 
         if (userProgress.walletStatus === 'Done!') {
             giveEggs();
+            let completedTasks = userProgress.completedTasks;
             if (!completedTasks.includes(1)) {
                 completedTasks.push(1);
                 await saveProgress(userId, { completedTasks });
