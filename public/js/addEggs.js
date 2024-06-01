@@ -396,25 +396,27 @@ async function finishDiggEgg(eggData) {
     changeBackgroundByRarity(eggData.rarity);
     const rarity = eggData.rarity;
 
-    switch (eggData.rarity) {
+    switch (rarity) {
         case 'Common':
             coinsDropped = getRandomInt(10, 100);
+            eggDropped = getRandomEggByRarity('Common');
             break;
         case 'Uncommon':
             coinsDropped = getRandomInt(350, 650);
+            eggDropped = getRandomEggByRarity('Uncommon');
             break;
         case 'Rare':
             coinsDropped = getRandomInt(700, 1300);
+            eggDropped = getRandomEggByRarity('Rare');
             break;
         case 'Secret':
             coinsDropped = getRandomInt(1800, 3000);
+            eggDropped = getRandomEggByRarity('Secret');
             break;
         default:
             coinsDropped = 0; // По умолчанию
             break;
     }
-
-    eggDropped = getRandomEggByRarity(eggData.rarity);
     
 
     console.log('Coins dropped:', coinsDropped);
