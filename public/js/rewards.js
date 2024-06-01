@@ -75,24 +75,27 @@ async function openRewardsModal() {
     } else {
         rewardsModal.style.display = 'block';
     }
-    hideLoadingIndicator();
+    
 
-    updateTasksDisplay();
+    await updateTasksDisplay();
+    hideLoadingIndicator();
 }
 
 // Обновление отображения заданий
-function updateTasksDisplay() {
+async function updateTasksDisplay() {
     const taskContainer = document.getElementById('taskContainer');
     if (!taskContainer) return;
 
     taskContainer.innerHTML = '';
-
+    showLoadingIndicator();
+    completedTasks = await getProgress(userId.completedTasks);
     tasks.forEach(task => {
         if (!completedTasks.includes(task.id)) {
             const taskElement = createTaskElement(task);
             taskContainer.appendChild(taskElement);
         }
     });
+    hideLoadingIndicator();
 }
 
 // Создание элемента задания
@@ -139,9 +142,39 @@ async function completeTask(taskId) {
         await saveProgress(userId, { completedTasks });
         updateTasksDisplay();
         hideLoadingIndicator();
+        openRewardModal();
     }
 }
+function openRewardModal() {
+    const rewardModal = document.createElement('div');
+    rewardModal.classList.add('modal');
+    rewardModal.style.display = 'block';
+    rewardModal.style.zIndex = '9999999999';
+    rewardModal.style.backgroundColor = 'white';
 
+    const modalContent = document.createElement('div');
+    modalContent.classList.add('modal-content');
+    rewardModal.appendChild(modalContent);
+
+    const closeButton = document.createElement('span');
+    closeButton.classList.add('close');
+    closeButton.textContent = '×';
+    modalContent.appendChild(closeButton);
+
+    const rewardImage = document.createElement('img');
+    rewardImage.src = 'public/images/bronze_egg.png';
+    rewardImage.alt = 'Bronze Egg';
+    rewardImage.style.width = '200px';
+    rewardImage.style.animation = 'shake 0.5s';
+    rewardImage.style.animationIterationCount = 'infinite';
+    modalContent.appendChild(rewardImage);
+
+    document.body.appendChild(rewardModal);
+
+    closeButton.addEventListener('click', () => {
+        rewardModal.style.display = 'none';
+    });
+}
 // Показ модального окна о невыполненном задании
 function openNotCompleteModal() {
     const notCompleteModal = document.createElement('div');
@@ -181,3 +214,22 @@ document.addEventListener('DOMContentLoaded', () => {
 window.openRewardsModal = openRewardsModal;
 window.completeTask = completeTask;
 window.checkWalletAndClaim = checkWalletAndClaim;
+
+// CSS анимация для тряски изображения
+const style = document.createElement('style');
+style.innerHTML = `
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+`;
+document.head.appendChild(style);
