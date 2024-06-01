@@ -77,25 +77,22 @@ async function openRewardsModal() {
     }
     
 
-    await updateTasksDisplay();
+    updateTasksDisplay(completedTasks);
     hideLoadingIndicator();
 }
 
 // Обновление отображения заданий
-async function updateTasksDisplay() {
+function updateTasksDisplay(completedTasks) {
     const taskContainer = document.getElementById('taskContainer');
     if (!taskContainer) return;
 
     taskContainer.innerHTML = '';
-    showLoadingIndicator();
-    const completedTasks = await getProgress(userId.completedTasks);
     tasks.forEach(task => {
         if (!completedTasks.includes(task.id)) {
             const taskElement = createTaskElement(task);
             taskContainer.appendChild(taskElement);
         }
     });
-    hideLoadingIndicator();
 }
 
 // Создание элемента задания
@@ -140,7 +137,7 @@ async function completeTask(taskId) {
     if (!completedTasks.includes(taskId)) {
         completedTasks.push(taskId);
         await saveProgress(userId, { completedTasks });
-        updateTasksDisplay();
+        updateTasksDisplay(completedTasks);
         hideLoadingIndicator();
         openRewardModal();
     }
