@@ -159,7 +159,7 @@ function openRewardModal() {
     modalContent.appendChild(closeButton);
 
     const rewardImage = document.createElement('img');
-    rewardImage.src = 'public/images/bronze_egg.png';
+    rewardImage.src = 'public/images/commonEggs/bronzeEgg.png';
     rewardImage.alt = 'Bronze Egg';
     rewardImage.style.width = '200px';
     rewardImage.style.animation = 'shake 0.5s';
