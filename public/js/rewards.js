@@ -145,17 +145,13 @@ async function completeTask(taskId) {
 function openRewardModal() {
     const rewardModal = document.createElement('div');
     rewardModal.classList.add('modal');
-    const description = document.createElement('h2');
-    description.textContent = 'Твоя награда!';
-    description.appendChild(description);
     rewardModal.style.display = 'block';
     rewardModal.style.zIndex = '9999999999';
-    rewardModal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    rewardModal.style.backgroundColor = 'white';
 
     const modalContent = document.createElement('div');
     modalContent.classList.add('modal-content');
     rewardModal.appendChild(modalContent);
-    modalContent.style.backgroundColor = 'white'
 
     const closeButton = document.createElement('span');
     closeButton.classList.add('close');
