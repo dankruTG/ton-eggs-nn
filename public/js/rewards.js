@@ -26,10 +26,17 @@ const tasks = [
     }
     // Можно добавить больше заданий сюда
 ];
+export async function handleWalletConnection(userId, walletAddress) {
+    try {
+        await saveProgress(userId, { walletStatus: 'Done!', walletAddress });
+        console.log('Wallet address saved:', walletAddress);
+    } catch (error) {
+        console.error('Error saving wallet address:', error);
+    }
+}
 
 // Открытие модального окна с заданиями
 async function openRewardsModal() {
-    const userId = Telegram.WebApp.initDataUnsafe.user.id;
     showLoadingIndicator();
     const userProgress = await getProgress(userId);
     completedTasks = userProgress.completedTasks || [];
@@ -70,20 +77,11 @@ async function openRewardsModal() {
     }
     hideLoadingIndicator();
 
-    updateTasksDisplay(completedTasks);
+    updateTasksDisplay();
 }
-export async function handleWalletConnection(userId, walletAddress) {
-    try {
-        await saveProgress(userId, { walletStatus: 'Done!', walletAddress });
-        console.log('Wallet address saved:', walletAddress);
-    } catch (error) {
-        console.error('Error saving wallet address:', error);
-    }
-}
-
 
 // Обновление отображения заданий
-function updateTasksDisplay(completedTasks) {
+function updateTasksDisplay() {
     const taskContainer = document.getElementById('taskContainer');
     if (!taskContainer) return;
 
@@ -109,37 +107,37 @@ function createTaskElement(task) {
     const claimButton = document.createElement('button');
     claimButton.classList.add('claim-button');
     claimButton.textContent = 'Claim';
-    claimButton.onclick = task.checkFunction;
+    claimButton.onclick = () => task.checkFunction(task.id);
     taskElement.appendChild(claimButton);
 
     return taskElement;
 }
 
 // Проверка выполнения задания
-async function checkWalletAndClaim() {
+async function checkWalletAndClaim(taskId) {
     showLoadingIndicator();
-    const userId = Telegram.WebApp.initDataUnsafe.user.id;
     const userProgress = await getProgress(userId);
     hideLoadingIndicator();
 
     if (userProgress.walletStatus === 'Done!') {
         giveEggs();
-        let taskId = 1;
-        await completeTask(Number (taskId));
+        completeTask(taskId);
     } else {
         openNotCompleteModal();
     }
-
 }
 
 // Обновление состояния выполнения задания в базе данных
 async function completeTask(taskId) {
     const userId = Telegram.WebApp.initDataUnsafe.user.id;
-    if (!completedTasks.includes(Number (taskId))) {
-        completedTasks.push(Number (taskId));
-        showLoadingIndicator();
+    showLoadingIndicator();
+    const userProgress = await getProgress(userId);
+    let completedTasks = userProgress.completedTasks || [];
+
+    if (!completedTasks.includes(taskId)) {
+        completedTasks.push(taskId);
         await saveProgress(userId, { completedTasks });
-        updateTasksDisplay(completedTasks);
+        updateTasksDisplay();
         hideLoadingIndicator();
     }
 }
@@ -182,3 +180,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.openRewardsModal = openRewardsModal;
 window.completeTask = completeTask;
+window.checkWalletAndClaim = checkWalletAndClaim;
