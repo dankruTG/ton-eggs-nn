@@ -2,7 +2,8 @@ import { saveProgress, getProgress } from './firebase.js';
 import { hideLoadingIndicator, showLoadingIndicator } from './openShop.js';
 
 
-
+let curenerg = 100; // Начальная энергия
+let maxenerg = 100; // Максимальная энергия
 let restoreEnergySpeed = 3000;
 let restoreRate = 1;
 
@@ -12,8 +13,8 @@ const userId = Telegram.WebApp.initDataUnsafe.user.id;
 showLoadingIndicator();
 await getProgress(userId).then(savedProgress => {
     if (savedProgress) {
-        let curenerg = savedProgress.curenerg || 100;
-        let maxenerg = savedProgress.maxenerg || 100;
+        curenerg = savedProgress.curenerg || 100;
+        maxenerg = savedProgress.maxenerg || 100;
         const lastUpdate = savedProgress.lastEnergyUpdate || Date.now();
         const now = Date.now();
         const elapsedTime = now - lastUpdate;
@@ -81,12 +82,6 @@ function enableClick() {
     }
 }
 
-function updateClickCounter(clickCount) {
-    const clickCounterElement = document.getElementById('clickCounter');
-    if (clickCounterElement) {
-        clickCounterElement.textContent = `${clickCount}`;
-    }
-}
 export async function updateBalance() {
     const userData = await getProgress(userId);
     const balanceElement = document.getElementById('coinBalance');
