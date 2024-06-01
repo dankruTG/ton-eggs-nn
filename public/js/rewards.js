@@ -88,7 +88,7 @@ async function updateTasksDisplay() {
 
     taskContainer.innerHTML = '';
     showLoadingIndicator();
-    completedTasks = await getProgress(userId.completedTasks);
+    const completedTasks = await getProgress(userId.completedTasks);
     tasks.forEach(task => {
         if (!completedTasks.includes(task.id)) {
             const taskElement = createTaskElement(task);
