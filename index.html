@@ -32,7 +32,7 @@
         const user = Telegram.WebApp.initDataUnsafe.user;
         const userId = user.id;
         const username = tg.initDataUnsafe.user.username;
-        console.log(`User ID: ${userId}, Username: ${username}`);
+        alert (`User ID: ${userId}, Username: ${username}`);
 
         // Получение сохраненного прогресса
         getProgress(userId).then(savedProgress => {
