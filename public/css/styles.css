@@ -525,15 +525,16 @@ body {
 
 /* Дополнительные стили для кнопок улучшений (если нужно) */
 .upgrade-speed-button {
-    background-color: #2D83EC; /* Синий фон */
-    color: #020202; /* Обычный текст */
+    background-color: #e2501c; /* Синий фон */
+    color: #cbecea; /* Обычный текст */
 }
 .upgrade-energy-button {
-    background-color: #2D83EC; /* Синий фон */
-    color: #020202; /* Обычный текст */
+    background-color: #d9ec2d; /* Синий фон */
+    color: #cbecea; /* Обычный текст */
 }
 #shopModal button:hover {
     background-color: #d515c2;
+    border: #eeff00;
 }
 #startDiggButton:hover {
     background-color: #0abcf2;
