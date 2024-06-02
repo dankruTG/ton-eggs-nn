@@ -6,6 +6,7 @@ let inventoryItems = {}; // Объект для хранения элемент�
 let clickCount = 0; // Счетчик кликов
 let currentEgg = null; // Текущее добываемое яйцо
 let speedUpgradeLevel = 0;
+let isProcessing = false;
 
 // Восстановление данных из базы данных при загрузке
 Telegram.WebApp.ready();
@@ -330,6 +331,8 @@ function createClickArea(eggData) {
     
 
     clickArea.addEventListener('click', async () => {
+        if (isProcessing) return;
+        isProcessing = true;
         let initialClickCount = eggData.strength;
         await getProgress(userId, { clickCount, speedUpgradeLevel });
         let currentClickCount = initialClickCount - clickCount;
@@ -375,6 +378,7 @@ function createClickArea(eggData) {
         if (currentClickCount <= 0) {
             await finishDiggEgg(eggData);
         }
+        isProcessing = false;
 
             
         }
