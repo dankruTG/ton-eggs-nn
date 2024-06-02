@@ -293,8 +293,9 @@ function startDiggEgg(eggData, isRestoring = false) {
     }
 
     if (!currentEgg || isRestoring) {
-        createClickArea(eggData);
+        
         currentEgg = eggData;
+        createClickArea(currentEgg);
         if (!isRestoring) {
             saveProgress(userId, { currentEgg, clickCount });
         }
