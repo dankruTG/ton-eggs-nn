@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js"
   },
-  "author": "",
+  "author": "DankruTG",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.5",
