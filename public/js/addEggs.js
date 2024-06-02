@@ -241,7 +241,7 @@ async function startDiggEggByName(eggName, eggContainerId) {
         await removeEggFromInventory(eggContainerId);
 
         // Начинаем добычу нового яйца
-        startDiggEgg(eggData);
+        createClickArea(eggData);
         await saveProgress(userId, { currentEgg: eggData, clickCount: 0 });
     } else {
         console.log('Яйцо не найдено в инвентаре');
@@ -287,28 +287,16 @@ function showModal(message) {
     };
 }
 
-// Функция начала добычи яйца
-function startDiggEgg(eggData, isRestoring = false) {
+
+
+
+function createClickArea(eggData) {
     const previousClickArea = document.getElementById('clickArea');
     if (previousClickArea) {
         previousClickArea.remove();
     }
-
-    if (!currentEgg || isRestoring) {
-        
-        currentEgg = eggData;
-        createClickArea(eggData);
-        if (!isRestoring) {
-            saveProgress(userId, { currentEgg, clickCount });
-        }
-    } else {
-        console.log('Яйцо уже добавлено для добычи');
-    }
-}
-
-
-function createClickArea(eggData) {
     changeBackgroundByRarity(eggData.rarity);
+    
     const clickArea = document.createElement('div');
     clickArea.id = 'clickArea';
     clickArea.style.width = '200px';

@@ -31,7 +31,7 @@
 
         const user = Telegram.WebApp.initDataUnsafe.user;
         const userId = user.id;
-        const username = user.name ||user.first_name;
+        const username = user.username || user.first_name || user.last_name || 'Anonymous';
 
         console.log(`User ID: ${userId}, Username: ${username}`);
 
