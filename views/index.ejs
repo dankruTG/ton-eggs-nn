@@ -8,6 +8,9 @@
     <link rel="icon" href="public/images/TON-EGG.ico" type="image/x-icon">
     <script src="https://unpkg.com/@tonconnect/ui@0.0.9/dist/tonconnect-ui.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script type="application/json" id="firebaseConfig">
+        <%= JSON.stringify(firebaseConfig) %>
+    </script>
     <script type="module" src="public/js/firebase.js"></script>
     <script src="public/js/inventory.js"></script>
     <script src="public/js/eggsData.js"></script>
@@ -23,9 +26,7 @@
             <!-- Сюда будет добавлен результат добычи -->
         </div>
     </div>
-    <script type="application/json" id="firebaseConfig">
-        <%= JSON.stringify(firebaseConfig) %>
-    </script>
+   
     <div id="walletContainer"></div>
     <script type="module">
         import { saveProgress, getProgress } from 'public/js/firebase.js';
