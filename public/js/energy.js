@@ -13,7 +13,7 @@ const userId = Telegram.WebApp.initDataUnsafe.user.id;
 showLoadingIndicator();
 await getProgress(userId).then(savedProgress => {
     if (savedProgress) {
-        curenerg = savedProgress.curenerg || 100;
+        curenerg = savedProgress.curenerg || 0;
         maxenerg = savedProgress.maxenerg || 100;
         const lastUpdate = savedProgress.lastEnergyUpdate || Date.now();
         const now = Date.now();
@@ -31,10 +31,11 @@ hideLoadingIndicator();
 export function decreaseEnergy() {
     curenerg--;
     updateEnergyBar();
-    saveProgress(userId, { curenerg, lastEnergyUpdate: Date.now() }); // Сохранение прогресса
     if (curenerg <= 0) {
         disableClick(); // Если энергия иссякла, блокируем возможность кликать
     }
+    saveProgress(userId, { curenerg, lastEnergyUpdate: Date.now() }); // Сохранение прогресса
+    
 }
 
 export function updateEnergyBar() {
