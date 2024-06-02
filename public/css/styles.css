@@ -31,7 +31,7 @@ body {
 }
 
 .containermenu {
-  display: block;
+  display: none;
   width: 350px;
   height: 182px;
   margin: 0 auto;
