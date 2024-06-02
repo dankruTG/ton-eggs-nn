@@ -1,8 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
 import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
