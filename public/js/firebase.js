@@ -44,7 +44,7 @@ export async function getProgress(userId) {
         // Create a new user with initial data
         const initialData = {
             userId: userId.toString(),
-            username: userId.toString(), // Placeholder
+            username: '',
             balance: 0,
             walletStatus: 'none',
             walletAddress: '',
