@@ -8,6 +8,10 @@
     <link rel="icon" href="public/images/TON-EGG.ico" type="image/x-icon">
     <script src="https://unpkg.com/@tonconnect/ui@0.0.9/dist/tonconnect-ui.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+</head>
+<body>
+    <div id="root"></div>
     <script type="application/json" id="firebaseConfig">
         <%= JSON.stringify(firebaseConfig) %>
     </script>
@@ -18,9 +22,6 @@
     <script type="module" src="public/js/openShop.js"></script>
     <script type="module" src="public/js/energy.js"></script>
     <script type="module" src="public/js/rewards.js"></script>
-</head>
-<body>
-    <div id="root"></div>
     <div id="eggDiggModal" class="modal">
         <div class="modal-content">
             <!-- Сюда будет добавлен результат добычи -->
