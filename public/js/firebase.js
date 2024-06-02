@@ -2,15 +2,14 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/fireba
 import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
 
 
-
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: secrets.FIREBASE_API_KEY,
-    authDomain: secrets.FIREBASE_AUTH_DOMAIN,
-    projectId: secrets.FIREBASE_PROJECT_ID,
-    storageBucket: secrets.FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: secrets.FIREBASE_MESSAGING_SENDER_ID,
-    appId: secrets.FIREBASE_APP_ID
+    apiKey: "AIzaSyBtaQXXyMt2Cf5EJVbR-TW4lztiyvdIcgI",
+    authDomain: "ton-eggs.firebaseapp.com",
+    projectId: "ton-eggs",
+    storageBucket: "ton-eggs.appspot.com",
+    messagingSenderId: "259366486455",
+    appId: "1:259366486455:web:1b346a97bb31b3ef196832"
 };
 
 // Initialize Firebase
