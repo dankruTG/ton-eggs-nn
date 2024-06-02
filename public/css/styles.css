@@ -512,7 +512,7 @@ body {
 
 /* Внутренний элемент для градиентного текста */
 .myfical-egg-button::before {
-    content: 'Buy Secret Egg (2500 $Shells)';
+    content: 'Buy MYFICAL Egg (10000 $Shells)';
     position: absolute;
     top: 50%;
     left: 50%;
