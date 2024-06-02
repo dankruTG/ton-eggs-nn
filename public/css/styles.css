@@ -530,7 +530,7 @@ body {
 }
 .upgrade-energy-button {
     background-color: #d9ec2d; /* Синий фон */
-    color: #cbecea; /* Обычный текст */
+    color: #000000; /* Обычный текст */
 }
 #shopModal button:hover {
     background-color: #d515c2;
