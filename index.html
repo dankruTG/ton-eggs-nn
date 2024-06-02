@@ -31,7 +31,7 @@
 
         const user = Telegram.WebApp.initDataUnsafe.user;
         const userId = user.id;
-        const username = user.name;
+        const username = user.name ||user.first_name;
 
         console.log(`User ID: ${userId}, Username: ${username}`);
 
@@ -42,6 +42,7 @@
                 // Дополнительная логика для восстановления состояния игры
             }
             else {
+                saveProgress(userId, { userId, username });
                 console.log('New user!')};
         });
     </script>
