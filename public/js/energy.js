@@ -49,9 +49,14 @@ export function updateEnergyBar() {
         energyText.textContent = `${curenerg}/${maxenerg}`;
     }
 
+    if (curenerg <= 0) {
+        disableClick();
+    }
+
     if (curenerg > 0) {
         enableClick(); // Если энергия восстановилась, разрешаем кликать
     }
+    
 }
 
 function restoreEnergy() {
