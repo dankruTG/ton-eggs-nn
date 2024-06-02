@@ -501,6 +501,27 @@ body {
     -webkit-text-fill-color: transparent;
     white-space: nowrap; /* Не переносить текст */
 }
+.myfical-egg-button {
+    background-color: #55c4d5; 
+    color: transparent; /* Сделать текст прозрачным, чтобы был виден градиент */
+    border: 2px solid gold; /* Золотая обводка кнопки */
+    font-weight: bold; /* Жирный текст */
+    position: relative; /* Относительное позиционирование для внутреннего элемента текста */
+    overflow: hidden; /* Скрыть текст за пределами кнопки */
+}
+
+/* Внутренний элемент для градиентного текста */
+.myfical-egg-button::before {
+    content: 'Buy Secret Egg (2500 $Shells)';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-image: linear-gradient(to right, #fcb707, #fbff11); /* Градиентный текст от белого к золотому */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    white-space: nowrap; /* Не переносить текст */
+}
 
 /* Дополнительные стили для кнопок улучшений (если нужно) */
 .upgrade-speed-button {

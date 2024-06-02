@@ -134,6 +134,8 @@ function getBackgroundColor(rarity) {
             return 'pink';
         case 'Secret':
             return 'red';
+        case 'Myfical':
+            return 'gold';
         default:
             return 'white';
     }
@@ -413,6 +415,10 @@ async function finishDiggEgg(eggData) {
             coinsDropped = getRandomInt(1800, 3000);
             eggDropped = getRandomEggByRarity('Secret');
             break;
+            case 'Myfical':
+            coinsDropped = getRandomInt(7500, 14000);
+            eggDropped = getRandomEggByRarity('Myfical');
+            break;
         default:
             coinsDropped = 0; // По умолчанию
             break;
@@ -466,7 +472,12 @@ async function finishDiggEgg(eggData) {
             case 'Secret':
                 eggNameElement.style.color = 'red';
                 eggNameElement.style.fontWeight = 'bold';
-                break; 
+                break;
+            case 'Myfical':
+                eggNameElement.style.color = 'gold';
+                eggNameElement.style.textShadow = '1px 1px 2px black';
+                eggNameElement.style.fontWeight = 'bold';
+                break;
             default:
                 eggNameElement.style.color = 'black'; // По умолчанию
                 eggNameElement.style.fontWeight = 'normal';
@@ -508,9 +519,10 @@ async function finishDiggEgg(eggData) {
 function getRandomEggByRarity(rarity) {
     const rarityChances = {
         Common: { Common: 0.93, Uncommon: 0.06, Rare: 0.0075, Secret: 0.0025 },
-        Uncommon: { Common: 0.52, Uncommon: 0.41, Rare: 0.06, Secret: 0.02 },
-        Rare: { Common: 0.28, Uncommon: 0.50, Rare: 0.14, Secret: 0.08 },
-        Secret: { Common: 0.14, Uncommon: 0.26, Rare: 0.28, Secret: 0.32 }
+        Uncommon: { Common: 0.52, Uncommon: 0.4075, Rare: 0.06, Secret: 0.02, Myfical: 0.0025 },
+        Rare: { Common: 0.28, Uncommon: 0.49, Rare: 0.14, Secret: 0.08, Myfical: 0.01 },
+        Secret: { Common: 0.14, Uncommon: 0.24, Rare: 0.26, Secret: 0.32, Myfical: 0.04 },
+        Myfical: { Uncommon: 0.04, Rare: 0.30, Secret: 0.50, Myfical: 0.16 }
     };
 
     const chances = rarityChances[rarity];
@@ -563,6 +575,9 @@ async function changeBackgroundByRarity(rarity) {
                 break;
             case 'Secret':
                 backgroundImagePath = 'public/images/Backgrounds/RareBackground.png';
+                break;
+            case 'Myfical':
+                backgroundImagePath = 'public/images/Backgrounds/MyficalBackground.png';
                 break;
             default:
                 // По умолчанию используем фон по умолчанию
