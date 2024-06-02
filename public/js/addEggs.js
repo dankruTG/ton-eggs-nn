@@ -135,7 +135,7 @@ function getBackgroundColor(rarity) {
         case 'Secret':
             return 'red';
         case 'Myfical':
-            return 'gold';
+            return 'yellow';
         default:
             return 'white';
     }
