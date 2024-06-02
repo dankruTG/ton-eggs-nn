@@ -7,6 +7,7 @@ let clickCount = 0; // Счетчик кликов
 let currentEgg = null; // Текущее добываемое яйцо
 let speedUpgradeLevel = 0;
 let isProcessing = false;
+let isFinishing = false;
 
 // Восстановление данных из базы данных при загрузке
 Telegram.WebApp.ready();
@@ -332,7 +333,7 @@ function createClickArea(eggData) {
 
     clickArea.addEventListener('click', async () => {
         if (isProcessing) return;
-        isProcessing = true;
+        
         let initialClickCount = eggData.strength;
         await getProgress(userId, { clickCount, speedUpgradeLevel });
         let currentClickCount = initialClickCount - clickCount;
@@ -361,7 +362,7 @@ function createClickArea(eggData) {
                     { opacity: 0, transform: 'translateY(-20px)' }
                 ],
                 {
-                    duration: 1000,
+                    duration: 500,
                     easing: 'ease',
                     fill: 'forwards'
                 }
@@ -376,9 +377,13 @@ function createClickArea(eggData) {
         };
 
         if (currentClickCount <= 0) {
+            isProcessing = true;
+            showLoadingIndicator();
             await finishDiggEgg(eggData);
+            hideLoadingIndicator();
+            isProcessing = false;
         }
-        isProcessing = false;
+        
 
             
         }
@@ -389,6 +394,8 @@ function createClickArea(eggData) {
 }
 
 async function finishDiggEgg(eggData) {
+    if (isFinishing) return;
+    isFinishing = true;
     currentEgg = null; // Сброс текущего яйца для добычи
     clickCount = 0; // Сброс счетчика кликов
     showLoadingIndicator();
@@ -506,6 +513,7 @@ async function finishDiggEgg(eggData) {
 
         // Возвращаем объект с информацией о дропе (монеты и яйцо)
     }
+    isFinishing = false;
     hideLoadingIndicator();    
 }
 
