@@ -13,7 +13,7 @@ let totalDamage = 0;
 
 // Восстановление данных из базы данных при загрузке
 Telegram.WebApp.ready();
-
+showLoadingIndicator();
 const userId = Telegram.WebApp.initDataUnsafe.user.id;
 getProgress(userId).then(savedProgress => {
     if (savedProgress) {
@@ -29,6 +29,7 @@ getProgress(userId).then(savedProgress => {
         }
     }
 });
+hideLoadingIndicator();
 
 
 async function restoreInventory() {
@@ -228,6 +229,8 @@ function openEggInfoModal(eggData, eggContainerId) {
 
 async function startDiggEggByName(eggName, eggContainerId) {
     const eggData = eggs.find((egg) => egg.name === eggName);
+    const userData = await getProgress(userId);
+    let { currentEgg } = userData;
 
     // Проверяем, есть ли уже активное яйцо для клика
     if (currentEgg) {
