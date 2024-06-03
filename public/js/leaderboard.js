@@ -71,4 +71,6 @@ async function loadLeaderboard() {
 }
 
 // Назначение функции открытия модального окна на кнопку
-document.getElementById('leaderBoardButton').onclick = openLeaderboardModal;
+document.getElementById('leaderboardButton').onclick = openLeaderboardModal;
+window.openLeaderboardModal = openLeaderboardModal;
+window.closeLeaderboardModal = closeLeaderboardModal;
