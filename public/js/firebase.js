@@ -3,7 +3,7 @@ import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/fireb
 
 
 // Your web app's Firebase configuration
-const firebaseConfig = {
+export const firebaseConfig = {
     apiKey: "AIzaSyBtaQXXyMt2Cf5EJVbR-TW4lztiyvdIcgI",
     authDomain: "ton-eggs.firebaseapp.com",
     projectId: "ton-eggs",

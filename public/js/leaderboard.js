@@ -1,6 +1,13 @@
-import { getProgress } from './firebase.js';
+import { getFirestore, collection, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
 import { showLoadingIndicator, hideLoadingIndicator } from './openShop.js';
+import { firebaseConfig } from './firebase.js';
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 const userId = Telegram.WebApp.initDataUnsafe.user.id;
+
 // Функция форматирования числа
 function formatNumber(number) {
     if (number >= 1e9) {
@@ -39,15 +46,9 @@ async function loadLeaderboard() {
     showLoadingIndicator();
 
     // Загрузка данных из базы данных (например, используя Firebase)
-    const snapshot = await firebase.database().ref('users').orderByChild('totalBalance').once('value');
-    const users = [];
-    snapshot.forEach(childSnapshot => {
-        const user = childSnapshot.val();
-        users.push(user);
-    });
-
-    // Сортировка пользователей по totalBalance в порядке убывания
-    users.sort((a, b) => b.totalBalance - a.totalBalance);
+    const q = query(collection(db, 'users'), orderBy('totalBalance', 'desc'));
+    const snapshot = await getDocs(q);
+    const users = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
     // Очистка контейнера перед обновлением
     leaderboardContainer.innerHTML = '';
