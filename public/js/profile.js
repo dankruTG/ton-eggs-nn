@@ -1,4 +1,5 @@
 import { getProgress, saveProgress } from './firebase.js';
+import { showLoadingIndicator, hideLoadingIndicator } from './openShop.js';
 
 const userId = Telegram.WebApp.initDataUnsafe.user.id;
 
