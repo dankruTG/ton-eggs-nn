@@ -35,9 +35,10 @@ jobs:
       - name: Configure Git
         run: |
           git config --global user.email "dankrute@gmail.com"
-          git config --global user.name "https://github.com/dankruTG/ton-eggs-nn"
+          git config --global user.name "dankruTG"
 
       - name: Deploy to GitHub Pages
-        run: npm run deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npx gh-pages -d public -r https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
