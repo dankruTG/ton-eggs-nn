@@ -8,6 +8,8 @@ let currentEgg = null; // Текущее добываемое яйцо
 let speedUpgradeLevel = 0;
 let isProcessing = false;
 let isFinishing = false;
+let totalBalance = 0;
+let totalDamage = 0;
 
 // Восстановление данных из базы данных при загрузке
 Telegram.WebApp.ready();
@@ -19,6 +21,8 @@ getProgress(userId).then(savedProgress => {
         currentEgg = savedProgress.currentEgg || null;
         clickCount = savedProgress.clickCount || 0;
         speedUpgradeLevel = savedProgress.speedUpgradeLevel || 0;
+        totalBalance = savedProgress.totalBalance || 0;
+        totalDamage = savedProgress.totalDamage || 0;
         restoreInventory();
         if (currentEgg) {
             createClickArea(currentEgg);
