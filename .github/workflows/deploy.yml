@@ -12,8 +12,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -34,13 +32,8 @@ jobs:
           echo "  appId: '${{ secrets.FIREBASE_APP_ID }}'" >> ./public/js/firebase-config.js
           echo "};" >> ./public/js/firebase-config.js
 
-      - name: Configure Git
-        run: |
-          git config --global user.email "dankrute@gmail.com"
-          git config --global user.name "dankruTG"
-
       - name: Deploy to GitHub Pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          npx gh-pages -d public -r https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
