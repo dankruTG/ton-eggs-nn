@@ -32,6 +32,11 @@ jobs:
           echo "  appId: '${{ secrets.FIREBASE_APP_ID }}'" >> ./public/js/firebase-config.js
           echo "};" >> ./public/js/firebase-config.js
 
+      - name: Configure Git
+        run: |
+          git config --global user.email "dankrute@gmail.com"
+          git config --global user.name "dankruTG"
+
       - name: Deploy to GitHub Pages
         run: npm run deploy
         env:
