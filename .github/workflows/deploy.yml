@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - master  # измените на вашу ветку, если необходимо
+      - master  # Измените на вашу ветку, если необходимо
 
 jobs:
   deploy:
@@ -31,6 +31,11 @@ jobs:
           echo "  messagingSenderId: '${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}'," >> ./public/js/firebase-config.js
           echo "  appId: '${{ secrets.FIREBASE_APP_ID }}'" >> ./public/js/firebase-config.js
           echo "};" >> ./public/js/firebase-config.js
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "dankrute@gmail.com"
+          git config --global user.name "dankruTG"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
