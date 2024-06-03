@@ -12,6 +12,7 @@ body {
     background-repeat: no-repeat; /* Запрещает повторение фонового изображения */
     flex-direction: column;
     background-position: center;
+    touch-action: manipulation;
 }
 .menu-button-container {
     position: relative;
