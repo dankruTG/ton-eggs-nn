@@ -325,14 +325,15 @@ function createClickArea(eggData) {
         if (isProcessing) return;
         
         let initialClickCount = eggData.strength;
-        await getProgress(userId, { clickCount, speedUpgradeLevel });
+        await getProgress(userId, { clickCount, speedUpgradeLevel, totalDamage });
         let currentClickCount = initialClickCount - clickCount;
         let clickValue = speedUpgradeLevel;
+        let damage = totalDamage + clickValue;
         if (currentClickCount > 0) {
             currentClickCount -= clickValue;
             clickCount = initialClickCount - currentClickCount;
             updateClickCounter(currentClickCount);
-            await saveProgress(userId, { clickCount });
+            await saveProgress(userId, { clickCount, totalDamage: damage });
             decreaseEnergy();
 
             eggImage.style.transform = 'scale(1.1)';
@@ -443,10 +444,12 @@ async function finishDiggEgg(eggData) {
         // Загрузка текущего баланса пользователя из базы данных
         const progress = await getProgress(userId);
         const currentBalance = Number(progress.balance) || 0;
+        const currentTotalBalance = Number(progress.totalBalance) || 0;
 
         // Обновление баланса монет
         const newBalance = currentBalance + coinsDropped;
-        await saveProgress(userId, { balance: newBalance });
+        const newTotalBalance = currentTotalBalance + coinsDropped;
+        await saveProgress(userId, { balance: newBalance, totalBalance: newTotalBalance });
         console.log('Coins balance saved:', newBalance);
         eggImageElement.style.verticalAlign = 'middle';
 
