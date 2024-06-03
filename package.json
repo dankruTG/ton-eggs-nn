@@ -4,7 +4,8 @@
   "description": "best clicker",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "deploy": "gh-pages -d ."
   },
   "author": "DankruTG",
   "license": "ISC",
@@ -14,5 +15,8 @@
     "express": "^4.19.2",
     "mongoose": "^8.4.0",
     "node-telegram-bot-api": "^0.66.0"
+  },
+  "devDependencies": {
+    "gh-pages": "^3.2.3"
   }
 }
