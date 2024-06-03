@@ -341,8 +341,9 @@ function createClickArea(eggData) {
             totalDamage = (totalDamage || 0) + speedUpgradeLevel;
             currentClickCount -= clickValue;
             clickCount = initialClickCount - currentClickCount;
-            updateClickCounter(currentClickCount);
+            
             await saveProgress(userId, { clickCount, totalDamage });
+            updateClickCounter(currentClickCount);
             decreaseEnergy();
 
             eggImage.style.transform = 'scale(1.1)';
