@@ -23,6 +23,7 @@
     <script type="module" src="public/js/energy.js"></script>
     <script type="module" src="public/js/rewards.js"></script>
     <script src ="public/js/menu.js"></script>
+    <script type="module" src="public/js/profile.js"></script>
 
     
     <div id="eggDiggModal" class="modal">
@@ -147,6 +148,21 @@
                 <button id="leaderboardButton">LEADERBOARD</button>
                 <button id="frensButton">FRENS</button>
             </div>
+        </div>
+    </div>
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeProfileModal()">&times;</span>
+            <div id="profileContent"></div>
+        </div>
+    </div>
+    
+    <div id="usernameModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeUsernameModal()">&times;</span>
+            <h2>Введите имя</h2>
+            <input type="text" id="usernameInput" placeholder="Имя (5-15 символов)">
+            <button onclick="saveUsername()">Сохранить</button>
         </div>
     </div>
     <div id="notificationModal" class="modal">
