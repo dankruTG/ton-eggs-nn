@@ -332,8 +332,8 @@ function createClickArea(eggData) {
         await getProgress(userId, { clickCount, speedUpgradeLevel, totalDamage });
         let currentClickCount = initialClickCount - clickCount;
         let clickValue = speedUpgradeLevel;
-        let damage = totalDamage + clickValue;
         if (currentClickCount > 0) {
+            const damage = totalDamage + clickValue;
             currentClickCount -= clickValue;
             clickCount = initialClickCount - currentClickCount;
             updateClickCounter(currentClickCount);
