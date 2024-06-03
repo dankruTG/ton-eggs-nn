@@ -10,6 +10,9 @@ let isProcessing = false;
 let isFinishing = false;
 let totalBalance = 0;
 let totalDamage = 0;
+let localClickCount = 0; // Локальный счетчик кликов
+let localTotalDamage = 0; // Локальный счетчик урона
+
 
 // Восстановление данных из базы данных при загрузке
 Telegram.WebApp.ready();
@@ -299,13 +302,13 @@ function showModal(message) {
 
 
 
-function createClickArea(eggData) {
+async function createClickArea(eggData) {
     const previousClickArea = document.getElementById('clickArea');
     if (previousClickArea) {
         previousClickArea.remove();
     }
     changeBackgroundByRarity(eggData.rarity);
-    
+
     const clickArea = document.createElement('div');
     clickArea.id = 'clickArea';
     clickArea.style.width = '200px';
@@ -323,26 +326,27 @@ function createClickArea(eggData) {
     eggImage.style.height = '100%';
     eggImage.style.objectFit = 'contain';
     clickArea.appendChild(eggImage);
+
     let stl = eggData.strength;
     updateClickCounter(stl);
+    showLoadingIndicator();
 
-    
+    const userData = await getProgress(userId);
+    let { clickCount, speedUpgradeLevel, totalDamage } = userData;
+
+    let initialClickCount = eggData.strength;
+    let currentClickCount = initialClickCount - clickCount;
+    let clickValue = speedUpgradeLevel;
+    hideLoadingIndicator();
 
     clickArea.addEventListener('click', async () => {
         if (isProcessing) return;
-        
-        let initialClickCount = eggData.strength;
-        const userData = await getProgress(userId);
-        let { clickCount, speedUpgradeLevel, totalDamage } = userData;
-        
-        let currentClickCount = initialClickCount - clickCount;
-        let clickValue = speedUpgradeLevel;
+
         if (currentClickCount > 0) {
-            totalDamage = (totalDamage || 0) + speedUpgradeLevel;
+            localTotalDamage += speedUpgradeLevel;
             currentClickCount -= clickValue;
-            clickCount = initialClickCount - currentClickCount;
-            
-            await saveProgress(userId, { clickCount, totalDamage });
+            localClickCount += clickValue;
+
             updateClickCounter(currentClickCount);
             decreaseEnergy();
 
@@ -375,7 +379,15 @@ function createClickArea(eggData) {
             setTimeout(() => {
                 eggImage.style.transform = 'scale(1)';
             }, 100);
-        };
+        }
+
+        if (localClickCount >= 10 || currentClickCount <= 0) {
+            clickCount += localClickCount;
+            totalDamage += localTotalDamage;
+            await saveProgress(userId, { clickCount, totalDamage });
+            localClickCount = 0; // Сбрасываем локальные счетчики
+            localTotalDamage = 0;
+        }
 
         if (currentClickCount <= 0) {
             isProcessing = true;
@@ -384,14 +396,9 @@ function createClickArea(eggData) {
             hideLoadingIndicator();
             isProcessing = false;
         }
-        
-
-            
-        }
-    );
+    });
 
     document.body.appendChild(clickArea);
-    
 }
 
 async function finishDiggEgg(eggData) {
