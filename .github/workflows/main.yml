@@ -1,0 +1,39 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - master  # измените на вашу ветку, если необходимо
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3  # Обновлено до версии v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3  # Обновлено до версии v3
+        with:
+          node-version: '20'  # Использование Node.js 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Create Firebase config file
+        run: |
+          echo "window.firebaseConfig = {" > ./public/js/firebase-config.js
+          echo "  apiKey: '${{ secrets.FIREBASE_API_KEY }}'," >> ./public/js/firebase-config.js
+          echo "  authDomain: '${{ secrets.FIREBASE_AUTH_DOMAIN }}'," >> ./public/js/firebase-config.js
+          echo "  projectId: '${{ secrets.FIREBASE_PROJECT_ID }}'," >> ./public/js/firebase-config.js
+          echo "  storageBucket: '${{ secrets.FIREBASE_STORAGE_BUCKET }}'," >> ./public/js/firebase-config.js
+          echo "  messagingSenderId: '${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}'," >> ./public/js/firebase-config.js
+          echo "  appId: '${{ secrets.FIREBASE_APP_ID }}'" >> ./public/js/firebase-config.js
+          echo "};" >> ./public/js/firebase-config.js
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
