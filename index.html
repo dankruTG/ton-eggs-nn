@@ -30,14 +30,7 @@
             <!-- Сюда будет добавлен результат добычи -->
         </div>
     </div>
-    <div class="menu-button-container">
-        <button id="menuButton">Menu</button>
-        <div id="menu" class="menu">
-            <button id="profileButton">PROFILE</button>
-            <button id="leaderboardButton">LEADERBOARD</button>
-            <button id="frensButton">FRENS</button>
-        </div>
-    </div>
+    
     <div id="walletContainer"></div>
     <script type="module">
         import { saveProgress, getProgress } from 'public/js/firebase.js';
@@ -147,8 +140,13 @@
             <img src="public/images/rewards_icon.png" alt="Rewards Icon">
         </div>
         <!-- Контейнер для четвертой иконки -->
-        <div class="iconContainer" onclick="openInvite()">
-            <img src="public/images/invite_icon.png" alt="Invite Icon">
+        <div class="iconContainer">
+            <img id="menuButton" src="public/images/invite_icon.png" alt="Invite Icon">
+            <div id="menu" class="menu">
+                <button id="profileButton">PROFILE</button>
+                <button id="leaderboardButton">LEADERBOARD</button>
+                <button id="frensButton">FRENS</button>
+            </div>
         </div>
     </div>
     <div id="notificationModal" class="modal">
