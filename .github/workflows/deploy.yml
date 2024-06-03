@@ -3,7 +3,10 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - master  # Измените на вашу ветку, если необходимо
+      - master  # измените на вашу ветку, если необходимо
+
+permissions:
+  contents: write
 
 jobs:
   deploy:
@@ -40,5 +43,5 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          personal_token: ${{ secrets.GH_PAT }}
           publish_dir: ./public
