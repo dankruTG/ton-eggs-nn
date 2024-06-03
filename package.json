@@ -4,8 +4,7 @@
   "description": "best clicker",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "deploy": "gh-pages -d ."
+    "start": "node index.js"
   },
   "author": "DankruTG",
   "license": "ISC",
