@@ -1,6 +1,7 @@
 import { saveProgress, getProgress } from './firebase.js';
 import { showLoadingIndicator, hideLoadingIndicator } from './openShop.js';
 import { restoreInventory } from './addEggs.js';
+let inventoryItems = {};
 
 Telegram.WebApp.ready();
 showLoadingIndicator();
