@@ -26,7 +26,7 @@ getProgress(userId).then(savedProgress => {
         speedUpgradeLevel = savedProgress.speedUpgradeLevel || 0;
         totalBalance = savedProgress.totalBalance || 0;
         totalDamage = savedProgress.totalDamage || 0;
-        restoreInventory();
+        restoreInventory(userId);
         if (currentEgg) {
             createClickArea(currentEgg);
         }
@@ -35,7 +35,7 @@ getProgress(userId).then(savedProgress => {
 hideLoadingIndicator();
 
 
-async function restoreInventory() {
+async function restoreInventory(userId) {
     showLoadingIndicator();
     const userData = await getProgress(userId);
     const inventoryItems = userData.inventoryItems || {};
@@ -124,12 +124,6 @@ function createEggContainer(eggData, eggContainerId = null) {
     return eggContainer;
 }
 
-async function saveInventory(inventoryItems) {
-    showLoadingIndicator();
-    await saveProgress(userId, { inventoryItems });
-    await restoreInventory(); // Восстановить инвентарь из базы данных
-    hideLoadingIndicator();
-}
 
 // Функция, которая определяет цвет фона в зависимости от редкости яйца
 function getBackgroundColor(rarity) {
@@ -272,11 +266,7 @@ async function removeEggFromInventory(eggContainerId) {
         delete inventoryItems[eggContainerId];
         await saveProgress(userId, { inventoryItems });
         
-        // Удаление из UI
-        const eggContainer = document.getElementById(eggContainerId);
-        if (eggContainer) {
-            eggContainer.remove();
-        }
+        await restoreInventory(userId);
     }
     hideLoadingIndicator();
 }
@@ -426,15 +416,15 @@ async function finishDiggEgg(eggData) {
             eggDropped = getRandomEggByRarity('Uncommon');
             break;
         case 'Rare':
-            coinsDropped = getRandomInt(700, 1300);
+            coinsDropped = getRandomInt(1200, 1800);
             eggDropped = getRandomEggByRarity('Rare');
             break;
         case 'Secret':
-            coinsDropped = getRandomInt(1800, 3000);
+            coinsDropped = getRandomInt(2400, 3600);
             eggDropped = getRandomEggByRarity('Secret');
             break;
             case 'Myfical':
-            coinsDropped = getRandomInt(7500, 14000);
+            coinsDropped = getRandomInt(12000, 19000);
             eggDropped = getRandomEggByRarity('Myfical');
             break;
         default:
