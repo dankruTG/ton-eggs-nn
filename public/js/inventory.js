@@ -12,7 +12,7 @@ getProgress(userId).then(savedProgress => {
 });
 hideLoadingIndicator();
 
-async function openInventory() {
+export async function openInventory() {
     const modal = document.getElementById('inventoryModal');
     if (modal) {
         modal.style.display = 'flex';
@@ -41,6 +41,13 @@ document.querySelector('.iconContainer img[src="public/images/inventory_icon.png
 
 // Назначаем обработчик клика на крестик для закрытия магазина
 document.querySelector('#inventoryModal .close').addEventListener('click', closeInventory);
+document.addEventListener('DOMContentLoaded', () => {
+    const inventoryModal = document.querySelector('.iconContainer img[src="public/images/inventory_icon.png"]');
+    if (inventoryModal) {
+        inventoryModal.parentElement.addEventListener('click', openInventory);
+    }
+    console.log('Event handlers assigned');
+});
 
 window.openInventory = openInventory;
 window.closeInventory = closeInventory;
