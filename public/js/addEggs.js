@@ -35,7 +35,7 @@ getProgress(userId).then(savedProgress => {
 hideLoadingIndicator();
 
 
-async function restoreInventory(userId) {
+export async function restoreInventory(userId) {
     showLoadingIndicator();
     const userData = await getProgress(userId);
     const inventoryItems = userData.inventoryItems || {};

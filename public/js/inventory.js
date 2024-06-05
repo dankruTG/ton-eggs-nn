@@ -39,15 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 document.querySelector('.iconContainer img[src="public/images/inventory_icon.png"]').parentElement.addEventListener('click', openInventory);
 
-// Назначаем обработчик клика на крестик для закрытия магазина
-document.querySelector('#inventoryModal .close').addEventListener('click', closeInventory);
-document.addEventListener('DOMContentLoaded', () => {
-    const inventoryModal = document.querySelector('.iconContainer img[src="public/images/inventory_icon.png"]');
-    if (inventoryModal) {
-        inventoryModal.parentElement.addEventListener('click', openInventory);
-    }
-    console.log('Event handlers assigned');
-});
 
 window.openInventory = openInventory;
 window.closeInventory = closeInventory;
