@@ -1,5 +1,5 @@
 import { saveProgress, getProgress } from './firebase.js';
-import { decreaseEnergy } from './energy.js';
+import { decreaseEnergy, updateBalance } from './energy.js';
 import { showLoadingIndicator, hideLoadingIndicator } from './openShop.js';
 let eggContainerIdCounter = 1; // Инициализация счетчика
 let inventoryItems = {}; // Объект для хранения элементов инвентаря по id
@@ -74,7 +74,7 @@ export async function addEggToInventory(egg) {
 }
 
 
-export function giveEggs() {
+export async function giveEggs() {
     const inventoryContainer = document.getElementById('inventoryItemsContainer');
     if (inventoryContainer) {
         // Фильтрация яиц по редкости Common
@@ -85,7 +85,9 @@ export function giveEggs() {
             // Выбор случайного яйца из списка commonEggs
             const randomIndex = Math.floor(Math.random() * commonEggs.length);
             const selectedEgg = commonEggs[randomIndex];
-            addEggToInventory(selectedEgg);
+            showLoadingIndicator();
+            await addEggToInventory(selectedEgg);
+            hideLoadingIndicator();
         } else {
             console.log('Нет яиц категории Common');
         }
@@ -292,7 +294,7 @@ function showModal(message) {
 
 
 
-async function createClickArea(eggData) {
+export async function createClickArea(eggData) {
     const previousClickArea = document.getElementById('clickArea');
     if (previousClickArea) {
         previousClickArea.remove();
@@ -326,6 +328,7 @@ async function createClickArea(eggData) {
 
     let initialClickCount = eggData.strength;
     let currentClickCount = initialClickCount - clickCount;
+    updateClickCounter(currentClickCount);
     let clickValue = speedUpgradeLevel;
     hideLoadingIndicator();
 
@@ -374,7 +377,7 @@ async function createClickArea(eggData) {
         if (localClickCount >= 10 || currentClickCount <= 0) {
             clickCount += localClickCount;
             totalDamage += localTotalDamage;
-            await saveProgress(userId, { clickCount, totalDamage });
+            saveProgress(userId, { clickCount, totalDamage });
             localClickCount = 0; // Сбрасываем локальные счетчики
             localTotalDamage = 0;
         }
@@ -457,6 +460,7 @@ async function finishDiggEgg(eggData) {
         const newBalance = currentBalance + coinsDropped;
         const newTotalBalance = currentTotalBalance + coinsDropped;
         await saveProgress(userId, { balance: newBalance, totalBalance: newTotalBalance });
+        await updateBalance();
         console.log('Coins balance saved:', newBalance);
         eggImageElement.style.verticalAlign = 'middle';
 
@@ -617,4 +621,3 @@ function updateClickCounter(clickCount) {
         clickCounterElement.textContent = `${clickCount}`;
     }
 }
-window.giveEggs = giveEggs;

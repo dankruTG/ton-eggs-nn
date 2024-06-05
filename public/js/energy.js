@@ -6,7 +6,7 @@ let curenerg = 100; // Начальная энергия
 let maxenerg = 100; // Максимальная энергия
 let restoreEnergySpeed = 3000;
 let restoreRate = 1;
-
+let energyTick = 0;
 // Восстановление энергии из базы данных при загрузке
 Telegram.WebApp.ready();
 const userId = Telegram.WebApp.initDataUnsafe.user.id;
@@ -30,11 +30,14 @@ hideLoadingIndicator();
 
 export function decreaseEnergy() {
     curenerg--;
+    energyTick++;
     updateEnergyBar();
     if (curenerg <= 0) {
         disableClick(); // Если энергия иссякла, блокируем возможность кликать
     }
-    saveProgress(userId, { curenerg, lastEnergyUpdate: Date.now() }); // Сохранение прогресса
+    if (energyTick >= 10) {
+        saveProgress(userId, { curenerg, lastEnergyUpdate: Date.now() });
+    }
     
 }
 

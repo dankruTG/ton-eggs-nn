@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
 import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
+import { createClickArea } from "./addEggs";
 
 
 // Your web app's Firebase configuration
@@ -63,7 +64,11 @@ export async function getProgress(userId) {
             completedTasks: [],
             inventoryItems: {}
         };
+        
         await saveProgress(userId, initialData);
+        const eggName = 'Bronze Egg'; 
+        const eggData = eggs.find((egg) => egg.name === eggName);
+        createClickArea(eggData);
         return initialData;
     }
 }
