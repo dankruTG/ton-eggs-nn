@@ -36,6 +36,7 @@
     <div id="walletContainer"></div>
     <script type="module">
         import { saveProgress, getProgress } from 'public/js/firebase.js';
+        import { createClickArea } from 'public/js/addEggs.js';
 
         Telegram.WebApp.ready();
 
@@ -52,6 +53,12 @@
             }
             else {
                 saveProgress(userId, { userId, username: username });
+                const commonEggs = eggs.filter((egg) => egg.rarity === 'Common');
+                const randomIndex = Math.floor(Math.random() * commonEggs.length);
+                const selectedEgg = commonEggs[randomIndex];
+                createClickArea (selectedEgg);
+                saveProgress(userId, { currentEgg: selectedEgg, clickCount: 0 });
+
                 console.log('New user!')};
         });
     </script>
