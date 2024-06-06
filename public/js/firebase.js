@@ -58,7 +58,7 @@ export async function getProgress(userId) {
             curenerg: 100,
             maxenerg: 100,
             lastEnergyUpdate: Date.now(),
-            currentEgg: null,
+            currentEgg: { name: "Bronze Egg", icon: "public/images/commonEggs/bronzeEgg.png", rarity: "Common", strength: 100, minting: "no" },
             clickCount: 0,
             completedTasks: [],
             inventoryItems: {}
