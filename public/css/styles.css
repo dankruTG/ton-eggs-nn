@@ -66,11 +66,12 @@ body {
 #menu {
     display: none;
     position: absolute;
-    top: -100px; /* Adjust based on the number of buttons */
-    left: -100px; /* Adjust based on your design */
+    top: -75px; /* Adjust based on the number of buttons */
+    left: -70px; /* Adjust based on your design */
     background-color: white;
     box-shadow: 0 8px 16px rgba(0,0,0,0.2);
     z-index: 100000;
+    border: 2px solid lch(70 83.1 89.92);
 }
 
 #menu button {
@@ -96,7 +97,7 @@ body {
     top: 20px;
     padding: 8px;
     height: 23px;
-    left: 220px;
+    left: 200px;
 }
 
 #eggContainer {
