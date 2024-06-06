@@ -621,4 +621,4 @@ function updateClickCounter(clickCount) {
         clickCounterElement.textContent = `${clickCount}`;
     }
 }
-window.giveEggs = giveEggs;
+

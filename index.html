@@ -36,7 +36,6 @@
     <div id="walletContainer"></div>
     <script type="module">
         import { saveProgress, getProgress } from 'public/js/firebase.js';
-        import { giveEggs } from 'public/js/addEggs.js';
 
         Telegram.WebApp.ready();
 
@@ -53,7 +52,6 @@
             }
             else {
                 saveProgress(userId, { userId, username: username });
-                giveEggs();
 
                 console.log('New user!')};
         });
