@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 document.querySelector('.iconContainer img[src="public/images/inventory_icon.png"]').parentElement.addEventListener('click', openInventory);
-
+document.querySelector('#inventoryModal .close').addEventListener('click', closeInventory);
 
 window.openInventory = openInventory;
 window.closeInventory = closeInventory;

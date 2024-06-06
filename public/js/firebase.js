@@ -63,6 +63,7 @@ export async function getProgress(userId) {
             completedTasks: [],
             inventoryItems: {}
         };
+        
         await saveProgress(userId, initialData);
         return initialData;
     }
