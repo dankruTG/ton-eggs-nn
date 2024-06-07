@@ -48,18 +48,16 @@ async function buyUpgrade(type) {
     if (type === 'speed') {
         if (coinBalance >= speedUpgradePrice) {
             // Покупка улучшения скорости
-            await updateCoinBalance(-speedUpgradePrice);
+            await updateCoinBalance(speedUpgradePrice);
             await upgradeSpeed();
-            await updateBalance();
         } else {
             showNotEnoughCoinsModal(speedUpgradePrice, coinBalance);
         }
     } else if (type === 'energy') {
         if (coinBalance >= energyUpgradePrice) {
             // Покупка улучшения энергии
-            await updateCoinBalance(-energyUpgradePrice);
+            await updateCoinBalance(energyUpgradePrice);
             await upgradeEnergy();
-            await updateBalance();
         } else {
             showNotEnoughCoinsModal(energyUpgradePrice, coinBalance);
         }
@@ -69,8 +67,9 @@ async function buyUpgrade(type) {
 async function updateCoinBalance(price) {
     showLoadingIndicator();
     const userData = await getProgress(userId);
-    const balance = Number (userData.balance + price);
-    await saveProgress(userId, { balance });
+    const currentBalance = Number (userData.balance);
+    const Newbalance = currentBalance - Number (price);
+    await saveProgress(userId, { balance: Newbalance });
     await updateBalance();
     hideLoadingIndicator();
 }
@@ -167,8 +166,7 @@ async function buyEgg(rarity, price) {
             console.log(egg)
 
             // Вычесть стоимость из баланса монет
-            await updateCoinBalance(-price);
-            await updateBalance();
+            await updateCoinBalance(price);
         }
     } else {
         showNotEnoughCoinsModal(price, coinBalance);
