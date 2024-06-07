@@ -202,12 +202,19 @@ function openNotCompleteModal() {
         notCompleteModal.style.display = 'none';
     });
 }
+function closeRewards() {
+    const modal = document.getElementById('rewardsModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
 document.getElementById('rewardsButton').onclick = openRewardsModal;
-
+document.querySelector('#rewardsModal .close').addEventListener('click', closeRewards);
 
 window.openRewardsModal = openRewardsModal;
 window.completeTask = completeTask;
 window.checkWalletAndClaim = checkWalletAndClaim;
+window.closeRewards = closeRewards;
 
 // CSS анимация для тряски изображения
 const style = document.createElement('style');
