@@ -446,6 +446,9 @@ body {
     border: 2px solid gold;
 
 }
+.rewardsModal {
+    display: none;
+}
 #rewardsModal .modal-content {
     background-color: #b2dc0cfc;
     margin: 15% auto; /* Отступ сверху/снизу и авто по бокам */
