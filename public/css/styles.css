@@ -162,21 +162,33 @@ body {
 
 /* Стили для контейнера модального окна */
 .modal-content {
-    background-color: #1E90FF; /* Темно-синий цвет фона */
-    border-radius: 10px; /* Закругленные углы */
-    border: 2px solid silver; /* Серебрянная обводка */
+    background-color: seashell;
+    border-radius: 33px;
+    border: 8px solid #f30e0e;
     padding: 20px;
-    margin: 20% auto; /* Расположение по центру */
+    margin: 20% auto;
     width: 60%;
     max-width: 600px;
     position: relative;
-    text-align: center; /* Выравнивание текста по центру */
+    text-align: center;
 }
 #coinInfo {
     display: flex;
-    justify-content: center;
     align-items: center;
     margin-top: 20px;
+    border-radius: 16px;
+    height: 50px;
+    border: 4px solid #e4f30e;
+    justify-content: start;
+}
+#dropEggInfo {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    border-radius: 16px;
+    height: 50px;
+    border: 4px solid #e4f30e;
+    justify-content: start;
 }
 
 /* Кнопка для закрытия модального окна */
