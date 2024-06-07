@@ -1,11 +1,11 @@
 import { saveProgress, getProgress } from './firebase.js';
-import { giveEggs } from './addEggs.js';
 import { hideLoadingIndicator, showLoadingIndicator } from './openShop.js';
+import { updateBalance } from './energy.js';
 
 // Переменные для хранения состояния пользователя
 let completedTasks = [];
 let walletStatus = 'none';
-
+let balance = 0;
 // Загрузка данных пользователя
 Telegram.WebApp.ready();
 const userId = Telegram.WebApp.initDataUnsafe.user.id;
@@ -13,6 +13,7 @@ getProgress(userId).then(savedProgress => {
     if (savedProgress) {
         walletStatus = savedProgress.walletStatus || 'none';
         completedTasks = savedProgress.completedTasks || [];
+        balance = savedProgress.balance || 0;
         console.log('Completed tasks:', completedTasks);
     }
 });
@@ -21,7 +22,7 @@ getProgress(userId).then(savedProgress => {
 const tasks = [
     {
         id: 1,
-        description: 'Привяжи кошелек',
+        description: 'Привяжи кошелек - 5000$Shells',
         checkFunction: checkWalletAndClaim
     }
     // Можно добавить больше заданий сюда
@@ -120,7 +121,11 @@ async function checkWalletAndClaim(taskId) {
     hideLoadingIndicator();
 
     if (userProgress.walletStatus === 'Done!') {
-        giveEggs();
+        const progress = await getProgress(userId);
+        const currentBalance = Number(progress.balance) || 0;
+        const newBalance = currentBalance + 5000;
+        await saveProgress(userId, { balance: newBalance });
+        await updateBalance();
         completeTask(taskId);
     } else {
         openNotCompleteModal();
@@ -139,7 +144,6 @@ async function completeTask(taskId) {
         await saveProgress(userId, { completedTasks });
         updateTasksDisplay(completedTasks);
         hideLoadingIndicator();
-        openRewardModal();
     }
 }
 function openRewardModal() {
@@ -200,14 +204,6 @@ function openNotCompleteModal() {
 }
 document.getElementById('rewardsButton').onclick = openRewardsModal;
 
-// Инициализация событий и данных при загрузке страницы
-document.addEventListener('DOMContentLoaded', () => {
-    const rewardsIconContainer = document.querySelector('.iconContainer img[src="public/images/rewards_icon.png"]');
-    if (rewardsIconContainer) {
-        rewardsIconContainer.parentElement.addEventListener('click', openRewardsModal);
-    }
-    console.log('Event handlers assigned');
-});
 
 window.openRewardsModal = openRewardsModal;
 window.completeTask = completeTask;

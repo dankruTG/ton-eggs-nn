@@ -12,6 +12,7 @@ let totalBalance = 0;
 let totalDamage = 0;
 let localClickCount = 0; // Локальный счетчик кликов
 let localTotalDamage = 0; // Локальный счетчик урона
+let balance = 0;
 
 
 // Восстановление данных из базы данных при загрузке
@@ -26,6 +27,7 @@ getProgress(userId).then(savedProgress => {
         speedUpgradeLevel = savedProgress.speedUpgradeLevel || 0;
         totalBalance = savedProgress.totalBalance || 0;
         totalDamage = savedProgress.totalDamage || 0;
+        balance = savedProgress.balance || 0;
         restoreInventory(userId);
         if (currentEgg) {
             createClickArea(currentEgg);
