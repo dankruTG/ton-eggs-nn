@@ -413,7 +413,7 @@ async function finishDiggEgg(rarity) {
 
     let clickCountText = 'Начни добывать любое яйцо';
     updateClickCounter(clickCountText);
-    changeBackgroundByRarity(rarity);
+    changeBackgroundByRarity(currentEgg.rarity);
 
     switch (rarity) {
         case 'Common':
