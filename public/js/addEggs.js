@@ -253,6 +253,7 @@ async function startDiggEggByName(eggName, eggContainerId) {
         // Начинаем добычу нового яйца
         createClickArea(eggData);
         await saveProgress(userId, { currentEgg: eggData, clickCount: 0 });
+        changeBackgroundByRarity(eggData.rarity);
     } else {
         console.log('Яйцо не найдено в инвентаре');
     }

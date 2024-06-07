@@ -61,7 +61,9 @@ export async function getProgress(userId) {
             currentEgg: { name: "Bronze Egg", icon: "public/images/commonEggs/bronzeEgg.png", rarity: "Common", strength: 100, minting: "no" },
             clickCount: 0,
             completedTasks: [],
-            inventoryItems: {}
+            inventoryItems: {},
+            ccLevel: 1,
+            ccUpgradePrice: 100
         };
         
         await saveProgress(userId, initialData);
