@@ -388,8 +388,9 @@ export async function createClickArea(eggData) {
         if (currentClickCount <= 0) {
             isProcessing = true;
             showLoadingIndicator();
-            let { currentEgg } = userData;
-            const rarity = currentEgg.rarity
+            const pir = await getProgress(userId);
+            const egdata = pir.currentEgg;
+            const rarity = egdata.rarity;
             await finishDiggEgg(rarity);
             hideLoadingIndicator();
             isProcessing = false;
