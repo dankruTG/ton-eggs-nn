@@ -32,6 +32,7 @@
         </div>
     </div>
     
+    <div id="walletContainer"></div>
     <script type="module">
         import { saveProgress, getProgress } from 'public/js/firebase.js';
 
@@ -53,7 +54,36 @@
                 console.log('New user!')};
         });
     </script>
-   
+    <script type="module">
+        import { handleWalletConnection } from './public/js/rewards.js';
+    
+        Telegram.WebApp.ready();
+    
+        const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+            manifestUrl: 'https://dankrutg.github.io/ton-eggs-nn/tonconnect-manifest.json',
+            buttonRootId: 'walletContainer'
+        });
+    
+        async function handleConnectionStatus(wallet) {
+            console.log('Wallet status changed:', wallet);
+            if (wallet) {
+                const userId = Telegram.WebApp.initDataUnsafe.user.id;
+                const walletAddress = wallet.account.address;
+                console.log('User ID:', userId);
+                console.log('Wallet Address:', walletAddress);
+                try {
+                    await handleWalletConnection(userId, walletAddress);
+                    console.log('Wallet address sent for saving:', walletAddress);
+                } catch (error) {
+                    console.error('Error handling wallet connection:', error);
+                }
+            } else {
+                console.log('No wallet connected');
+            }
+        }
+    
+        tonConnectUI.onStatusChange(handleConnectionStatus);
+    </script>
     
     <div id="notComplete" class="not-complete-modal">
         <div class="modal-content">

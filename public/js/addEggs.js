@@ -388,7 +388,9 @@ export async function createClickArea(eggData) {
         if (currentClickCount <= 0) {
             isProcessing = true;
             showLoadingIndicator();
-            await finishDiggEgg(eggData);
+            let { currentEgg } = userData;
+            const rarity = currentEgg.rarity
+            await finishDiggEgg(rarity);
             hideLoadingIndicator();
             isProcessing = false;
         }
@@ -397,20 +399,21 @@ export async function createClickArea(eggData) {
     document.body.appendChild(clickArea);
 }
 
-async function finishDiggEgg(eggData) {
-    if (isFinishing) return;
+async function finishDiggEgg(rarity) {
+    if (isFinishing) {
+        return;
+    }
+    showLoadingIndicator();
     isFinishing = true;
     currentEgg = null; // Сброс текущего яйца для добычи
     clickCount = 0; // Сброс счетчика кликов
-    showLoadingIndicator();
     await saveProgress(userId, { currentEgg, clickCount }); // Сохранение прогресса
     let coinsDropped = 0;
     let eggDropped = null;
 
     let clickCountText = 'Начни добывать любое яйцо';
     updateClickCounter(clickCountText);
-    changeBackgroundByRarity(eggData.rarity);
-    const rarity = eggData.rarity;
+    changeBackgroundByRarity(rarity);
 
     switch (rarity) {
         case 'Common':

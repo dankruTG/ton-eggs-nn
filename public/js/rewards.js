@@ -6,7 +6,6 @@ import { updateBalance } from './energy.js';
 let completedTasks = [];
 let walletStatus = 'none';
 let balance = 0;
-let tonConnectUI;
 // Загрузка данных пользователя
 Telegram.WebApp.ready();
 const userId = Telegram.WebApp.initDataUnsafe.user.id;
@@ -69,11 +68,6 @@ async function openRewardsModal() {
         taskContainer.id = 'taskContainer';
         modalContent.appendChild(taskContainer);
 
-        // Добавляем контейнер для кнопки подключения кошелька
-        const walletButtonContainer = document.createElement('div');
-        walletButtonContainer.id = 'walletButtonContainer';
-        modalContent.appendChild(walletButtonContainer);
-
         document.body.appendChild(rewardsModal);
 
         closeButton.addEventListener('click', () => {
@@ -82,43 +76,11 @@ async function openRewardsModal() {
     } else {
         rewardsModal.style.display = 'block';
     }
-
-    // Проверяем, добавлен ли контейнер для кнопки подключения кошелька
-    let walletButtonContainer = document.getElementById('walletButtonContainer');
-    if (!walletButtonContainer) {
-        walletButtonContainer = document.createElement('div');
-        walletButtonContainer.id = 'walletButtonContainer';
-        rewardsModal.querySelector('.modal-content').appendChild(walletButtonContainer);
-    }
+    
 
     updateTasksDisplay(completedTasks);
     hideLoadingIndicator();
 }
-
-tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-    manifestUrl: 'https://dankrutg.github.io/ton-eggs-nn/tonconnect-manifest.json',
-    buttonRootId: 'walletButtonContainer'
-});
-tonConnectUI.onStatusChange(handleConnectionStatus);
-
-async function handleConnectionStatus(wallet) {
-    console.log('Wallet status changed:', wallet);
-    if (wallet) {
-        const userId = Telegram.WebApp.initDataUnsafe.user.id;
-        const walletAddress = wallet.account.address;
-        console.log('User ID:', userId);
-        console.log('Wallet Address:', walletAddress);
-        try {
-            await handleWalletConnection(userId, walletAddress);
-            console.log('Wallet address sent for saving:', walletAddress);
-        } catch (error) {
-            console.error('Error handling wallet connection:', error);
-        }
-    } else {
-        console.log('No wallet connected');
-    }
-}
-
 
 // Обновление отображения заданий
 function updateTasksDisplay(completedTasks) {
