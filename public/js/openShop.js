@@ -1,6 +1,6 @@
 import { saveProgress, getProgress } from './firebase.js';
 import { addEggToInventory } from './addEggs.js';
-import { updateEnergyBar, updateBalance } from './energy.js';
+import { updateEnergyBar, updateBalance, apdateEnergyBar } from './energy.js';
 
 let speedUpgradeLevel = 1;
 let speedUpgradePrice = 100;
@@ -146,7 +146,7 @@ async function upgradeEnergy() {
     console.log('After upgrade:', { maxenerg, energyUpgradeLevel, energyUpgradePrice });
     await saveProgress(userId, { maxenerg, energyUpgradeLevel, energyUpgradePrice }); // Сохранение прогресса
     await updateShopDisplay();
-    updateEnergyBar(); // Обновляем отображение энергии после увеличения
+    await apdateEnergyBar(); // Обновляем отображение энергии после увеличения
     await Telegram.WebApp.ready();
     hideLoadingIndicator();
 }

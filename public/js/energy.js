@@ -1,3 +1,4 @@
+import { get } from 'mongoose';
 import { saveProgress, getProgress } from './firebase.js';
 import { hideLoadingIndicator, showLoadingIndicator } from './openShop.js';
 
@@ -23,6 +24,7 @@ await getProgress(userId).then(savedProgress => {
         curenerg = Math.min(curenerg + energyToRestore, maxenerg);
         
         updateEnergyBar();
+        updateBalance();
         saveProgress(userId, { curenerg, lastEnergyUpdate: now });
     }
 });
@@ -40,8 +42,12 @@ export function decreaseEnergy() {
     }
     
 }
-
-export function updateEnergyBar() {
+export async function apdateEnergyBar() {
+    const userData = await getProgress(userId);
+    let { curenerg, maxenerg } = userData;
+    updateEnergyBar(curenerg, maxenerg)
+}
+export function updateEnergyBar(curenerg, maxenerg) {
     const energyBar = document.getElementById('energyBar');
     if (energyBar) {
         energyBar.style.width = `${(curenerg / maxenerg) * 100}%`;
@@ -113,7 +119,4 @@ function formatNumber(number) {
 
 // Call updateBalance on page load
 document.addEventListener('DOMContentLoaded', updateBalance);
-
-// Periodically update the balance every 5 seconds (5000 milliseconds)
-setInterval(updateBalance, 5000);
 
