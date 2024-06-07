@@ -198,6 +198,7 @@ function openNotCompleteModal() {
         notCompleteModal.style.display = 'none';
     });
 }
+document.getElementById('rewardsButton').onclick = openRewardsModal;
 
 // Инициализация событий и данных при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
