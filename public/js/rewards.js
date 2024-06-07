@@ -6,6 +6,7 @@ import { updateBalance } from './energy.js';
 let completedTasks = [];
 let walletStatus = 'none';
 let balance = 0;
+let tonConnectUI;
 // Загрузка данных пользователя
 Telegram.WebApp.ready();
 const userId = Telegram.WebApp.initDataUnsafe.user.id;
@@ -82,7 +83,7 @@ async function openRewardsModal() {
         rewardsModal.style.display = 'block';
     }
 
-    // Убеждаемся, что контейнер для кнопки подключения кошелька существует и добавлен
+    // Проверяем, добавлен ли контейнер для кнопки подключения кошелька
     let walletButtonContainer = document.getElementById('walletButtonContainer');
     if (!walletButtonContainer) {
         walletButtonContainer = document.createElement('div');
@@ -90,17 +91,15 @@ async function openRewardsModal() {
         rewardsModal.querySelector('.modal-content').appendChild(walletButtonContainer);
     }
 
-    // Инициализация TonConnectUI после добавления контейнера
-    const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-        manifestUrl: 'https://dankrutg.github.io/ton-eggs-nn/tonconnect-manifest.json',
-        buttonRootId: 'walletButtonContainer'
-    });
-
-    tonConnectUI.onStatusChange(handleConnectionStatus);
-
     updateTasksDisplay(completedTasks);
     hideLoadingIndicator();
 }
+
+tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+    manifestUrl: 'https://dankrutg.github.io/ton-eggs-nn/tonconnect-manifest.json',
+    buttonRootId: 'walletButtonContainer'
+});
+tonConnectUI.onStatusChange(handleConnectionStatus);
 
 async function handleConnectionStatus(wallet) {
     console.log('Wallet status changed:', wallet);
