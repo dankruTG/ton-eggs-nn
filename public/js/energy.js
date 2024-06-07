@@ -42,12 +42,12 @@ export function decreaseEnergy() {
     }
     
 }
-export async function apdateEnergyBar() {
-    const userData = await getProgress(userId);
-    let { curenerg, maxenerg } = userData;
-    updateEnergyBar(curenerg, maxenerg)
-}
-export function updateEnergyBar(curenerg, maxenerg) {
+//export async function apdateEnergyBar() {
+    //const userData = await getProgress(userId);
+    //let { curenerg, maxenerg } = userData;
+  //  updateEnergyBar(curenerg, maxenerg)
+//}
+export function updateEnergyBar() {
     const energyBar = document.getElementById('energyBar');
     if (energyBar) {
         energyBar.style.width = `${(curenerg / maxenerg) * 100}%`;
