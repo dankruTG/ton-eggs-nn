@@ -1,4 +1,3 @@
-import { get } from 'mongoose';
 import { saveProgress, getProgress } from './firebase.js';
 import { hideLoadingIndicator, showLoadingIndicator } from './openShop.js';
 
@@ -24,11 +23,11 @@ await getProgress(userId).then(savedProgress => {
         curenerg = Math.min(curenerg + energyToRestore, maxenerg);
         
         updateEnergyBar();
-        updateBalance();
         saveProgress(userId, { curenerg, lastEnergyUpdate: now });
     }
 });
 hideLoadingIndicator();
+updateBalance();
 
 export function decreaseEnergy() {
     curenerg--;
@@ -42,11 +41,7 @@ export function decreaseEnergy() {
     }
     
 }
-//export async function apdateEnergyBar() {
-    //const userData = await getProgress(userId);
-    //let { curenerg, maxenerg } = userData;
-  //  updateEnergyBar(curenerg, maxenerg)
-//}
+
 export function updateEnergyBar() {
     const energyBar = document.getElementById('energyBar');
     if (energyBar) {
