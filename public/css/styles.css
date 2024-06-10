@@ -739,6 +739,7 @@ body {
 
 .spinner {
     background: url('../images/chicken-chickens.gif') no-repeat center center;
+    background-size: contain;
     width: 100px; /* Установите ширину GIF-ки */
     height: 100px; /* Установите высоту GIF-ки */
     margin-bottom: 20px;
