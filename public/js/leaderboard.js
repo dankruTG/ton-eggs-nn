@@ -63,7 +63,7 @@ async function loadLeaderboard() {
         leaderboardContainer.appendChild(userElement);
 
         // Если текущий пользователь, отображаем его ранг отдельно
-        if (user.id === userId) {
+        if (Number (user.id) === Number (userId)) {
             playerRank.textContent = `Ваше место: ${index + 1}\n Ваше имя: ${userName}\n Общее количество монет: ${totalBalance}`;
         }
         else {
