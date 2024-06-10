@@ -1,3 +1,10 @@
+#mainContainer {
+    width: 100%;
+    max-width: 400px; /* Ограничиваем максимальную ширину для удобства на мобильных устройствах */
+    margin: 0 auto; /* Центрируем по горизонтали */
+    padding: 20px;
+    box-sizing: border-box;
+}
 body {
     display: flex;
     justify-content: center;
