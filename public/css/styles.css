@@ -719,7 +719,7 @@ body {
 }
 
 .loading-overlay {
-    display: none; /* Скрыт по умолчанию */
+    display: flex; /* Скрыт по умолчанию */
     position: fixed;
     top: 0;
     left: 0;
