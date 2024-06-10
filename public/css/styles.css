@@ -1,4 +1,8 @@
 #mainContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     max-width: 400px; /* Ограничиваем максимальную ширину для удобства на мобильных устройствах */
     margin: 0 auto; /* Центрируем по горизонтали */
