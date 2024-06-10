@@ -318,26 +318,32 @@ body {
     margin: 0 auto;
     width: 80%;
     max-width: 500px;
-    max-height: 65px;
     padding: 10px;
     background-color: rgba(0, 0, 0, 0.5);
     border: 2px solid gold;
     border-radius: 10px;
+    box-sizing: border-box; /* Убедитесь, что паддинг учитывается в размере */
 }
 
 .iconContainer {
-    cursor: pointer; /* Курсор при наведении */
-    padding: 10px;
-    transition: transform 0.2s ease; /* Плавный переход при изменении размера */
+    cursor: pointer;
+    padding: 5px; /* Уменьшите паддинг */
+    flex: 1;
+    max-width: 70px; /* Ограничьте максимальную ширину контейнера */
+    box-sizing: border-box;
+    text-align: center; /* Центрируйте содержимое */
 }
 
+
 .iconContainer:hover {
-    transform: scale(1.1); /* Увеличение масштаба при наведении */
+    transform: scale(1.1);
 }
 
 .iconContainer img {
-    width: 60px; /* Ширина иконок */
-    height: 60px; /* Высота иконок */
+    width: 15vw; /* Относительная ширина иконок */
+    height: 15vw; /* Относительная высота иконок */
+    max-width: 60px; /* Максимальная ширина */
+    max-height: 60px; /* Максимальная высота */
 }
 /* Стили для модального окна инвентаря */
 #inventoryModal {
