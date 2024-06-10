@@ -259,7 +259,7 @@ body {
 
 
 #energyContainer {
-    position: fixed;
+    position: fixed; /* Позиционируем фиксировано */
     width: 80%;
     max-width: 300px;
     height: auto;
@@ -270,11 +270,11 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    bottom: 90px; /* Отступ от нижнего меню */
+    bottom: 90px; /* Располагаем над нижним меню */
     left: 50%;
     transform: translateX(-50%);
     padding: 10px;
-    z-index: 5; /* Убедитесь, что z-index установлен ниже, чем у bottomIconsContainer */
+    z-index: 10; /* Устанавливаем z-index */
 }
 
 #energyContent {
@@ -313,17 +313,17 @@ body {
     justify-content: space-around;
     align-items: center;
     position: fixed;
-    bottom: 20px;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
+    bottom: 10px; /* Располагаем внизу страницы */
+    left: 50%;
+    transform: translateX(-50%);
     width: 80%;
     max-width: 500px;
-    padding: 10px;
+    height: 65px;
     background-color: rgba(0, 0, 0, 0.5);
     border: 2px solid gold;
     border-radius: 10px;
-    box-sizing: border-box; /* Убедитесь, что паддинг учитывается в размере */
+    padding: 10px;
+    z-index: 9; /* Устанавливаем z-index */
 }
 
 .iconContainer {
@@ -333,6 +333,8 @@ body {
     max-width: 70px; /* Ограничьте максимальную ширину контейнера */
     box-sizing: border-box;
     text-align: center; /* Центрируйте содержимое */
+    padding: 10px;
+    transition: transform 0.2s ease; /* Плавный переход при изменении размера */
 }
 
 
