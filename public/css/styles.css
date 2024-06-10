@@ -133,7 +133,7 @@ body {
     top: 20px;
     padding: 8px;
     height: 23px;
-    left: 200px;
+    left: -200px;
 }
 
 #eggContainer {
