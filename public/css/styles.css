@@ -326,7 +326,7 @@ body {
     border: 2px solid gold;
     border-radius: 10px;
     padding: 10px;
-    z-index: 9; /* Устанавливаем z-index */
+    z-index: 20; /* Устанавливаем z-index */
 }
 
 .iconContainer {
