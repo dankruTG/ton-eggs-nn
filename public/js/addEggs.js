@@ -304,22 +304,15 @@ export async function createClickArea(eggData) {
     }
     changeBackgroundByRarity(eggData.rarity);
 
+    const container = document.getElementById('mainContainer');
+
     const clickArea = document.createElement('div');
     clickArea.id = 'clickArea';
-    clickArea.style.width = '200px';
-    clickArea.style.height = '200px';
-    clickArea.style.backgroundColor = 'transparent';
-    clickArea.style.position = 'relative';
-    clickArea.style.overflow = 'block';
-    clickArea.style.display = 'flex';
-    clickArea.style.justifyContent = 'center';
-    clickArea.style.alignItems = 'center';
+    clickArea.classList.add('click-area');
 
     const eggImage = document.createElement('img');
     eggImage.src = eggData.icon;
-    eggImage.style.width = '100%';
-    eggImage.style.height = '100%';
-    eggImage.style.objectFit = 'contain';
+    eggImage.classList.add('egg-image');
     clickArea.appendChild(eggImage);
 
     let stl = eggData.strength;
@@ -351,9 +344,7 @@ export async function createClickArea(eggData) {
 
             const damageElement = document.createElement('span');
             damageElement.textContent = `-${clickValue}`;
-            damageElement.style.position = 'absolute';
-            damageElement.style.color = 'white';
-            damageElement.style.fontSize = '16px';
+            damageElement.classList.add('damage-element');
 
             clickArea.appendChild(damageElement);
 
@@ -397,7 +388,7 @@ export async function createClickArea(eggData) {
         }
     });
 
-    document.body.appendChild(clickArea);
+    container.appendChild(clickArea);
 }
 
 async function finishDiggEgg(rarity) {
