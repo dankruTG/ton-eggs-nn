@@ -183,7 +183,7 @@ export function showLoadingIndicator() {
 export function hideLoadingIndicator() {
     const loadingOverlay = document.getElementById('loadingOverlay');
     if (loadingOverlay) {
-        loadingOverlay.style.display = 'flex';
+        loadingOverlay.style.display = 'none';
     }
 }
 
