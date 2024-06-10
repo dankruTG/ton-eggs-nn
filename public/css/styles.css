@@ -33,9 +33,12 @@ body {
 }
 
 .egg-image {
-    width: 100%;
+    width: 60%;
     height: 100%;
     object-fit: contain;
+    z-index: auto;
+    position: absolute;
+    top: -10vw;
 }
 
 .damage-element {
