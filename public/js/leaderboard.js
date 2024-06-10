@@ -61,6 +61,7 @@ async function loadLeaderboard() {
         const userElement = document.createElement('div');
         userElement.textContent = `${index + 1}. ${userName} - ${totalBalance}`;
         leaderboardContainer.appendChild(userElement);
+        
 
         // Если текущий пользователь, отображаем его ранг отдельно
         if (Number (user.id) === Number (userId)) {
