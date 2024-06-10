@@ -259,21 +259,22 @@ body {
 
 
 #energyContainer {
-    position: fixed; /* Изменяем на fixed для фиксированного позиционирования */
+    position: fixed;
     width: 80%;
-    max-width: 300px; /* Ограничиваем максимальную ширину */
-    height: auto; /* Высота будет зависеть от содержимого */
-    background-color: #333; 
+    max-width: 300px;
+    height: auto;
+    background-color: #333;
     border: 2px solid gold;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    bottom: 110px; /* Располагаем над bottomIconsContainer */
-    left: 50%; 
+    bottom: 90px; /* Отступ от нижнего меню */
+    left: 50%;
     transform: translateX(-50%);
-    padding: 10px; 
+    padding: 10px;
+    z-index: 5; /* Убедитесь, что z-index установлен ниже, чем у bottomIconsContainer */
 }
 
 #energyContent {
@@ -284,28 +285,28 @@ body {
 #energyIcon {
     width: 30px;
     height: 30px;
-    margin-right: 5px; /* Отступ справа для изображения */
+    margin-right: 5px;
 }
 
 #energyText {
     color: white;
     font-size: 14px;
     font-weight: bold;
-    margin-right: 5px; /* Отступ справа для текста */
+    margin-right: 5px;
 }
 
 #energyBarContainer {
-    width: 80%; /* Ширина контейнера для полосы энергии */
-    height: 20px; /* Высота контейнера для полосы энергии */
+    width: 80%;
+    height: 20px;
     border-radius: 8px;
-    overflow: hidden; /* Скрытие выходящей за рамки полосы */
-    background-color: #666; /* Цвет фона контейнера для полосы */
+    overflow: hidden;
+    background-color: #666;
 }
 
 #energyBar {
-    height: 100%; /* Высота полосы энергии (будет меняться) */
-    background: linear-gradient(to right, white, gold); /* Градиент от белого до золотого */
-    transition: width 0.3s ease; /* Анимация изменения ширины */
+    height: 100%;
+    background: linear-gradient(to right, white, gold);
+    transition: width 0.3s ease;
 }
 #bottomIconsContainer {
     display: flex;
