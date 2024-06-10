@@ -64,7 +64,10 @@ async function loadLeaderboard() {
 
         // Если текущий пользователь, отображаем его ранг отдельно
         if (user.id === userId) {
-            playerRank.textContent = `Ваше место: ${index + 1}\nВаше имя: ${userName}\nОбщее количество монет: ${totalBalance}`;
+            playerRank.textContent = `Ваше место: ${index + 1}\n Ваше имя: ${userName}\n Общее количество монет: ${totalBalance}`;
+        }
+        else {
+            playerRank.textContent = 'Where?'
         }
     });
 
