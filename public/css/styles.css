@@ -130,10 +130,6 @@ body {
     align-items: center;
     justify-content: flex-end;
     position: absolute;
-    top: 20px;
-    padding: 8px;
-    height: 23px;
-    left: -100px;
 }
 
 #eggContainer {
@@ -194,6 +190,7 @@ body {
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный черный фон */
+    z-index: 1000;
 }
 
 /* Стили для контейнера модального окна */
@@ -501,6 +498,7 @@ body {
     border: 1px solid #888;
     border-radius: 8px;
     width: 80%; /* Ширина содержимого */
+    padding-bottom: 100%;
 }
 #rewardsModal .close {
     color: #aaa;
