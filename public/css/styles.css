@@ -49,7 +49,7 @@ body {
     position: absolute;
     color: white;
     font-size: 16px;
-    top: -20vw;
+    top: 40vw, 41vw, 39vw;
 }
 .menu-button-container {
     position: relative;
