@@ -68,8 +68,14 @@ async function loadLeaderboard() {
         
         if (userData) {
             const currentUserName = userData.username;
+            if (!currentUserName === 'ANONDIGGER') {
+            const ff = userElement.index(currentUserName);
             const currentTotalBalance = userData.totalBalance;
-            playerRank.textContent = `Ваше место: ${index + 1}\n Ваше имя: ${currentUserName}\n Общее количество монет: ${currentTotalBalance}`;
+            playerRank.textContent = `Ваше место: ${ff + 1}\n Ваше имя: ${currentUserName}\n Общее количество монет: ${currentTotalBalance}`;
+            }
+            else {
+                playerRank.textContent = 'You dont have a nick!'
+            }
         }
         else {
             playerRank.textContent = 'Where?'
