@@ -1,7 +1,7 @@
 import { getFirestore, collection, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
 import { showLoadingIndicator, hideLoadingIndicator } from './openShop.js';
-import { firebaseConfig } from './firebase.js';
+import { firebaseConfig, getProgress } from './firebase.js';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -52,6 +52,7 @@ async function loadLeaderboard() {
 
     // Очистка контейнера перед обновлением
     leaderboardContainer.innerHTML = '';
+    const userData = await getProgress(userId);
 
     // Заполнение списка пользователей
     users.forEach((user, index) => {
@@ -64,8 +65,11 @@ async function loadLeaderboard() {
         
 
         // Если текущий пользователь, отображаем его ранг отдельно
-        if (Number (user.id) === Number (userId)) {
-            playerRank.textContent = `Ваше место: ${index + 1}\n Ваше имя: ${userName}\n Общее количество монет: ${totalBalance}`;
+        
+        if (userData) {
+            const currentUserName = userData.username;
+            const currentTotalBalance = userData.totalBalance;
+            playerRank.textContent = `Ваше место: ${index + 1}\n Ваше имя: ${currentUserName}\n Общее количество монет: ${currentTotalBalance}`;
         }
         else {
             playerRank.textContent = 'Where?'
