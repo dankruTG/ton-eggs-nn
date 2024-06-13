@@ -118,7 +118,7 @@ function createTaskElement(task) {
 async function checkWalletAndClaim(taskId) {
     showLoadingIndicator();
     const userProgress = await getProgress(userId);
-    hideLoadingIndicator();
+    
 
     if (userProgress.walletStatus === 'Done!') {
         const progress = await getProgress(userId);
@@ -130,6 +130,7 @@ async function checkWalletAndClaim(taskId) {
     } else {
         openNotCompleteModal();
     }
+    hideLoadingIndicator();
 }
 
 // Обновление состояния выполнения задания в базе данных
