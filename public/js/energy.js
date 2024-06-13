@@ -93,11 +93,13 @@ function enableClick() {
 }
 
 export async function updateBalance() {
+    showLoadingIndicator();
     const userData = await getProgress(userId);
     const balanceElement = document.getElementById('coinBalance');
     if (balanceElement) {
         balanceElement.textContent = formatNumber(userData.balance);
     }
+    hideLoadingIndicator();
 
 }
 function formatNumber(number) {

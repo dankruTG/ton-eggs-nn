@@ -334,7 +334,7 @@ export async function createClickArea(eggData) {
         if (currentClickCount > 0) {
             localTotalDamage += speedUpgradeLevel;
             currentClickCount -= clickValue;
-            localClickCount += clickValue;
+            localClickCount ++;
 
             updateClickCounter(currentClickCount);
             decreaseEnergy();
@@ -368,10 +368,9 @@ export async function createClickArea(eggData) {
             }, 100);
         }
 
-        if (localClickCount >= 10 || currentClickCount <= 0) {
-            clickCount += localClickCount;
-            totalDamage += localTotalDamage;
-            saveProgress(userId, { clickCount, totalDamage });
+        if (localClickCount >= 10) {
+            clickCount += localTotalDamage;
+            saveProgress(userId, { clickCount });
             localClickCount = 0; // Сбрасываем локальные счетчики
             localTotalDamage = 0;
         }
@@ -379,6 +378,10 @@ export async function createClickArea(eggData) {
         if (currentClickCount <= 0) {
             isProcessing = true;
             showLoadingIndicator();
+            localClickCount = 0;
+            localTotalDamage = 0;
+            totalDamage += Number (stl);
+            await saveProgress(userId, { totalDamage });
             const pir = await getProgress(userId);
             const egdata = pir.currentEgg;
             const rarity = egdata.rarity;
