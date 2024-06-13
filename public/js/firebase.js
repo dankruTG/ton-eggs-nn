@@ -18,6 +18,7 @@ const db = getFirestore(app);
 
 // Function to save progress
 export async function saveProgress(userId, data) {
+    showLoadingIndicator();
     const docRef = doc(db, "users", userId.toString());
     const docSnap = await getDoc(docRef);
 
@@ -32,10 +33,12 @@ export async function saveProgress(userId, data) {
         await setDoc(docRef, data);
     }
     console.log('Progress saved');
+    hideLoadingIndicator();
 }
 
 // Function to get progress
 export async function getProgress(userId) {
+    showLoadingIndicator();
     const docRef = doc(db, "users", userId.toString());
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
@@ -67,6 +70,22 @@ export async function getProgress(userId) {
         };
         
         await saveProgress(userId, initialData);
+        hideLoadingIndicator();
         return initialData;
+        
+    }
+    
+}
+function showLoadingIndicator() {
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    if (loadingOverlay) {
+        loadingOverlay.style.display = 'flex';
+    }
+}
+
+function hideLoadingIndicator() {
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    if (loadingOverlay) {
+        loadingOverlay.style.display = 'none';
     }
 }
