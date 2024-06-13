@@ -37,6 +37,7 @@ export function decreaseEnergy() {
         disableClick(); // Если энергия иссякла, блокируем возможность кликать
     }
     if (energyTick >= 10) {
+        energyTick = 0;
         saveProgress(userId, { curenerg, lastEnergyUpdate: Date.now() });
     }
     

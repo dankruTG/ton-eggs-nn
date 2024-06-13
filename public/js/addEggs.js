@@ -400,9 +400,10 @@ async function finishDiggEgg(rarity) {
     }
     showLoadingIndicator();
     isFinishing = true;
-    currentEgg = null; // Сброс текущего яйца для добычи
-    clickCount = 0; // Сброс счетчика кликов
-    await saveProgress(userId, { currentEgg, clickCount }); // Сохранение прогресса
+    const currentEgg = null; // Сброс текущего яйца для добычи
+    const clickCount = 0; // Сброс счетчика кликов
+    await saveProgress(userId, { currentEgg: null, clickCount: 0 });
+    await saveProgress(userId, { currentEgg: null, clickCount: 0 });
     let coinsDropped = 0;
     let eggDropped = null;
 
